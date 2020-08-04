@@ -19,7 +19,7 @@ fi
 if [ ! -d $SOURCE ]; then
         mkdir -pv $(dirname $SOURCE)
         cd $(dirname $SOURCE)
-        echo "extracting nest ${VERSION}"
+        echo "extracting ${PACKAGE} ${VERSION}"
         tar -xJf "${HOME}/src/${PACKAGE}-${VERSION}.tar.xz"
 	mv -v Python-${VERSION} "${SOURCE}"
 fi
