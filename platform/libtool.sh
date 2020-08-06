@@ -13,13 +13,13 @@ LOG=${BUILD}/logs
 set -x
 echo ">>> prepare source"
 if [ ! -r "$HOME/src/${PACKAGE}-${VERSION}.tar.gz" ]; then
-	wget "$URL" -O "~/src/${PACKAGE}-${VERSION}.tar.gz"
+	wget "$URL" -O "${HOME}/src/${PACKAGE}-${VERSION}.tar.gz"
 fi
 if [ ! -d $SOURCE ]; then
         mkdir -pv $(dirname $SOURCE)
         cd $(dirname $SOURCE)
         echo "extracting ${PACKAGE} ${VERSION}"
-        tar -xzf "~/src/${PACKAGE}-${VERSION}.tar.gz"
+        tar -xzf "${HOME}/src/${PACKAGE}-${VERSION}.tar.gz"
 fi
 
 echo ">>> prepare build"
