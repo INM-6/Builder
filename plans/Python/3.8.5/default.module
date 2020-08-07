@@ -1,0 +1,21 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set VERSION ${VERSION}
+set SUFFIX -${VARIANT}
+set INSTALLDIR ${TARGET}/${PACKAGE}/${VERSION}-${SUFFIX}
+
+proc ModulesHelp { } {
+	global VERSION
+        puts stderr "Python \$VERSION"
+}
+
+module-whatis   "Python \$VERSION\$SUFFIX"
+
+conflict python
+
+prepend-path    PATH    \$INSTALLDIR/bin
+prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
+prepend-path    MANPATH \$INSTALLDIR/man
+
