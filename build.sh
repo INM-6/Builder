@@ -23,14 +23,18 @@ BUILDER_PATH="$(dirname $(realpath "$0"))"
 # Comman line parsing
 
 PACKAGE=${1:-help}
-shift
+shift || true
 case "$PACKAGE" in
-*help)
+*help | -h)
 	cat <<ENDHELP
 Usage: build -h|--help
        build <package> <version> [<variant>]
 
-  Some <package> names have a special meaning
+  Install software as given in a build plan identifed by <package>, <version>
+  and optional <variant>. If no <variant> is given, the "default" variant will
+  be built.
+
+  Some <package> names have a special meaning and do not cause a build:
 
       help           this text is printed
       configure      installs ~/.buildrc and exits
@@ -50,13 +54,23 @@ esac
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Setup Builder configuration
 
+if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
+	cat <<ENDNOTICE
+!!!
+!!! ~/.buildrc already exists.
+!!!
+!!! Edit manually or delete it to install a new default configuration.
+!!!
+ENDNOTICE
+fi
 if [ ! -e "${HOME}/.buildrc" ]; then
-	cat <<ENDRC
+	echo ">>> installing default configuration '${HOME}/.buildrc'..."
+	cat >"${HOME}/.buildrc" <<ENDRC
 #
 # This is the configuration file for Builder
 #
 # If you use environment or Builder internal variables to define paths, you
-# have to escape the dollar '\\\$' to deferr evaluation to the actual build
+# have to escape the dollar '\\\$' to defer evaluation to the actual build
 # time.
 #
 # Builder internal variables are evaluated in the following order:
@@ -67,25 +81,40 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 PLANFILE_PATH=${BUILDER_PATH}/plans
 
 # storage of all package archives (like .tar.gz files)
-PACKAGE_CACHE=\\\${HOME}/src
+PACKAGE_CACHE=\${HOME}/src
 
 # temporary storage of source files (extracted from tar-balls)
-SOURCE_PATH=\\\${HOME}/build/src
+SOURCE_PATH=\${HOME}/build/src
 
 # location for out-of-tree builds
-BUILD_PATH=\\\${HOME}/build
+BUILD_PATH=\${HOME}/build
 
 # install path (usually used as --prefix)
-TARGET_PATH=\\\${HOME}/install
+TARGET_PATH=\${HOME}/install
 
 # module install path. If defined and a template file
-# `<package>/<version>/<variant>.module` exists, it will be filled and copied
-# to `<MODULE_INSTALL_PATH>/<package>/<version>/<variant>`.
-MODULE_INSTALL_PATH=\\\${HOME}/modules
+# '<package>/<version>/<variant>.module' exists, it will be filled and copied
+# to '<MODULE_INSTALL_PATH>/<package>/<version>/<variant>'.
+MODULE_INSTALL_PATH=\${HOME}/modules
 
 # path where to store logfiles of the build
-LOG_PATH=\\\${BUILD}/logs
+LOG_PATH=\${BUILD}/logs
 ENDRC
+	cat "${HOME}/.buildrc"
+	cat <<ENDNOTE
+!!!
+!!! You probably want to modify at least the \$TARGET_PATH in your
+!!! configuration in '~/.buildrc'.
+!!!
+ENDNOTE
+	echo -e "\n>>> default configuration has been written to"
+	echo -e "    ${HOME}/.buildrc\n"
+	if [ "$PACKAGE" != "configure" ]; then
+		echo "!!! Please check that the guessed paths are correct and"
+		echo "!!! rerun the build command."
+		echo -e "\n>>> Stopping here, to be sure."
+		exit 1
+	fi
 fi
 
 # load configuration
@@ -118,26 +147,32 @@ VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
 VARIANT=${2:-default}	# optional variant
 echo ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
-SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
-TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}"
-BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}"
-LOG="${LOG_PATH@P}"
+if version_gt $BASH_VERSION 4.4; then
+	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
+	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}"
+	BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}"
+	LOG="${LOG_PATH@P}"
+else
+	SOURCE="$(eval echo "${SOURCE_PATH}/${PACKAGE}-${VERSION}")"
+	TARGET="$(eval echo "${TARGET_PATH}/${PACKAGE}/${VERSION}")"
+	BUILD="$(eval echo "${BUILD_PATH}/${PACKAGE}/${VERSION}")"
+	LOG="$(eval echo "${LOG_PATH}")"
+fi
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
-
+echo ">>> loading the build plan..."
 PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 . "${PLAN}"
 
-echo ">>> SOURCE=${SOURCE}"
-echo ">>> TARGET=${TARGET}"
-echo ">>> BUILD=${BUILD}"
-echo ">>> LOG=${LOG}"
-
+echo ">>> build environment information"
+builder_info
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
+echo "PRESS ENTER TO START"
+read
 
 source_prepare
 build_prepare

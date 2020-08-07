@@ -31,12 +31,33 @@ split_ext() {
 
 function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
 
+builder_info () {
+	echo "Configured variables:"
+	echo "  PLANFILE_PATH=${PLANFILE_PATH:- <undefined>}"
+	echo "  PACKAGE_CACHE=${PACKAGE_CACHE:- <undefined>}"
+	echo "  SOURCE_PATH=${SOURCE_PATH:- <undefined>}"
+	echo "  BUILD_PATH=${BUILD_PATH:- <undefined>}"
+	echo "  TARGET_PATH=${TARGET_PATH:- <undefined>}"
+	echo "  MODULE_INSTALL_PATH=${MODULE_INSTALL_PATH:- <undefined>}"
+	echo "  LOG_PATH=${LOG_PATH:- <undefined>}"
+	echo ""
+	echo "Build Variables:"
+	echo "  PACKAGE=${PACKAGE:- <undefined>}"
+	echo "  VERSION=${VERSION:- <undefined>}"
+	echo "  VARIANT=${VARIANT:- <undefined>}"
+	echo "  PLAN=${PLAN:- <undefined>}"
+	echo "  SOURCE=${SOURCE:- <undefined>}"
+	echo "  TARGET=${TARGET:- <undefined>}"
+	echo "  BUILD=${BUILD:- <undefined>}"
+	echo "  LOG=${LOG:- <undefined>}"
+}
 ################################################################################
 # Default implementation of steps
 
 source_prepare() {
 	EXT="$(split_ext "${URL}")"
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
+	mkdir -pv "$(dirname "$PACKAGE_FILE")"
 	echo ">>> prepare source"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		echo ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
