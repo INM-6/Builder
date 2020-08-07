@@ -44,6 +44,10 @@ ENDHELP
 	;;
 esac
 
+if [ -z ${1+x} ]; then
+	echo ">>> ERROR: No version specified!"
+	exit 1;
+fi
 VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
 VARIANT=${2:-default}	# optional variant
 
@@ -62,6 +66,9 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 # Builder internal variables are evaluated in the following order:
 # SOURCE, TARGET, BUILD, LOG
 # Each definition can reference only preceeding ones.
+
+# storage of all build plans
+PLANFILE_PATH=${BUILDER_PATH}/plans
 
 # storage of all package archives (like .tar.gz files)
 PACKAGE_CACHE=\\\${HOME}/src
@@ -99,7 +106,7 @@ if [ "${PACKAGE}" == "configure" ]; then
 	exit 1
 fi
 
-echo ">>> set up build of ${PACKAGE} ${VERSION}..."
+echo ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
 TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}"
 BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}"
@@ -107,7 +114,7 @@ LOG="${LOG_PATH@P}"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
-PLAN="${PLAN_PATH:-$BUILDER_PATH}/platform/${PACKAGE}/${VERSION}/${VARIANT}"
+PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 . "${PLAN}"
 
 echo ">>> SOURCE=${SOURCE}"
