@@ -103,6 +103,7 @@ build_package () {
 	set -x
 	./configure --prefix="$TARGET" |& tee ${LOG}/configure.log
 	make -j $(( $(nproc) / 4 )) |& tee ${LOG}/make.log
+	set +x
 }
 
 build_test () {
@@ -118,7 +119,11 @@ module_install () {
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 		echo ">>> installing module file to ${module_path}"
 		module="$(cat "${PLAN}.module")"
-		echo "${module@P}" >"${module_path}"
+		if version_gt $BASH_VERSION 4.4; then
+			echo "${module@P}" >"${module_path}"
+		else
+			echo "$(eval echo "${module}")" >"${module_path}"
+		fi
 	else
 		echo ">>> no modulefile template found. skipping."
 	fi
