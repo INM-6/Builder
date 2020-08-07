@@ -92,6 +92,17 @@ build_install () {
 	make install |& tee ${LOG}/make-install.log
 }
 
+module_install () {
+	if [ -r "${PLAN}.module" ]; then
+		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
+		echo ">>> installing module file to ${module_path}"
+		module="$(cat "${PLAN}.module")"
+		echo "${module@P}" >"${module_path}"
+	else
+		echo ">>> no modulefile template found. skipping."
+	fi
+}
+
 build_install_test () {
 	echo ">>> no install-tests defined."
 }

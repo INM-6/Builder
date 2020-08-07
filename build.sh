@@ -16,43 +16,39 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 set -euo pipefail
-BUILDER_PATH="$(diname $(realpath "$0"))"
+BUILDER_PATH="$(dirname $(realpath "$0"))"
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Comman line parsing
 
-PACKAGE=${1:help}
+PACKAGE=${1:-help}
 shift
-case "$PACKAGE"
-"*help")
+case "$PACKAGE" in
+*help)
 	cat <<ENDHELP
-Usage: build <package> <version>
+Usage: build -h|--help
+       build <package> <version> [<variant>]
 
   Some <package> names have a special meaning
 
       help           this text is printed
-      configure      installs ~/.builderrc and exits
+      configure      installs ~/.buildrc and exits
 
 
-  Builder  Copyright (C) 2020  Dennis Terhorst
+  Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
-  This is free software, and you are welcome to redistribute it
-  under certain conditions; see 'LICENSE' for details.
+  This is free software, and you are welcome to redistribute it under certain
+  conditions; see '${BUILDER_PATH}/LICENSE' for details.
+
 ENDHELP
 	exit 0
 	;;
 esac
 
-if [ -z ${1+x} ]; then
-	echo ">>> ERROR: No version specified!"
-	exit 1;
-fi
-VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
-VARIANT=${2:-default}	# optional variant
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Setup defaults and environment variables
+# Setup Builder configuration
 
 if [ ! -e "${HOME}/.buildrc" ]; then
 	cat <<ENDRC
@@ -82,6 +78,11 @@ BUILD_PATH=\\\${HOME}/build
 # install path (usually used as --prefix)
 TARGET_PATH=\\\${HOME}/install
 
+# module install path. If defined and a template file
+# `<package>/<version>/<variant>.module` exists, it will be filled and copied
+# to `<MODULE_INSTALL_PATH>/<package>/<version>/<variant>`.
+MODULE_INSTALL_PATH=\\\${HOME}/modules
+
 # path where to store logfiles of the build
 LOG_PATH=\\\${BUILD}/logs
 ENDRC
@@ -101,19 +102,31 @@ if [ ! -r "${BUILDER_PATH}/build_functions.sh" ]; then
 	exit 1
 fi
 . "${BUILDER_PATH}/build_functions.sh"
-
 if [ "${PACKAGE}" == "configure" ]; then
 	exit 1
 fi
 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# set up builder variables for the plan files
+
+if [ -z ${1+x} ]; then
+	echo ">>> ERROR: No version specified!"
+	exit 1;
+fi
+VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
+VARIANT=${2:-default}	# optional variant
 echo ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
+
 SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
 TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}"
 BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}"
 LOG="${LOG_PATH@P}"
 
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
+
 PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 . "${PLAN}"
 
@@ -121,6 +134,7 @@ echo ">>> SOURCE=${SOURCE}"
 echo ">>> TARGET=${TARGET}"
 echo ">>> BUILD=${BUILD}"
 echo ">>> LOG=${LOG}"
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
@@ -131,5 +145,6 @@ build_package
 build_test
 build_install
 build_install_test
+module_install
 
 echo ">>> done."
