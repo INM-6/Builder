@@ -53,7 +53,8 @@
 
   A build plan defines package specific variables that are used in the build
   steps. In a build plan you can override the default implementations of the
-  single steps, that are executed in the following order:
+  single steps, that are executed in the following order (to verify the order
+  look at the last lines of `build.sh`):
 
   ----------------------------------------------------------------
   Function            Description
@@ -76,6 +77,9 @@
 
   build_install_test  any tests of the installed package (default:
                       do nothing)
+
+  module_install      fills the modulefile template and copies it
+                      to `<MODULE_INSTALL_PATH>/<pkg>/<ver>/<var>`
   ----------------------------------------------------------------
 
   To customize a function, a good starting point is to copy the default
