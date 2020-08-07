@@ -1,5 +1,56 @@
 # Making a Plan
 
+## Collection of Plans
+
+  Builder uses plan definitions that are in a different file for each specific
+  package build. The files are located in the `$PLANFILE_PATH` always in a
+  structure of `<packagename>/<version>/<variant>`, where package name and
+  version are obvious, and the `<variant>` allows for different build flags,
+  code modifications, etc. If the `<variant>` is not given it is set to
+  `default`.
+
+  The plan files are part of Builder, but you can easily choose to create your
+  own repository of plans somewhere and set `PLANFILE_PATH` in `.buildrc`
+  accordingly.
+
+  The tree of plan files looks something like this
+
+    plans
+    ├── cmake
+    │   └── 3.18.0
+    │       └── default
+    ├── gsl
+    │   ├── 2.6
+    │   │   └── default
+    │   └── gsl_key.txt
+    ├── libtool
+    │   └── 2.4.6
+    │       └── default
+    ├── nest-simulator
+    │   ├── 2.14.0
+    │   │   └── default -> ../common
+    │   ├── 2.16.0
+    │   │   └── default -> ../common
+    │   ├── 2.18.0
+    │   │   └── default -> ../common
+    │   ├── 2.20.0
+    │   │   └── default -> ../common
+    │   └── common
+    ├── python
+    │   └── 3.8.5
+    │       └── default
+    └── tree
+        └── 1.8.0
+            └── default
+
+  As long as the `<packagename>/<version>/<variant>` structure is there, you
+  can use any scheme of symbolic links, includes, ... to reduce duplication of
+  code. Keeping the plan files concise, containing only the minimum of
+  necessary information, is important to keep the plan files maintainable.
+
+
+## Plan Files
+
   A build plan defines package specific variables that are used in the build
   steps. In a build plan you can override the default implementations of the
   single steps, that are executed in the following order:
