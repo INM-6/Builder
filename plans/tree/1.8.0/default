@@ -29,6 +29,7 @@ build_prepare() {
 		rm -vrf "${BUILD}"
 	fi
 	# tree specific:
+	mkdir -pv "$(dirname "${BUILD}")"
 	cp -rv "${SOURCE}" "${BUILD}"	# not actually an out-of-tree-build
 	cd "${BUILD}"
 	sed -i -e "s%prefix = .*%prefix = ${TARGET}%" Makefile
