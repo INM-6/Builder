@@ -7,4 +7,4 @@
 
 ## Plan Files
 
-* [How to make your own plan files](Bild-Plan-Files.md)
+* [How to make your own plan files](Build-Plan-Files.md)
