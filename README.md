@@ -39,7 +39,10 @@ default value.
 To install a package replace `<package>` and `<version>` with an available
 build plan:
 
-    build <package> <version>
+    build <package> [<version>] [<variant>]
+
+The parameter `<version>` is optional. It will default to installing the
+highest version available.
 
 If there are more variants available, you can optionally specify the
 `<variant>` as third parameter.

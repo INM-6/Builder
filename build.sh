@@ -28,16 +28,17 @@ case "$PACKAGE" in
 *help | -h)
 	cat <<ENDHELP
 Usage: build -h|--help
-       build <package> <version> [<variant>]
+       build configure
+       build <package> [<version>] [<variant>]
 
   Install software as given in a build plan identifed by <package>, <version>
   and optional <variant>. If no <variant> is given, the "default" variant will
   be built.
 
-  Some <package> names have a special meaning and do not cause a build:
+Options:
 
-      help           this text is printed
-      configure      installs ~/.buildrc and exits
+  -h or --help       this text is printed
+  configure          installs ~/.buildrc and exits
 
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
@@ -140,11 +141,17 @@ fi
 # set up builder variables for the plan files
 
 if [ -z ${1+x} ]; then
-	log_error ">>> ERROR: No version specified!"
-	exit 1;
+	log_warning ">>>"
+	log_warning ">>> No version specified!"
+	guess="$(ls -1 "${PLANFILE_PATH}/${PACKAGE}" | grep '^[0-9]\+\.[0-9]\+.*' | sort -V | tail -n1)"
+	log_warning ">>> Guessing you want the latest available version:"
+	log_warning ">>>    ${PACKAGE}-${guess}"
+	log_warning ">>>"
+	VERSION="${guess}"
+else
+	VERSION="${1}"	# keep version as $1 in $@ to hand it to the build scrips!
 fi
-VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
-VARIANT=${2:-default}	# optional variant
+VARIANT="${2:-default}"	# optional variant
 log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
 if version_gt $BASH_VERSION 4.4; then
