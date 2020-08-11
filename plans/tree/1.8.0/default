@@ -15,41 +15,30 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-set -euo pipefail
 
-PACKAGE=tree
 VERSION=${1:-1.8.0}
 URL=ftp://mama.indstate.edu/linux/${PACKAGE}/${PACKAGE}-${VERSION}.tgz
+# this checksum was not officially provided
+SHA256SUM=715d5d4b434321ce74706d0dd067505bb60c5ea83b5f0b3655dae40aa6f9b7c2
 
-SOURCE=~/build/src/${PACKAGE}-${VERSION}
-TARGET=~/install/${PACKAGE}/${VERSION}
-BUILD=~/build/${PACKAGE}/${VERSION}
-LOG=${BUILD}/logs
 
-set -x
-echo ">>> prepare source"
-if [ ! -r "$HOME/src/${PACKAGE}-${VERSION}.tgz" ]; then
-	wget "$URL" -O "${HOME}/src/${PACKAGE}-${VERSION}.tgz"
-fi
-if [ ! -d $SOURCE ]; then
-        mkdir -pv $(dirname $SOURCE)
-        cd $(dirname $SOURCE)
-        echo "extracting ${PACKAGE} ${VERSION}"
-        tar -xzf "${HOME}/src/${PACKAGE}-${VERSION}.tgz"
-fi
+build_prepare() {
+	log_status ">>> prepare build"
+	if [ -d "${BUILD}" ]; then
+		read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
+		rm -vrf "${BUILD}"
+	fi
+	# tree specific:
+	cp -rv "${SOURCE}" "${BUILD}"	# not actually an out-of-tree-build
+	cd "${BUILD}"
+	sed -i -e "s%prefix = .*%prefix = ${TARGET}%" Makefile
+	mkdir -pv "${LOG}"
+}
 
-echo ">>> prepare build"
-if [ -d $BUILD ]; then
-	read -p "sure you want to delete $BUILD? (ctrl-c for NO)"
-	rm -rf $BUILD
-fi
-mv -v "${SOURCE}" "${BUILD}"
-mkdir -pv "${LOG}"
-
-echo ">>> build"
-cd "${BUILD}"
-set -x
-sed -i -e "s%prefix = .*%prefix = ${TARGET}%" Makefile
-#${SOURCE}/configure --srcdir="${SOURCE}" --prefix="$TARGET" |& tee ${LOG}/configure.log
-make -j $(( $(nproc) / 4 )) |& tee ${LOG}/make.log
-make install |& tee ${LOG}/make-install.log
+build_package () {
+	log_status ">>> build"
+	cd "${BUILD}"
+	set -x
+	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
+	set +x
+}

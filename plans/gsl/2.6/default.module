@@ -1,0 +1,56 @@
+################################################################################
+#
+# GNU Scientific Library
+#
+# This is a moldulefile to be included in specific version definitions
+# 
+#Expects the following variables to have been set
+#   VERSION: the version, 
+#      defaults to last component of module tag
+#   SUFFIX: any information appended to the VERSION
+#   INSTALLDIR: path of specific installation
+#
+
+# Specific Settings ############################################################
+
+set     VERSION         ${VERSION}
+set     SUFFIX          -${VARIANT}
+set     INSTALLDIR      ${TARGET}
+
+set moduledir [file dirname \$ModulesCurrentModulefile]
+
+# Common Setting ###############################################################
+if [info exists version]==0 {
+   set version [file tail [module-info version [module-info name] ] ]
+}
+
+proc ModulesHelp { } {
+        global VERSION SUFFIX INSTALLDIR
+        puts stderr "================================================================================
+GNU Scientific Library \$VERSION\$SUFFIX
+================================================================================
+
+   The GNU Scientific Library (GSL) is a numerical library for C and C++
+   programmers. It is free software under the GNU General Public License.
+
+   The library provides a wide range of mathematical routines such as random
+   number generators, special functions and least-squares fitting. There are
+   over 1000 functions in total with an extensive test suite.
+
+   For help visit:  https://www.gnu.org/software/gsl/doc/html/index.html
+"
+        set fp [open "$INSTALLDIR/ConfigurationSummary.txt" r]
+        puts stderr [read \$fp];
+        close \$fp;
+        puts stderr "Module settings:
+INSTALLDIR:  	\$INSTALLDIR"
+}
+
+module-whatis   "GNU Scientific Library, version \$VERSION\$SUFFIX"
+
+conflict gsl
+
+prepend-path    PATH                    \$INSTALLDIR/bin
+prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
+prepend-path    MANPATH \$INSTALLDIR/man
+

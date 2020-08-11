@@ -15,11 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-set -euo pipefail
 
 VERSION=3.18.0
-tar -xzf ~/src/cmake-${VERSION}.tar.gz
-cd cmake-${VERSION}
-./bootstrap --prefix=~/install/cmake/${VERSION}
-make
-make install
+URL=https://github.com/Kitware/CMake/releases/download/v${VERSION}/${PACKAGE}-${VERSION}.tar.gz
+MD5SUM=94a7befd2ff39721a3de844d94bd7c62
+
+build_package () {
+	log_status ">>> build"
+	cd "${BUILD}"
+	set -x
+	"${SOURCE}/bootstrap" --prefix="${TARGET}" --parallel=$(( $(nproc) / 4 )) |& tee "${LOG}/bootstrap.log"
+	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
+	set +x
+}
+

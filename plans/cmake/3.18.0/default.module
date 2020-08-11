@@ -1,21 +1,17 @@
 #%Module1.0#####################################################################
 ##
-## ${PACKAGE} ${VERSION} (${VARIANT})
+## CMake
 ##
-set VERSION ${VERSION}
-set SUFFIX -${VARIANT}
-set INSTALLDIR ${TARGET}
-
 proc ModulesHelp { } {
-        global VERSION
-        puts stderr "Python \$VERSION"
+        puts stderr "CMake ${VERSION}-${VARIANT}"
 }
 
-module-whatis   "Python \$VERSION\$SUFFIX"
+module-whatis   "CMake ${VERSION}"
 
-conflict python
+conflict cmake
+
+set     INSTALLDIR          ${TARGET}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
 prepend-path    MANPATH \$INSTALLDIR/man
-

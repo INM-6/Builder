@@ -15,14 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-PACKAGE=gsl
-VERSION=${1:-2.6}
-SUFFIX=${2:-}
-URL=ftp://ftp.gnu.org/gnu/${PACKAGE}/${PACKAGE}-${VERSION}.tar.gz
-GPG_VERIFY_KEY=../gsl_key.txt
 
-build_install() {
-	make install |& tee ${LOG}/make-install.log
-	awk 'BEGIN {f=2;x=0}; /^-------/{x=1;if (f>0) f--} f*x' ${LOG}/make-install.log  >${TARGET}/ConfigurationSummary.txt
+VERSION=3.18.1
+URL=https://github.com/Kitware/CMake/releases/download/v${VERSION}/${PACKAGE}-${VERSION}.tar.gz
+MD5SUM=bc0d668dba6ec081c664ae95b75540d6
+SHA256SUM=c0e3338bd37e67155b9d1e9526fec326b5c541f74857771b7ffed0c46ad62508
+
+build_package () {
+	log_status ">>> build"
+	cd "${BUILD}"
+	set -x
+	"${SOURCE}/bootstrap" --prefix="${TARGET}" --parallel=$(( $(nproc) / 4 )) |& tee "${LOG}/bootstrap.log"
+	#./bootstrap --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/bootstrap.log"
+	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
+	set +x
 }
 
