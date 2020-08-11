@@ -19,3 +19,54 @@ your `$PATH`. You may have `~/bin` in your `$PATH` in which case you can do
 
 The only prerequisites are to have a system supporting sym-links with a proper
 `/bin/bash` and `wget` installed.
+
+To set up the defaults for Builder run the configure command once:
+
+    build configure
+
+Then you can configure all relevant paths in `~/.buildrc`.  A more complete
+description is in the [configuration details](doc/Configuration.md).
+
+
+## Usage
+
+You can install any software with Builder if a plan file is available. The
+default location where Builder looks for plan files is configured as
+`PLANFILE_PATH` in `~/.buildrc`. You will find many files in the scheme
+`<package>/<version>/<variant>`, where the `<variant>` uses `default` as its
+default value.
+
+To install a package replace `<package>` and `<version>` with an available
+build plan:
+
+    build <package> <version>
+
+If there are more variants available, you can optionally specify the
+`<variant>` as third parameter.
+
+In any case, you can always get more details with
+
+    build --help
+
+
+## Contributing
+
+I would be happy to receive PRs for new plan files or bug fixes. Some
+documentation can be found in the [doc/ folder](doc/), where the [documentation
+index](index.md) aims to give you a quick overview.
+
+
+## License
+
+ Builder is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Builder is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Builder.  If not, see <https://www.gnu.org/licenses/>.
