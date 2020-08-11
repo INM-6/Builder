@@ -200,6 +200,7 @@ build_install () {
 }
 
 module_install () {
+	AUTOMATIC_BUILD_WARNING=" This file was automatically produced by Builder.\n# Any changes may be overwritten without notice.\n#\n# Please see ${BUILDER_PATH} for details."
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 		log_status ">>> installing module file to ${module_path}"
@@ -211,6 +212,8 @@ module_install () {
 			# this is a bad substitute for the power of the bash>4.4 notation.
 			echo "${module}" | sed \
 			    -e 's%\\\$%__NOT_BUILDER_DOLLAR__%g' \
+			    -e "s%\${\?AUTOMATIC_BUILD_WARNING}\?%$AUTOMATIC_BUILD_WARNING%g" \
+			    -e "s%\${\?BUILDER_PATH}\?%$BUILDER_PATH%g" \
 			    -e "s%\${\?PLANFILE_PATH}\?%$PLANFILE_PATH%g" \
 			    -e "s%\${\?PACKAGE_CACHE}\?%$PACKAGE_CACHE%g" \
 			    -e "s%\${\?SOURCE_PATH}\?%$SOURCE_PATH%g" \
