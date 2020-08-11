@@ -18,12 +18,11 @@
 ################################################################################
 # Helper functions
 
-log_status() { /usr/bin/echo -e "\033[00;34m${@}\033[0m"; }
-log_info() { /usr/bin/echo -e "\033[00;33m${@}\033[0m"; }
-
+log_info() { /usr/bin/echo -e "\033[00;34m${@}\033[0m"; }
+log_status() { /usr/bin/echo -e "\033[01;33m${@}\033[0m"; }
 log_error() { /usr/bin/echo -e "\033[01;41m${@}\033[0m"; }
-
 log_warning() { /usr/bin/echo -e "\033[01;31m${@}\033[0m"; }
+log_success() { /usr/bin/echo -e "\033[00;32m${@}\033[0m"; }
 
 split_ext() {
 	case "$1" in
@@ -106,8 +105,10 @@ check_package_file() {
 	fi
 	if [ ! -z "${GPG_VERIFY_KEY+x}" ]; then
 		# if a verify key is defined, fetch signature and check it
-		wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
-		gpg --import "$(dirname ${PACKAGE_FILE})/${GPG_VERIFY_KEY}"
+		if [ ! -r "${PACKAGE_FILE}.sig" ]; then
+			wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
+			gpg --import "$(dirname ${PLAN})/${GPG_VERIFY_KEY}"
+		fi
 		echo -n "GPG Signature: "
 		( cd "${PACKAGE_CACHE}";
 		  gpg --verify "$(basename ${PACKAGE_FILE}).sig" )
@@ -119,6 +120,8 @@ check_package_file() {
 		log_warning "!!! Using only weak ${strength} checksum. This does not protect the package against tampering!"
 		log_warning "!!!"
 		sleep 10
+	else
+		log_success "... package checked! 👍"
 	fi
 	if ! $checked; then
 		log_warning "!!!"
@@ -134,10 +137,10 @@ check_package_file() {
 }
 
 source_prepare() {
+	log_status ">>> prepare source"
 	EXT="$(split_ext "${URL}")"
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
 	mkdir -pv "$(dirname "$PACKAGE_FILE")"
-	log_status ">>> prepare source"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
@@ -178,10 +181,10 @@ build_prepare() {
 }
 
 build_package () {
-	log_status ">>> build"
+	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	./configure --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/configure.log"
+	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/configure.log"
 	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
 	set +x
 }
@@ -191,6 +194,7 @@ build_test () {
 }
 
 build_install () {
+	log_status ">>> installing..."
 	make install |& tee ${LOG}/make-install.log
 }
 
@@ -233,7 +237,7 @@ module_install () {
 			log_info ">>>       export MODULEPATH=\$MODULEPATH:${MODULE_INSTALL_PATH}"
 			log_info ">>>"
 		else
-			log_info ">>> use 'module avail' to see and e.g. 'module load ${PACKAGE}/${VERSION}' to load modules."
+			log_success ">>> use 'module avail' to see and e.g. 'module load ${PACKAGE}/${VERSION}' to load modules."
 		fi
 	else
 		log_status ">>> no modulefile template found. skipping."

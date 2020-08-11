@@ -140,12 +140,12 @@ fi
 # set up builder variables for the plan files
 
 if [ -z ${1+x} ]; then
-	echo ">>> ERROR: No version specified!"
+	log_error ">>> ERROR: No version specified!"
 	exit 1;
 fi
 VERSION=${1}	# keep version as $1 in $@ to hand it to the build scrips!
 VARIANT=${2:-default}	# optional variant
-echo ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
+log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
 if version_gt $BASH_VERSION 4.4; then
 	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
@@ -162,16 +162,16 @@ fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
-echo ">>> loading the build plan..."
+log_status ">>> loading the build plan..."
 PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 . "${PLAN}"
 
-echo ">>> build environment information"
+log_status ">>> build environment information"
 builder_info
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
-echo "PRESS ENTER TO START"
+log_success "\nPRESS ENTER TO START"
 read
 
 source_prepare
@@ -182,4 +182,4 @@ build_install
 build_install_test
 module_install
 
-echo ">>> done."
+log_success ">>>\n>>> done.\n>>>"
