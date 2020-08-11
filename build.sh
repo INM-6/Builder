@@ -149,7 +149,7 @@ echo ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
 if version_gt $BASH_VERSION 4.4; then
 	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
-	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}"
+	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}_${VARIANT}"
 	BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}"
 	LOG="${LOG_PATH@P}"
 else
