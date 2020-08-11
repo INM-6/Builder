@@ -61,6 +61,78 @@ builder_info () {
 ################################################################################
 # Default implementation of steps
 
+
+check_package_file() {
+	log_status ">>> checking ${PACKAGE_FILE}..."
+	# One section for each algorithm that can check the file.
+	# put weakest algorithms first, so $strength can be overwritten if also stronger checks exist
+	checked=false
+	strength="strong"
+	if [ ! -z "${MD5SUM+x}" ]; then
+		echo -n "MD5: "
+		md5sum -c <<<"${MD5SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="MD5"
+	fi
+	if [ ! -z "${SHA1SUM+x}" ]; then
+		echo -n "SHA1: "
+		sha1sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="SHA1"
+	fi
+	if [ ! -z "${SHA224SUM+x}" ]; then
+		echo -n "SHA224: "
+		sha224sum -c <<<"${SHA224SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="strong"
+	fi
+	if [ ! -z "${SHA256SUM+x}" ]; then
+		echo -n "SHA256: "
+		sha256sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="strong"
+	fi
+	if [ ! -z "${SHA384SUM+x}" ]; then
+		echo -n "SHA384: "
+		sha384sum -c <<<"${SHA384SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="strong"
+	fi
+	if [ ! -z "${SHA512SUM+x}" ]; then
+		echo -n "SHA512: "
+		sha512sum -c <<<"${SHA512SUM}  ${PACKAGE_FILE}"
+		checked=true
+		strength="strong"
+	fi
+	if [ ! -z "${GPG_VERIFY_KEY+x}" ]; then
+		# if a verify key is defined, fetch signature and check it
+		wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
+		gpg --import "$(dirname ${PACKAGE_FILE})/${GPG_VERIFY_KEY}"
+		echo -n "GPG Signature: "
+		( cd "${PACKAGE_CACHE}";
+		  gpg --verify "$(basename ${PACKAGE_FILE}).sig" )
+		checked=true
+		strength="strong"
+	fi
+	if [ $checked -a "$strength" != "strong" ]; then
+		log_warning "!!!"
+		log_warning "!!! Using only weak ${strength} checksum. This does not protect the package against tampering!"
+		log_warning "!!!"
+		sleep 10
+	fi
+	if ! $checked; then
+		log_warning "!!!"
+		log_warning "!!! PACKAGE FILE WAS NOT CHECKED!"
+		log_warning "!!!"
+		log_warning "!!! This means, that package content may change unnoticed,"
+		log_warning "!!! including modifications with possibly malicious intent."
+		log_warning "!!!"
+		log_warning "!!! Add a checksum or signature to the plan file!"
+		log_warning "!!!"
+		sleep 10
+	fi
+}
+
 source_prepare() {
 	EXT="$(split_ext "${URL}")"
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
@@ -69,15 +141,8 @@ source_prepare() {
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
-		if [ ! -z "${GPG_VERIFY_KEY-x}" ]; then
-			# if a verify key is defined, fetch signature and check it
-			wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
-			gpg --import gsl_key.txt
-			( cd "${PACKAGE_CACHE}";
-			  gpg --verify "$(basename ${PACKAGE_FILE}).sig" )
-		fi
-
 	fi
+	check_package_file
 	if [ ! -d $SOURCE ]; then
 		mkdir -pv $(dirname $SOURCE)
 		cd $(dirname $SOURCE)
@@ -159,7 +224,7 @@ module_install () {
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
 		fi
-		if ! echo "${MODULE_INSTALL_PATH}" | grep "${MODULEPATH}"; then
+		if ! echo "${MODULEPATH}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
 			log_info ">>> Info: MODULE_INSTALL_PATH is not in your MODULEPATH"
 			log_info ">>>       You may want to add the following line to your startup"
@@ -167,6 +232,8 @@ module_install () {
 			log_info ">>>"
 			log_info ">>>       export MODULEPATH=\$MODULEPATH:${MODULE_INSTALL_PATH}"
 			log_info ">>>"
+		else
+			log_info ">>> use 'module avail' to see and e.g. 'module load ${PACKAGE}/${VERSION}' to load modules."
 		fi
 	else
 		log_status ">>> no modulefile template found. skipping."
