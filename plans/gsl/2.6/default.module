@@ -1,14 +1,8 @@
-################################################################################
+#%Module1.0#####################################################################
 #
 # GNU Scientific Library
 #
-# This is a moldulefile to be included in specific version definitions
-# 
-#Expects the following variables to have been set
-#   VERSION: the version, 
-#      defaults to last component of module tag
-#   SUFFIX: any information appended to the VERSION
-#   INSTALLDIR: path of specific installation
+# ${AUTOMATIC_BUILD_WARNING}
 #
 
 # Specific Settings ############################################################

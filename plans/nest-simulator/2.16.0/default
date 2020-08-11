@@ -1,1 +1,28 @@
-../common
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# NEST Simulator 2.16.0
+DOI=10.5281/zenodo.1400175
+#MD5SUM=1f1118586ec2d566cb3505e0fb748106	# DOI Version (= custom tarball)
+#SHA256SUM=
+
+MD5SUM=327c1d1edea9580cde1bc1deaa7f63f3 # GitHub release tarball
+SHA256SUM=abfeb61719dec54da9477be035bef1d9d764f4e7663f63f6a6d9211f967e0490
+log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
+
+source "$(dirname "${PLAN}")/../common"

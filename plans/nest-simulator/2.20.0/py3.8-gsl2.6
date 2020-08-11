@@ -16,9 +16,18 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# NEST Simulator 2.18.0
-DOI=10.5281/zenodo.2605422
-MD5SUM=5d04f99bb8d1fa13a5796ef12500ec99
-SHA256SUM=7295c936fbdd5486395b06f54f0d4d35d9a1b6ee50b7b844186ec2c92de641d1
+module load Python/3.8.5
+module load gsl/2.6
 
+# NEST Simulator 2.20.0
+DOI=10.5281/zenodo.3605514
+#URL=https://zenodo.org/record/3605514/files/nest-simulator-2.20.0.tar.gz?download=1
+#MD5SUM=6ebc0ce8e398dc64c75f749dadde1321	# DOI Version (= custom tarball)
+#SHA256SUM=
+
+MD5SUM=d3fc815b6a6db187468350cc971fed0b
+SHA256SUM=40e33187c22d6e843d80095b221fa7fd5ebe4dbc0116765a91fc5c425dd0eca4
+log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
+
+CMAKEFLAGS="-Dwith-python=3 -Dwith-gsl=ON"
 source "$(dirname "${PLAN}")/../common"

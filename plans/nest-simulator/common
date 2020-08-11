@@ -15,15 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-set -euo pipefail
 
-PACKAGE=nest-simulator
-VERSION=${1:-2.18.0}
+# Here are some common definitions for all nest versions.
+# Source this file from version specific build plans.
+
 URL=https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz
 
-
 build_package () {
-	echo ">>> build"
+	log_status ">>> build"
 	cd $BUILD
 	set -x
 	module load cmake
@@ -31,18 +30,20 @@ build_package () {
 		module load libtool
 	fi
 
-	cmake -Dwith-python=OFF -DCMAKE_INSTALL_PREFIX:PATH=$TARGET $SOURCE |& tee ${LOG}/cmake.log
+	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH=$TARGET $SOURCE |& tee ${LOG}/cmake.log
 	make -j $(( $(nproc) / 4 )) |& tee ${LOG}/make.log
+	set +x
 }
 
 build_install () {
+	log_status ">>> install"
 	make install |& tee ${LOG}/make-install.log
 	awk 'BEGIN {f=3;x=0}; /^-------/{x=1;if (f>0) f--} f*x' ${LOG}/cmake.log >${TARGET}/ConfigurationSummary.txt
 }
 
 build_install_test () {
-	echo ">>> test"
+	log_status ">>> test"
 	make installcheck |& tee ${LOG}/make-installcheck.log
-	echo "installcheck passed." >>${TARGET}/ConfigurationSummary.txt
+	log_success "installcheck passed." >>${TARGET}/ConfigurationSummary.txt
 	awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' ${LOG}/make-installcheck.log >>${TARGET}/ConfigurationSummary.txt
 }
