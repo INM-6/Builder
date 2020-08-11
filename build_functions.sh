@@ -122,7 +122,7 @@ check_package_file() {
 			log_warning "!!!"
 			log_warning "!!! Using only weak ${strength} checksum. This does not protect the package against tampering!"
 			log_warning "!!!"
-			sleep 10
+			sleep 5
 		fi
 	else
 		log_warning "!!!"
@@ -148,7 +148,7 @@ source_prepare() {
 	fi
 	check_package_file
 	if [ ! -d $SOURCE ]; then
-		mkdir -pv $(dirname $SOURCE)
+		mkdir -pv "$(dirname $SOURCE)"
 		cd $(dirname $SOURCE)
 		log_info "extracting ${PACKAGE_FILE}"
 		case "$(basename "${URL}")" in
