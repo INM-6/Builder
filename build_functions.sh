@@ -115,15 +115,16 @@ check_package_file() {
 		checked=true
 		strength="strong"
 	fi
-	if [ $checked -a "$strength" != "strong" ]; then
-		log_warning "!!!"
-		log_warning "!!! Using only weak ${strength} checksum. This does not protect the package against tampering!"
-		log_warning "!!!"
-		sleep 10
+	if $checked; then
+		if [ "$strength" == "strong" ]; then
+			log_success "... package checked! 👍"
+		else
+			log_warning "!!!"
+			log_warning "!!! Using only weak ${strength} checksum. This does not protect the package against tampering!"
+			log_warning "!!!"
+			sleep 10
+		fi
 	else
-		log_success "... package checked! 👍"
-	fi
-	if ! $checked; then
 		log_warning "!!!"
 		log_warning "!!! PACKAGE FILE WAS NOT CHECKED!"
 		log_warning "!!!"
