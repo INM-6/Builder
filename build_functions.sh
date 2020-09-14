@@ -87,7 +87,7 @@ check_package_file() {
 	fi
 	if [ ! -z "${SHA256SUM+x}" ]; then
 		echo -n "SHA256: "
-		sha256sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		sha256sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}" || { echo""; echo "🚨  ERROR: UNEXPECTED PACKAGE CONTENT!";  echo; false; }
 		checked=true
 		strength="strong"
 	fi
@@ -138,8 +138,10 @@ check_package_file() {
 }
 
 source_prepare() {
+	# This function takes the PACKAGE_FILE, checks it and puts the
+	# contained source code into the SOURCE directory
 	log_status ">>> prepare source"
-	EXT="$(split_ext "${URL}")"
+	EXT="$(split_ext "${URL}")" || { echo "$EXT"; false; }
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
 	mkdir -pv "$(dirname "$PACKAGE_FILE")"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
@@ -148,18 +150,18 @@ source_prepare() {
 	fi
 	check_package_file
 	if [ ! -d $SOURCE ]; then
-		mkdir -pv "$(dirname $SOURCE)"
-		cd $(dirname $SOURCE)
+		mkdir -pv "${SOURCE}"
+		cd "${SOURCE}"
 		log_info "extracting ${PACKAGE_FILE}"
 		case "$(basename "${URL}")" in
 		    *.tar.gz | *.tgz)
-			tar -xzf "${PACKAGE_FILE}"
+			tar -xzf "${PACKAGE_FILE}" --strip-components=1
 			;;
 		    *.tar.bz2 | *.tbz)
-			tar -xjf "${PACKAGE_FILE}"
+			tar -xjf "${PACKAGE_FILE}" --strip-components=1
 			;;
 		    *.tar.xz)
-			tar -xJf "${PACKAGE_FILE}"
+			tar -xJf "${PACKAGE_FILE}" --strip-components=1
 			;;
 		    *.zip)
 			unzip "${PACKAGE_FILE}"
