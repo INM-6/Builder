@@ -17,8 +17,7 @@ proc ModulesHelp { } {
 Miniconda3 \$VERSION\$SUFFIX
 ================================================================================
 
-   Conda is an open-source package management system and environment management
-   system that runs on Windows, macOS, and Linux. Conda quickly installs, runs,
+
    and updates packages and their dependencies. Conda easily creates, saves,
    loads, and switches between environments on your local computer. It was
    created for Python programs but it can package and distribute software for
@@ -51,7 +50,9 @@ setenv  _CONDA_ROOT     ${TARGET}
 setenv  rc      0
 
 prepend-path    PATH    ${TARGET}/bin:${TARGET}/condabin
-# prepend PS1="(base) \${PS1}"
+
+#unsetenv PS1    $::env(PS1)
+#unsetenv PS1      $::env(CONDA_PROMPT_MODIFIER)$::env(PS1)
 
 # actually set-function should be called, but for modules-3.10 compatibility
 # only set-alias is available.
@@ -60,98 +61,99 @@ prepend-path    PATH    ${TARGET}/bin:${TARGET}/condabin
 # and
 # https://modules.readthedocs.io/en/latest/diff_v3_v4.html
 
-set-alias __add_sys_prefix_to_path () {
-    if [ -n "${_CE_CONDA}" ] && [ -n "${WINDIR+x}" ]; then
-        SYSP=$(\dirname "${CONDA_EXE}");
+set-alias __add_sys_prefix_to_path "
+    if \[ -n \"\$\{_CE_CONDA\}\" \] && \[ -n \"\$\{WINDIR+x\}\" \]; then
+        SYSP=\$(\dirname \"\$\{CONDA_EXE\}\");
     else
-        SYSP=$(\dirname "${CONDA_EXE}");
-        SYSP=$(\dirname "${SYSP}");
+        SYSP=\$(\dirname \"\$\{CONDA_EXE\}\");
+        SYSP=\$(\dirname \"\$\{SYSP\}\");
     fi;
-    if [ -n "${WINDIR+x}" ]; then
-        PATH="${SYSP}/bin:${PATH}";
-        PATH="${SYSP}/Scripts:${PATH}";
-        PATH="${SYSP}/Library/bin:${PATH}";
-        PATH="${SYSP}/Library/usr/bin:${PATH}";
-        PATH="${SYSP}/Library/mingw-w64/bin:${PATH}";
-        PATH="${SYSP}:${PATH}";
+    if \[ -n \"\$\{WINDIR+x\}\" \]; then
+        PATH=\"\$\{SYSP\}/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Scripts:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/usr/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/mingw-w64/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}:\$\{PATH\}\";
     else
-        PATH="${SYSP}/bin:${PATH}";
+        PATH=\"\$\{SYSP\}/bin:\$\{PATH\}\";
     fi;
     \export PATH
-}
+"
 
-set-alias __conda_activate () {
-    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
-        PS1="$CONDA_PS1_BACKUP";
+
+set-alias __conda_activate "
+    if \[ -n \"\$\{CONDA_PS1_BACKUP:+x\}\" \]; then
+        PS1=\"\$CONDA_PS1_BACKUP\";
         \unset CONDA_PS1_BACKUP;
     fi;
-    \local cmd="$1";
+    \local cmd=\"\$1\";
     shift;
     \local ask_conda;
-    CONDA_INTERNAL_OLDPATH="${PATH}";
+    CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
     __add_sys_prefix_to_path;
-    ask_conda="$(PS1="$PS1" "$CONDA_EXE" $_CE_M $_CE_CONDA shell.posix "$cmd" "$@")" || \return $?;
-    rc=$?;
-    PATH="${CONDA_INTERNAL_OLDPATH}";
-    \eval "$ask_conda";
-    if [ $rc != 0 ]; then
+    ask_conda=\"\$(PS1=\"\$PS1\" \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA shell.posix \"\$cmd\" \"\$@\")\" || \return \$?;
+    rc=\$?;
+    PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+    \eval \"\$ask_conda\";
+    if \[ \$rc != 0 \]; then
         \export PATH;
     fi;
     __conda_hashr
-}
+"
 
-set-alias __conda_hashr () {
-    if [ -n "${ZSH_VERSION:+x}" ]; then
+set-alias __conda_hashr "
+    if \[ -n \"\$\{ZSH_VERSION:+x\}\" \]; then
         \rehash;
     else
-        if [ -n "${POSH_VERSION:+x}" ]; then
+        if \[ -n \"\$\{POSH_VERSION:+x\}\" \]; then
             :;
         else
             \hash -r;
         fi;
     fi
-}
+"
 
-set-alias __conda_reactivate () {
+set-alias __conda_reactivate "
     \local ask_conda;
-    CONDA_INTERNAL_OLDPATH="${PATH}";
+    CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
     __add_sys_prefix_to_path;
-    ask_conda="$(PS1="$PS1" "$CONDA_EXE" $_CE_M $_CE_CONDA shell.posix reactivate)" || \return $?;
-    PATH="${CONDA_INTERNAL_OLDPATH}";
-    \eval "$ask_conda";
+    ask_conda=\"\$(PS1=\"\$PS1\" \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA shell.posix reactivate)\" || \return \$?;
+    PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+    \eval \"\$ask_conda\";
     __conda_hashr
-}
+"
 
-set-alias conda () {
-    if [ "$#" -lt 1 ]; then
-        "$CONDA_EXE" $_CE_M $_CE_CONDA;
+set-alias conda "
+    if \[ \"\$#\" -lt 1 \]; then
+        \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA;
     else
-        \local cmd="$1";
+        \local cmd=\"\$1\";
         shift;
-        case "$cmd" in
+        case \"\$cmd\" in
             activate | deactivate)
-                __conda_activate "$cmd" "$@"
+                __conda_activate \"\$cmd\" \"\$@\"
             ;;
             install | update | upgrade | remove | uninstall)
-                CONDA_INTERNAL_OLDPATH="${PATH}";
+                CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
                 __add_sys_prefix_to_path;
-                "$CONDA_EXE" $_CE_M $_CE_CONDA "$cmd" "$@";
-                \local t1=$?;
-                PATH="${CONDA_INTERNAL_OLDPATH}";
-                if [ $t1 = 0 ]; then
+                \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA \"\$cmd\" \"\$@\";
+                \local t1=\$?;
+                PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+                if \[ \$t1 = 0 \]; then
                     __conda_reactivate;
                 else
-                    return $t1;
+                    return \$t1;
                 fi
             ;;
             *)
-                CONDA_INTERNAL_OLDPATH="${PATH}";
+                CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
                 __add_sys_prefix_to_path;
-                "$CONDA_EXE" $_CE_M $_CE_CONDA "$cmd" "$@";
-                \local t1=$?;
-                PATH="${CONDA_INTERNAL_OLDPATH}";
-                return $t1
+                \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA \"\$cmd\" \"\$@\";
+                \local t1=\$?;
+                PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+                return \$t1
             ;;
         esac;
     fi
-}
+"
