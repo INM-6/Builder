@@ -16,9 +16,10 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-VERSION=${1:-1.8.0}
 URL=ftp://mama.indstate.edu/linux/${PACKAGE}/${PACKAGE}-${VERSION}.tgz
-# this checksum was not officially provided
+
+# this checksum was not officially provided, but taken from downloaded 1.8.0
+# tar-ball
 SHA256SUM=715d5d4b434321ce74706d0dd067505bb60c5ea83b5f0b3655dae40aa6f9b7c2
 
 
@@ -33,13 +34,15 @@ build_prepare() {
 	cp -rv "${SOURCE}" "${BUILD}"	# not actually an out-of-tree-build
 	cd "${BUILD}"
 	sed -i -e "s%prefix = .*%prefix = ${TARGET}%" Makefile
+
+	# write a dummy configure script, so that we can use Builder standard build_package()
+	(
+		cd "${SOURCE}"
+		test ! -e configure    # take care not to overwrite an eventually existing file
+		echo "#!/bin/sh" >configure
+		echo "echo 'dummy configure'" >>configure
+		chmod u+x configure
+	)
 	mkdir -pv "${LOG}"
 }
 
-build_package () {
-	log_status ">>> build"
-	cd "${BUILD}"
-	set -x
-	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
-	set +x
-}
