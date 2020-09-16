@@ -1,0 +1,124 @@
+#
+# looking at the environment before and after `source
+# ${CONDA_PREFIX}/bin/conda.sh` introduces the changes listed here
+#
+#  This is only needed for modules versions before 4.6, when the source-sh
+#  command was introduced, that would do exactly this automatically.
+#  See <https://modules.readthedocs.io/en/latest/cookbook/source-script-in-modulefile.html>
+#
+# `conda init` appends [this initialization](bashrc.sh) to `.bashrc`.
+#
+
+CONDA_DEFAULT_ENV=base
+CONDA_EXE=${TARGET}/bin/conda
+CONDA_INTERNAL_OLDPATH=${TARGET}/condabin:${PATH}
+CONDA_PREFIX=${TARGET}
+CONDA_PROMPT_MODIFIER=(base) 
+CONDA_PYTHON_EXE=${TARGET}/bin/python
+CONDA_SHLVL=1
+_CE_CONDA=
+_CE_M=
+_CONDA_ROOT=${TARGET}
+rc=0
+
+PATH=${TARGET}/bin:${TARGET}/condabin:${PATH}
+
+PS1="(base) ${PS1}"
+
+__add_sys_prefix_to_path () 
+{ 
+    if [ -n "${_CE_CONDA}" ] && [ -n "${WINDIR+x}" ]; then
+        SYSP=$(\dirname "${CONDA_EXE}");
+    else
+        SYSP=$(\dirname "${CONDA_EXE}");
+        SYSP=$(\dirname "${SYSP}");
+    fi;
+    if [ -n "${WINDIR+x}" ]; then
+        PATH="${SYSP}/bin:${PATH}";
+        PATH="${SYSP}/Scripts:${PATH}";
+        PATH="${SYSP}/Library/bin:${PATH}";
+        PATH="${SYSP}/Library/usr/bin:${PATH}";
+        PATH="${SYSP}/Library/mingw-w64/bin:${PATH}";
+        PATH="${SYSP}:${PATH}";
+    else
+        PATH="${SYSP}/bin:${PATH}";
+    fi;
+    \export PATH
+}
+__conda_activate () 
+{ 
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        PS1="$CONDA_PS1_BACKUP";
+        \unset CONDA_PS1_BACKUP;
+    fi;
+    \local cmd="$1";
+    shift;
+    \local ask_conda;
+    CONDA_INTERNAL_OLDPATH="${PATH}";
+    __add_sys_prefix_to_path;
+    ask_conda="$(PS1="$PS1" "$CONDA_EXE" $_CE_M $_CE_CONDA shell.posix "$cmd" "$@")" || \return $?;
+    rc=$?;
+    PATH="${CONDA_INTERNAL_OLDPATH}";
+    \eval "$ask_conda";
+    if [ $rc != 0 ]; then
+        \export PATH;
+    fi;
+    __conda_hashr
+}
+__conda_hashr () 
+{ 
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash;
+    else
+        if [ -n "${POSH_VERSION:+x}" ]; then
+            :;
+        else
+            \hash -r;
+        fi;
+    fi
+}
+__conda_reactivate () 
+{ 
+    \local ask_conda;
+    CONDA_INTERNAL_OLDPATH="${PATH}";
+    __add_sys_prefix_to_path;
+    ask_conda="$(PS1="$PS1" "$CONDA_EXE" $_CE_M $_CE_CONDA shell.posix reactivate)" || \return $?;
+    PATH="${CONDA_INTERNAL_OLDPATH}";
+    \eval "$ask_conda";
+    __conda_hashr
+}
+
+conda () 
+{ 
+    if [ "$#" -lt 1 ]; then
+        "$CONDA_EXE" $_CE_M $_CE_CONDA;
+    else
+        \local cmd="$1";
+        shift;
+        case "$cmd" in 
+            activate | deactivate)
+                __conda_activate "$cmd" "$@"
+            ;;
+            install | update | upgrade | remove | uninstall)
+                CONDA_INTERNAL_OLDPATH="${PATH}";
+                __add_sys_prefix_to_path;
+                "$CONDA_EXE" $_CE_M $_CE_CONDA "$cmd" "$@";
+                \local t1=$?;
+                PATH="${CONDA_INTERNAL_OLDPATH}";
+                if [ $t1 = 0 ]; then
+                    __conda_reactivate;
+                else
+                    return $t1;
+                fi
+            ;;
+            *)
+                CONDA_INTERNAL_OLDPATH="${PATH}";
+                __add_sys_prefix_to_path;
+                "$CONDA_EXE" $_CE_M $_CE_CONDA "$cmd" "$@";
+                \local t1=$?;
+                PATH="${CONDA_INTERNAL_OLDPATH}";
+                return $t1
+            ;;
+        esac;
+    fi
+}
