@@ -82,21 +82,21 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 PLANFILE_PATH=${BUILDER_PATH}/plans
 
 # storage of all package archives (like .tar.gz files)
-PACKAGE_CACHE=\\\${HOME}/src
+PACKAGE_CACHE=\${HOME}/src
 
 # temporary storage of source files (extracted from tar-balls)
-SOURCE_PATH=\\\${HOME}/build/src
+SOURCE_PATH=\${HOME}/build/src
 
 # location for out-of-tree builds
-BUILD_PATH=\\\${HOME}/build
+BUILD_PATH=\${HOME}/build
 
 # install path (usually used as --prefix)
-TARGET_PATH=\\\${HOME}/install
+TARGET_PATH=\${HOME}/install
 
 # module install path. If defined and a template file
 # '<package>/<version>/<variant>.module' exists, it will be filled and copied
 # to '<MODULE_INSTALL_PATH>/<package>/<version>/<variant>'.
-MODULE_INSTALL_PATH=\\\${HOME}/modules
+MODULE_INSTALL_PATH=\${HOME}/modules
 
 # path where to store logfiles of the build
 LOG_PATH=\\\${BUILD}/logs
