@@ -19,7 +19,10 @@
 # Here are some common definitions for all nest versions.
 # Source this file from version specific build plans.
 
-URL=https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz
+if [ $VERSION -ne "master"]
+then
+	URL=https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz
+fi
 
 build_package () {
 	log_status ">>> build"
