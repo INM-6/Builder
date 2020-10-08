@@ -1,0 +1,7 @@
+
+
+* modules different on all systems -> not in planfile
+* cross-compile
+* usually build time loaded modules also necessary for runtime
+  * head node modules that do not exist on compute nodes
+
