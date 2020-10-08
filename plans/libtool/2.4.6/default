@@ -18,4 +18,3 @@
 
 URL=https://ftpmirror.gnu.org/${PACKAGE}/${PACKAGE}-${VERSION}.tar.gz
 MD5SUM=addf44b646ddb4e3919805aa88fa7c5e
-
