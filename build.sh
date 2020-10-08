@@ -99,7 +99,7 @@ TARGET_PATH=\${HOME}/install
 MODULE_INSTALL_PATH=\${HOME}/modules
 
 # path where to store logfiles of the build
-LOG_PATH=\${BUILD}/logs
+LOG_PATH=\\\${BUILD}/logs
 ENDRC
 	cat "${HOME}/.buildrc"
 	cat <<ENDNOTE
