@@ -30,6 +30,7 @@ INSTALLDIR:  	\$INSTALLDIR"
 module-whatis   "NEST spiking neural network simulator, version ${VERSION} (${VARIANT} build)"
 
 conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 ################################################################################
 # from \$INSTALLDIR/bin/nest_vars.sh
