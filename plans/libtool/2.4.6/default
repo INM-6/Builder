@@ -16,8 +16,6 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-PACKAGE=libtool
-VERSION=${1:-2.4.6}
-URL=http://gnu.spinellicreations.com/libtool/${PACKAGE}-${VERSION}.tar.gz
+URL=https://ftpmirror.gnu.org/${PACKAGE}/${PACKAGE}-${VERSION}.tar.gz
 MD5SUM=addf44b646ddb4e3919805aa88fa7c5e
 
