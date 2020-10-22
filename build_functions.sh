@@ -143,13 +143,13 @@ source_prepare() {
 	log_status ">>> prepare source"
 	EXT="$(split_ext "${URL}")" || { echo "$EXT"; false; }
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
-	mkdir -pv "$(dirname "$PACKAGE_FILE")"
+	mkdir -pv "$(dirname "${PACKAGE_FILE}")"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
 	fi
 	check_package_file
-	if [ ! -d $SOURCE ]; then
+	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
 		cd "${SOURCE}"
 		log_info "extracting ${PACKAGE_FILE}"
@@ -191,7 +191,7 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/configure.log"
+	bash -c "\"${SOURCE}/configure\" --prefix=\"${TARGET}\" --srcdir=\"${SOURCE}\" |& tee \"${LOG}/configure.log\""
 	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
 	set +x
 }
