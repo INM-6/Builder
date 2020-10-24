@@ -76,7 +76,7 @@ check_package_file() {
 	fi
 	if [ ! -z "${SHA1SUM+x}" ]; then
 		echo -n "SHA1: "
-		sha1sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		sha1sum -c <<<"${SHA1SUM}  ${PACKAGE_FILE}"
 		checked=true
 		strength="SHA1"
 	fi
