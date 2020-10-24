@@ -192,7 +192,7 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/configure.log"
+	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} |& tee "${LOG}/configure.log"
 	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
 	set +x
 }
