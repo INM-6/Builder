@@ -18,11 +18,12 @@
 ################################################################################
 # Helper functions
 
-log_info() { /usr/bin/echo -e "\033[00;34m${@}\033[0m"; }
-log_status() { /usr/bin/echo -e "\033[01;33m${@}\033[0m"; }
-log_error() { /usr/bin/echo -e "\033[01;41m${@}\033[0m"; }
-log_warning() { /usr/bin/echo -e "\033[01;31m${@}\033[0m"; }
-log_success() { /usr/bin/echo -e "\033[00;32m${@}\033[0m"; }
+ECHO="$(which echo)"
+log_info() { "$ECHO" -e "\033[00;34m${@}\033[0m"; }
+log_status() { "$ECHO" -e "\033[01;33m${@}\033[0m"; }
+log_error() { "$ECHO" -e "\033[01;41m${@}\033[0m"; }
+log_warning() { "$ECHO" -e "\033[01;31m${@}\033[0m"; }
+log_success() { "$ECHO" -e "\033[00;32m${@}\033[0m"; }
 
 split_ext() {
 	case "$1" in
