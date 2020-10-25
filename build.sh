@@ -100,6 +100,9 @@ MODULE_INSTALL_PATH=\${HOME}/modules
 
 # path where to store logfiles of the build
 LOG_PATH=\\\${BUILD}/logs
+
+# define the number of cores to use in standard build_package()
+#MAKE_THREADS=(( \$(nproc) / 4 ))
 ENDRC
 	cat "${HOME}/.buildrc"
 	cat <<ENDNOTE
