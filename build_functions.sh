@@ -168,8 +168,8 @@ source_prepare() {
 			unzip "${PACKAGE_FILE}"
 			cd "$SOURCE"
 			base_source="$(basename "${SOURCE}")"
-			mv $base_source/* .
-			rm -r $base_source
+			mv "$base_source"/* .
+			rm -r "$base_source"
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
