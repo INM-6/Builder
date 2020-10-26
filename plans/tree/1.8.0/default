@@ -22,6 +22,8 @@ URL=ftp://mama.indstate.edu/linux/${PACKAGE}/${PACKAGE}-${VERSION}.tgz
 # tar-ball
 SHA256SUM=715d5d4b434321ce74706d0dd067505bb60c5ea83b5f0b3655dae40aa6f9b7c2
 
+log_warning "WARNING: This build re-assigns \$TARGET path to $TARGET, because tree build process does not handle spaces..."
+sleep 5
 
 build_prepare() {
 	log_status ">>> prepare build"
@@ -30,6 +32,10 @@ build_prepare() {
 		rm -vrf "${BUILD}"
 	fi
 	# tree specific:
+	log_status "resetting \$TARGET back to ${TREE_ORIGINAL_TARGET}"
+	TREE_ORIGINAL_TARGET="$TARGET"
+	TARGET="/tmp/Builder/tree-tmp"
+	log_status "REDIRECTED \$TARGET path to $TARGET, because tree build process does not handle spaces..."
 	mkdir -pv "$(dirname "${BUILD}")"
 	cp -rv "${SOURCE}" "${BUILD}"	# not actually an out-of-tree-build
 	cd "${BUILD}"
@@ -38,11 +44,18 @@ build_prepare() {
 	# write a dummy configure script, so that we can use Builder standard build_package()
 	(
 		cd "${SOURCE}"
-		test ! -e configure    # take care not to overwrite an eventually existing file
+		test ! -e configure || { log_error "actually a configure file already exists, this is unexpected"; false; }   # take care not to overwrite an eventually existing file
 		echo "#!/bin/sh" >configure
 		echo "echo 'dummy configure'" >>configure
 		chmod u+x configure
 	)
 	mkdir -pv "${LOG}"
+	log_status "resetting \$TARGET back to ${TREE_ORIGINAL_TARGET}"
+	TARGET="${TREE_ORIGINAL_TARGET}"
 }
 
+build_install_test() {
+	log_warning "mis-using install-test for fixing tweaked installation path..."
+	mkdir -pv "$(dirname "${TREE_ORIGINAL_TARGET}")"
+	mv -v "${TARGET}" "${TREE_ORIGINAL_TARGET}"
+}
