@@ -1,0 +1,19 @@
+#%Module1.0#####################################################################
+##
+## CMake
+##
+proc ModulesHelp { } {
+        puts stderr "MPC ${VERSION}-${VARIANT}"
+}
+
+module-whatis   "MPC ${VERSION}"
+
+conflict mpc
+
+set     INSTALLDIR          "${TARGET}"
+
+prepend-path    PATH    "\$INSTALLDIR/bin"
+prepend-path    LD_LIBRARY_PATH  "\$INSTALLDIR/lib"
+prepend-path    LIBRARY_PATH  "\$INSTALLDIR/lib"
+prepend-path    CPATH    "\$INSTALLDIR/include"
+prepend-path    MANPATH "\$INSTALLDIR/man"

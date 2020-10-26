@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/infrastructure/${PACKAGE}-${VERSION}.tar.gz
+
+# mpc-0.8.1.tar.gz
+SHA512SUM=14cb9ae3d33caed24d5ae648eed28b2e00ad047a8baeff25981129af88245b4def2948573d7a00d65c5bd34e53524aa6a7351b76703c9f888b41830c1a1daae2

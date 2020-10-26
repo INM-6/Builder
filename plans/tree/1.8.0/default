@@ -23,7 +23,6 @@ URL=ftp://mama.indstate.edu/linux/${PACKAGE}/${PACKAGE}-${VERSION}.tgz
 SHA256SUM=715d5d4b434321ce74706d0dd067505bb60c5ea83b5f0b3655dae40aa6f9b7c2
 
 log_warning "WARNING: This build re-assigns \$TARGET path to $TARGET, because tree build process does not handle spaces..."
-sleep 5
 
 build_prepare() {
 	log_status ">>> prepare build"
@@ -32,7 +31,6 @@ build_prepare() {
 		rm -vrf "${BUILD}"
 	fi
 	# tree specific:
-	log_status "resetting \$TARGET back to ${TREE_ORIGINAL_TARGET}"
 	TREE_ORIGINAL_TARGET="$TARGET"
 	TARGET="/tmp/Builder/tree-tmp"
 	log_status "REDIRECTED \$TARGET path to $TARGET, because tree build process does not handle spaces..."
@@ -50,12 +48,17 @@ build_prepare() {
 		chmod u+x configure
 	)
 	mkdir -pv "${LOG}"
+
 	log_status "resetting \$TARGET back to ${TREE_ORIGINAL_TARGET}"
+	TREE_FAKE_TARGET="${TARGET}"
 	TARGET="${TREE_ORIGINAL_TARGET}"
 }
 
 build_install_test() {
-	log_warning "mis-using install-test for fixing tweaked installation path..."
-	mkdir -pv "$(dirname "${TREE_ORIGINAL_TARGET}")"
-	mv -v "${TARGET}" "${TREE_ORIGINAL_TARGET}"
+	log_warning "fixing tweaked installation path (misuse of install-test)..."
+	if [ -e "${TARGET}" ]; then
+		rm -irf "${TARGET}"
+	fi
+	mkdir -pv "$(dirname "${TARGET}")"
+	mv -v "${TREE_FAKE_TARGET}" "${TARGET}"
 }
