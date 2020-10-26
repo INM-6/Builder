@@ -18,11 +18,12 @@
 ################################################################################
 # Helper functions
 
-log_info() { /usr/bin/echo -e "\033[00;34m${@}\033[0m"; }
-log_status() { /usr/bin/echo -e "\033[01;33m${@}\033[0m"; }
-log_error() { /usr/bin/echo -e "\033[01;41m${@}\033[0m"; }
-log_warning() { /usr/bin/echo -e "\033[01;31m${@}\033[0m"; }
-log_success() { /usr/bin/echo -e "\033[00;32m${@}\033[0m"; }
+ECHO="$(which echo)"
+log_info() { "$ECHO" -e "\033[00;34m${@}\033[0m"; }
+log_status() { "$ECHO" -e "\033[01;33m${@}\033[0m"; }
+log_error() { "$ECHO" -e "\033[01;41m${@}\033[0m"; }
+log_warning() { "$ECHO" -e "\033[01;31m${@}\033[0m"; }
+log_success() { "$ECHO" -e "\033[00;32m${@}\033[0m"; }
 
 split_ext() {
 	case "$1" in
@@ -75,7 +76,7 @@ check_package_file() {
 	fi
 	if [ ! -z "${SHA1SUM+x}" ]; then
 		echo -n "SHA1: "
-		sha1sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		sha1sum -c <<<"${SHA1SUM}  ${PACKAGE_FILE}"
 		checked=true
 		strength="SHA1"
 	fi
@@ -191,7 +192,7 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	bash -c "\"${SOURCE}/configure\" --prefix=\"${TARGET}\" --srcdir=\"${SOURCE}\" |& tee \"${LOG}/configure.log\""
+	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} |& tee "${LOG}/configure.log"
 	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
 	set +x
 }

@@ -16,6 +16,10 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+URL=https://github.com/dun/munge/releases/download/${PACKAGE}-${VERSION}/${PACKAGE}-${VERSION}.tar.xz
 
-CONFIGURE_OPTIONS="--enable-shared"
+# from https://github.com/dun/munge/releases/download/${PACKAGE}-${VERSION}/${PACKAGE}-${VERSION}.tar.xz.sha256
+# munge-0.5.14.tar.xz
+SHA512SUM=742c9f2c1cf9f5b070f91fc6b9e74c5f2712c385bce6820c400e884fb6d78f86dea7ebe8e3918d056bf72e746a6af5481a1a8d9f0834a28836da90a42b4eb166
+
+

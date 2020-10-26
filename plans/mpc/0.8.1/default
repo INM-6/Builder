@@ -16,6 +16,7 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/infrastructure/${PACKAGE}-${VERSION}.tar.gz
 
-CONFIGURE_OPTIONS="--enable-shared"
+# mpc-0.8.1.tar.gz
+SHA512SUM=14cb9ae3d33caed24d5ae648eed28b2e00ad047a8baeff25981129af88245b4def2948573d7a00d65c5bd34e53524aa6a7351b76703c9f888b41830c1a1daae2
