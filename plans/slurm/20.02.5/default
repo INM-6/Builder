@@ -16,6 +16,13 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+URL=https://download.schedmd.com/${PACKAGE}/${PACKAGE}-${VERSION}.tar.bz2
 
-CONFIGURE_OPTIONS="--enable-shared"
+# from https://www.schedmd.com/downloads.php
+# slurm-20.02.5.tar.bz2
+SHA1SUM=62d9f66c86e17cbc541328e5f36a1213eaf7789a
+MD5SUM=3902c8a06643cf70cf6fe750971f7146
+SHA256SUM=c32a7a32010a526bb8a303df1df081c79dbe15423576543a73c65bdd33301723
+
+CONFIGURE_OPTIONS="--enable-deprecated --sysconfdir=/etc/slurm --with-munge --disable-x11 --disable-gtktest --enable-pam"
+
