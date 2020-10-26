@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/infrastructure/${PACKAGE}-${VERSION}.tar.bz2
+
+# gmp-4.3.2.tar.bz2
+SHA512SUM=2e0b0fd23e6f10742a5517981e5171c6e88b0a93c83da701b296f5c0861d72c19782daab589a7eac3f9032152a0fc7eff7f5362db8fccc4859564a9aa82329cf
+
+build_install_test () {
+	log_status ">>> runing strongly suggested install checks..."
+	make check
+}
