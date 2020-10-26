@@ -57,6 +57,8 @@ builder_info () {
 	log_info "  TARGET=${TARGET:- <undefined>}"
 	log_info "  BUILD=${BUILD:- <undefined>}"
 	log_info "  LOG=${LOG:- <undefined>}"
+	log_info "  CONFIGURE_OPTIONS=${CONFIGURE_OPTIONS:- <undefined>}"
+	log_info "  MAKE_THREADS=${MAKE_THREADS:- <undefined>}"
 }
 ################################################################################
 # Default implementation of steps
