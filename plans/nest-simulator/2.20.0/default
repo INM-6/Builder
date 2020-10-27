@@ -34,6 +34,6 @@ if which python; then
 	CMAKEFLAGS="-Dwith-python=3"
 fi
 
-CMAKEFLAGS="-Dwith-boost=ON"
+CMAKEFLAGS+=" -Dwith-boost=ON"
 
 source "$(dirname "${PLAN}")/../common"
