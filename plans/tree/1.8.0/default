@@ -42,7 +42,7 @@ build_prepare() {
 	# write a dummy configure script, so that we can use Builder standard build_package()
 	(
 		cd "${SOURCE}"
-		#test ! -e configure    # take care not to overwrite an eventually existing file
+		test ! -e configure || { log_warning "actually a configure file already exists, this is unexpected"; }   # take care not to overwrite an eventually existing file
 		echo "#!/bin/sh" >configure
 		echo "echo 'dummy configure'" >>configure
 		chmod u+x configure
