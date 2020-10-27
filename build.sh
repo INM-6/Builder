@@ -16,7 +16,9 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 set -euo pipefail
-BUILDER_PATH="$(dirname $(realpath "$0"))"
+if [ -z "${BUILDER_PATH+x}" ]; then
+	BUILDER_PATH="$(dirname "$(realpath "$0")")"
+fi
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

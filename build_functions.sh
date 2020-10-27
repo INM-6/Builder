@@ -108,11 +108,11 @@ check_package_file() {
 		# if a verify key is defined, fetch signature and check it
 		if [ ! -r "${PACKAGE_FILE}.sig" ]; then
 			wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
-			gpg --import "$(dirname ${PLAN})/${GPG_VERIFY_KEY}"
+			gpg --import "$(dirname "${PLAN}")/${GPG_VERIFY_KEY}"
 		fi
 		echo -n "GPG Signature: "
 		( cd "${PACKAGE_CACHE}";
-		  gpg --verify "$(basename ${PACKAGE_FILE}).sig" )
+		  gpg --verify "$(basename "${PACKAGE_FILE}").sig" )
 		checked=true
 		strength="strong"
 	fi
@@ -144,13 +144,13 @@ source_prepare() {
 	log_status ">>> prepare source"
 	EXT="$(split_ext "${URL}")" || { echo "$EXT"; false; }
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
-	mkdir -pv "$(dirname "$PACKAGE_FILE")"
+	mkdir -pv "$(dirname "${PACKAGE_FILE}")"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
 	fi
 	check_package_file
-	if [ ! -d $SOURCE ]; then
+	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
 		cd "${SOURCE}"
 		log_info "extracting ${PACKAGE_FILE}"
@@ -167,9 +167,9 @@ source_prepare() {
 		    *.zip)
 			unzip "${PACKAGE_FILE}"
 			cd "$SOURCE"
-			base_source="$(basename ${SOURCE})"
-			mv $base_source/* .
-			rm -r $base_source
+			base_source="$(basename "${SOURCE}")"
+			mv "$base_source"/* .
+			rm -r "$base_source"
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
@@ -203,7 +203,7 @@ build_test () {
 
 build_install () {
 	log_status ">>> installing..."
-	make install |& tee ${LOG}/make-install.log
+	make install |& tee "${LOG}/make-install.log"
 }
 
 module_install () {
@@ -211,7 +211,7 @@ module_install () {
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 		log_status ">>> installing module file to ${module_path}"
-		mkdir -pv "$(dirname ${module_path})"
+		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
 		if version_gt $BASH_VERSION 4.4; then
 			echo "${module@P}" >"${module_path}"
