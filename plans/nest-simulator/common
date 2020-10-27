@@ -34,7 +34,7 @@ build_package () {
 	fi
 
 	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH=$TARGET $SOURCE |& tee ${LOG}/cmake.log
-	make -j $(( $(nproc) / 4 )) |& tee ${LOG}/make.log
+	make -j ${MAKE_THREADS:-$(nproc)} |& tee ${LOG}/make.log
 	set +x
 }
 
