@@ -17,7 +17,7 @@
 #
 set -euo pipefail
 if [ -z "${BUILDER_PATH+x}" ]; then
-	BUILDER_PATH="$(dirname $(realpath "$0"))"
+	BUILDER_PATH="$(dirname "$(realpath "$0")")"
 fi
 
 
@@ -104,7 +104,7 @@ MODULE_INSTALL_PATH=\${HOME}/modules
 LOG_PATH=\\\${BUILD}/logs
 
 # define the number of cores to use in standard build_package()
-#MAKE_THREADS=(( \$(nproc) / 4 ))
+#MAKE_THREADS=\$(( \$(nproc) / 4 ))
 ENDRC
 	cat "${HOME}/.buildrc"
 	cat <<ENDNOTE
