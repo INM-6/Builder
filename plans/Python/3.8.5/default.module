@@ -2,20 +2,22 @@
 ##
 ## ${PACKAGE} ${VERSION} (${VARIANT})
 ##
-set VERSION ${VERSION}
-set SUFFIX -${VARIANT}
 set INSTALLDIR ${TARGET}
 
 proc ModulesHelp { } {
         global VERSION
-        puts stderr "Python \$VERSION"
+        puts stderr "${PACKAGE} ${VERSION} (${VARIANT})"
 }
 
-module-whatis   "Python \$VERSION\$SUFFIX"
+module-whatis   "${PACKAGE} ${VERSION} ${VARIANT}"
 
-conflict python
+conflict ${PACKAGE}
 
-prepend-path    PATH    \$INSTALLDIR/bin
-prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
-prepend-path    MANPATH \$INSTALLDIR/man
+setenv       PYTHON_LIBRARIES     "\$INSTALLDIR/lib"
+setenv       PYTHON_INCLUDE_DIRS  "\$INSTALLDIR/include"
+prepend-path    PATH              "\$INSTALLDIR/bin"
+prepend-path    LD_LIBRARY_PATH   "\$INSTALLDIR/lib"
+prepend-path    LIBRARY_PATH      "\$INSTALLDIR/lib"
+prepend-path    CPATH             "\$INSTALLDIR/include"
+prepend-path    MANPATH           "\$INSTALLDIR/share/man"
 
