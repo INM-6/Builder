@@ -16,6 +16,10 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/${PACKAGE}-${VERSION}/${PACKAGE}-${VERSION}.tar.xz
 
-CONFIGURE_OPTIONS="--enable-shared"
+# from https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/gcc-10.2.0/sha512.sum
+SHA512SUM=42ae38928bd2e8183af445da34220964eb690b675b1892bbeb7cd5bb62be499011ec9a93397dba5e2fb681afadfc6f2767d03b9035b44ba9be807187ae6dc65e
+#signature also available
+
+CONFIGURE_OPTIONS=" --disable-multilib"

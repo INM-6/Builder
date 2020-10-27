@@ -16,6 +16,7 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/infrastructure/${PACKAGE}-${VERSION}.tar.bz2
 
-CONFIGURE_OPTIONS="--enable-shared"
+# mpfr-2.4.2.tar.bz2
+SHA512SUM=c004b3dbf86c04960e4a1f8db37a409a7cc4cb76135e76e98dcc5ad93aaa8deb62334ee13ff84447a7c12a5e8cb57f25c62ac908c24920f1fb1a38d79d4a4c5e
