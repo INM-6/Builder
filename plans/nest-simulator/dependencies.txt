@@ -1,0 +1,5 @@
+optional dependencies are marked with a '?'
+nest-simulator/2.14 libtool boost? gsl?
+nest-simulator/2.16 cmake>=2.4 boost? gsl?
+nest-simulator/2.18 cmake>=2.6 boost? gsl?
+nest-simulator/2.20 cmake>=2.6 boost=>1.70? gsl?

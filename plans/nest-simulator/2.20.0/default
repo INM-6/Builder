@@ -17,14 +17,23 @@
 #
 
 # NEST Simulator 2.20.0
-DOI=10.5281/zenodo.3605514
-#URL=https://zenodo.org/record/3605514/files/nest-simulator-2.20.0.tar.gz?download=1
+#
+#DOI=10.5281/zenodo.3605514
+#URL='https://zenodo.org/record/3605514/files/nest-simulator-2.20.0.tar.gz?download=1'
 #MD5SUM=6ebc0ce8e398dc64c75f749dadde1321	# DOI Version (= custom tarball)
 #SHA256SUM=
 
+log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
+URL='https://github.com/nest/nest-simulator/archive/v2.20.0.tar.gz'
 MD5SUM=d3fc815b6a6db187468350cc971fed0b
 SHA256SUM=40e33187c22d6e843d80095b221fa7fd5ebe4dbc0116765a91fc5c425dd0eca4
-log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
 
 CMAKEFLAGS="-Dwith-python=OFF"
+if which python; then
+	PYTHON="$(which python3)"
+	CMAKEFLAGS="-Dwith-python=3"
+fi
+
+CMAKEFLAGS="-Dwith-boost=ON"
+
 source "$(dirname "${PLAN}")/../common"
