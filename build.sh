@@ -17,7 +17,7 @@
 #
 set -euo pipefail
 if [ -z "${BUILDER_PATH+x}" ]; then
-	BUILDER_PATH="$(dirname $(realpath "$0"))"
+	BUILDER_PATH="$(dirname "$(realpath "$0")")"
 fi
 
 
