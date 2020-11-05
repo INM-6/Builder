@@ -1,0 +1,30 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION}
+-------------------
+
+Elephant (Electrophysiology Analysis Toolkit) is an open-source, community centered library for the analysis of electrophysiological data in the Python programming language. The focus of Elephant is on generic analysis functions for spike train data and time series recordings from electrodes, such as the local field potentials (LFP) or intracellular voltages. In addition to providing a common platform for analysis code from different laboratories, the Elephant project aims to provide a consistent and homogeneous analysis framework that is built on a modular foundation. Elephant is the direct successor to Neurotools and maintains ties to complementary projects such as OpenElectrophy and spykeviewer.
+
+Homepage: http://neuralensemble.org/elephant
+Documentation: https://elephant.readthedocs.io
+"
+
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: analysis of electrophysiological data in Python"
+
+
+conflict ${PACKAGE}
+
+prepend-path    PATH    \$INSTALLDIR/bin
+prepend-path    PYTHONPATH  \$INSTALLDIR/opt/app-root/lib/python3.6/site-packages/
+#prepend-path    LIBRARY_PATH   \$INSTALLDIR/lib
+#prepend-path    CPATH   \$INSTALLDIR/include
+#prepend-path    MANPATH \$INSTALLDIR/share/man
+

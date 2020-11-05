@@ -1,5 +1,63 @@
-optional dependencies are marked with a '?'
-nest-simulator/2.14 libtool boost? gsl?
-nest-simulator/2.16 cmake>=2.4 boost? gsl?
-nest-simulator/2.18 cmake>=2.6 boost? gsl?
-nest-simulator/2.20 cmake>=2.6 boost=>1.70? gsl?
+# (c)ompile-time dependency
+# (r)un-time dependency
+
+dependencies:
+
+- readline             # c  library : required by nest-simulator<=2.16
+
+- libtool              # cr? library : hard by nest-simulator<2.16
+
+- boost>=1.70 | boost<1.67    # c(r) library : large performance increase if boost is available
+  # boost.test by nest-simulator>2.18
+  # boost.random by nest-simulator>2.18
+  # not boost.mpi for boost>=1.70
+
+- gcc | ...            # c  build tool : >=C++11 compatible compilers
+
+- cmake>=2.6           # c  build tool :
+
+- gsl                  #  r library : many neuron models
+
+- python>=3            # cr interpreter : for Python bindings
+- cython>=0.26         # c  build tool : for Python bindings
+
+- sphinx               # c  build tool : documentation workflow
+- sphinx-gallery       # c  build tool : documentation workflow
+- sphinx_rtd_theme     # c  build tool : documentation workflow
+- breathe              # c  build tool : documentation workflow
+
+- pip:
+  - pytest             # c  build tool : make installcheck
+  - nosetest           # c  build tool : make installcheck
+
+  - pydot              # (c)r library : documentation example rendering
+    #import nest.visualization requires pydot
+    # by pynest/examples/csa_example.py requires pydot
+  - matplotlib         # (c)r library : documentation example rendering
+  - numpy              # (c)r library : documentation example rendering
+
+  - sphinx-tabs        # c  library : documentation workflow
+  - tydm               # c  library : documentation workflow
+
+- MUSIC                # cr library : co-simulation
+  # by pynest/examples/music_cont_out_proxy_example/nest_script.py requires MUSIC
+  # by  pynest/examples/music_cont_out_proxy_example/receiver_script.py requires MUSIC
+
+- CSA                  # cr library : special connection generators
+  # pynest/examples/csa_spatial_example.py requires CSA
+
+- Arbor                # cr library : co-simulation
+  # pynest/examples/arbor_cosim_example/arbor_proxy.py requires ARBOR
+  # pynest/examples/arbor_cosim_example/nest_sender.py requires ARBOR
+
+- SionLib              # cr library : parallel output back-end
+
+
+
+# Broken Examples
+#
+#   pynest/examples/aeif_cond_beta_multisynapse.py
+#   DictError in SLI function Connect_g_g_D_D: Unused dictionary items:  model
+#
+#   pynest/examples/Potjans_2014/run_microcircuit.py
+#   IOError in SLI function Prepare: 
