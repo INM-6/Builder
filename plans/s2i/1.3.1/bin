@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL="https://github.com/openshift/source-to-image/releases/download/v1.3.1/source-to-image-v1.3.1-a5a77147-linux-amd64.tar.gz"
+SHA256SUM="de43ff27d634d750528d9f8ddc14b92107f674b09925bcc972c4f81431a092ac"
+
+build_package () {
+	log_status ">>> binary package is already built."
+}
+
+build_install () {
+	log_status ">>> installing..."
+	mkdir -pv "$(dirname "${TARGET}")"
+	cp -vr "${SOURCE}" "${TARGET}"
+}
+
