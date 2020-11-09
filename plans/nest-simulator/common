@@ -32,7 +32,7 @@ build_package () {
 	module load Python/3.6.8
 	module load SciPy-Stack/2019a-Python-3.6.8
 	module load Intel/2019.5.281-GCC-8.3.0
-	module load intel-para/2019a
+	module load ParaStationMPI/5.2.2-1-mt
 	module load GSL/2.5
 	module load jemalloc/5.1.0	
 	# if version_gt 2.16.0 $VERSION; then # version 2.14.0 and before requrie LTDL as hard dependency
