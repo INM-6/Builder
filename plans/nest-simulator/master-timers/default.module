@@ -1,0 +1,45 @@
+#%Module1.0#####################################################################
+#
+# ${AUTOMATIC_BUILD_WARNING}
+#
+
+set     INSTALLDIR      ${TARGET}
+
+proc ModulesHelp { } {
+	global INSTALLDIR
+        puts stderr "================================================================================
+NEST Simulator ${VERSION} (${VARIANT})
+================================================================================
+
+   NEST is a simulator for spiking neural network models that focuses on the
+   dynamics, size and structure of neural systems rather than on the exact
+   morphology of individual neurons.
+
+   Load this modulefile instead of the usual 'source .../bin/nest_vars.sh' to
+   initialize all environment variables.
+
+   For help visit:  https://nest-simulator.org/documentation.
+"
+        set fp [open "\$INSTALLDIR/ConfigurationSummary.txt" r]
+        puts stderr [read \$fp];
+        close \$fp;
+        puts stderr "Module settings:
+INSTALLDIR:  	\$INSTALLDIR"
+}
+
+module-whatis   "NEST spiking neural network simulator, version ${VERSION} (${VARIANT} build)"
+
+conflict ${PACKAGE}
+
+################################################################################
+# from \$INSTALLDIR/bin/nest_vars.sh
+# 
+module load CMake/3.14.0
+module load Python/3.6.8
+module load SciPy-Stack/2019a-Python-3.6.8
+module load Intel/2019.5.281-GCC-8.3.0
+module load ParaStationMPI/5.2.2-1-mt
+module load GSL/2.5
+module load jemalloc/5.1.0  
+prepend-path    PYTHONPATH              $INSTALLDIR/lib64/python3.6/site-packages
+prepend-path    PATH                    $INSTALLDIR/bin
