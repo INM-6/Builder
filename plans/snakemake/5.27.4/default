@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# define any additional flavours to request pip to install
+#EXTRAS="[extras]"
+
+# This is a PIP package, so most of the heavy lifting is done already. We just forward the build environment settings.
+
+source_prepare() {
+        log_status ">>> no source preparation necessary."
+}
+
+build_prepare() {
+        log_status ">>> no prepare for pip packages."
+}
+
+build_package () {
+        log_status ">>> build phase is combined with install phase for pip packages."
+}
+
+build_install () {
+        log_status ">>> build and install ${PACKAGE}..."
+	# DEPRECATION: The -b/--build/--build-dir/--build-directory option is
+	# deprecated. pip 20.3 will remove support for this functionality. A
+	# possible replacement is use the TMPDIR/TEMP/TMP environment variable,
+	# possibly combined with --no-clean. You can find discussion regarding
+	# this at https://github.com/pypa/pip/issues/8333.
+	export TMPDIR="${BUILD}"
+
+        # --target "${TARGET}"
+	# is a subset of --root
+	pip3 install ${CONFIGURE_OPTIONS:-} \
+	    --root "${TARGET}" \
+            --cache-dir "${PACKAGE_CACHE}" \
+            --src "${SOURCE}" \
+            "${PACKAGE}${EXTRAS:-}==${VERSION}"
+
+}
+
