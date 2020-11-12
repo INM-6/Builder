@@ -161,12 +161,12 @@ log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
 if version_gt $BASH_VERSION 4.4; then
 	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
-	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}_${VARIANT}"
+	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}/${VARIANT}"
 	BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}/${VARIANT}"
 	LOG="${LOG_PATH@P}"
 else
 	SOURCE="$(eval echo "${SOURCE_PATH}/${PACKAGE}-${VERSION}")"
-	TARGET="$(eval echo "${TARGET_PATH}/${PACKAGE}/${VERSION}")"
+	TARGET="$(eval echo "${TARGET_PATH}/${PACKAGE}/${VERSION}/${VARIANT}")"
 	BUILD="$(eval echo "${BUILD_PATH}/${PACKAGE}/${VERSION}/${VARIANT}")"
 	LOG="$(eval echo "${LOG_PATH}")"
 fi
