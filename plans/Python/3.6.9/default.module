@@ -1,0 +1,23 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION} (${VARIANT})"
+}
+
+module-whatis   "${PACKAGE} ${VERSION} ${VARIANT}"
+
+conflict ${PACKAGE}
+
+setenv       PYTHON_LIBRARIES     "\$INSTALLDIR/lib"
+setenv       PYTHON_INCLUDE_DIRS  "\$INSTALLDIR/include"
+prepend-path    PATH              "\$INSTALLDIR/bin"
+prepend-path    LD_LIBRARY_PATH   "\$INSTALLDIR/lib"
+prepend-path    LIBRARY_PATH      "\$INSTALLDIR/lib"
+prepend-path    CPATH             "\$INSTALLDIR/include"
+prepend-path    MANPATH           "\$INSTALLDIR/share/man"
+
