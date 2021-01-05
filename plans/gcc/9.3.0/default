@@ -16,8 +16,10 @@
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
-# from downloaded  Python-3.8.5.tar.xz
-SHA256SUM=e3003ed57db17e617acb382b0cade29a248c6026b1bd8aad1f976e9af66a83b0
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/${PACKAGE}-${VERSION}/${PACKAGE}-${VERSION}.tar.xz
 
-CONFIGURE_OPTIONS="--enable-shared"
+# from https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/gcc-10.2.0/sha512.sum
+SHA512SUM=4b9e3639eef6e623747a22c37a904b4750c93b6da77cf3958d5047e9b5ebddb7eebe091cc16ca0a227c0ecbd2bf3b984b221130f269a97ee4cc18f9cf6c444de
+#signature also available
+
+CONFIGURE_OPTIONS=" --disable-multilib"

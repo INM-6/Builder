@@ -1,0 +1,20 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR "${TARGET}"
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "GNU Compiler Collection GCC ${VERSION}"
+}
+
+module-whatis   "${PACKAGE} ${VERSION} (${VARIANT})"
+
+conflict gcc
+
+prepend-path    PATH    "$INSTALLDIR/bin"
+prepend-path    LD_LIBRARY_PATH  "$INSTALLDIR/lib64"
+prepend-path    LIBRARY_PATH   "$INSTALLDIR/lib64"
+prepend-path    CPATH   "$INSTALLDIR/include"
+prepend-path    MANPATH "$INSTALLDIR/share/man"

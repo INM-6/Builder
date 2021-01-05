@@ -17,7 +17,7 @@
 #
 
 URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
-# from downloaded  Python-3.8.5.tar.xz
-SHA256SUM=e3003ed57db17e617acb382b0cade29a248c6026b1bd8aad1f976e9af66a83b0
+# from downloaded Python-3.6.9.tar.xz
+SHA256SUM=5e2f5f554e3f8f7f0296f7e73d8600c4e9acbaee6b2555b83206edf5153870da
 
 CONFIGURE_OPTIONS="--enable-shared"

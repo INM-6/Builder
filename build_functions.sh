@@ -40,25 +40,26 @@ function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$
 
 builder_info () {
 	log_info "Configured variables:"
-	log_info "  PLANFILE_PATH=${PLANFILE_PATH:- <undefined>}"
-	log_info "  PACKAGE_CACHE=${PACKAGE_CACHE:- <undefined>}"
-	log_info "  SOURCE_PATH=${SOURCE_PATH:- <undefined>}"
-	log_info "  BUILD_PATH=${BUILD_PATH:- <undefined>}"
-	log_info "  TARGET_PATH=${TARGET_PATH:- <undefined>}"
-	log_info "  MODULE_INSTALL_PATH=${MODULE_INSTALL_PATH:- <undefined>}"
-	log_info "  LOG_PATH=${LOG_PATH:- <undefined>}"
+	log_info "  PLANFILE_PATH=\"${PLANFILE_PATH:- <undefined>}\""
+	log_info "  PACKAGE_CACHE=\"${PACKAGE_CACHE:- <undefined>}\""
+	log_info "  SOURCE_PATH=\"${SOURCE_PATH:- <undefined>}\""
+	log_info "  BUILD_PATH=\"${BUILD_PATH:- <undefined>}\""
+	log_info "  TARGET_PATH=\"${TARGET_PATH:- <undefined>}\""
+	log_info "  MODULE_INSTALL_PATH=\"${MODULE_INSTALL_PATH:- <undefined>}\""
+	log_info "  LOG_PATH=\"${LOG_PATH:- <undefined>}\""
+	log_info "  MAKE_THREADS=\"${MAKE_THREADS:- <undefined>}\""
 	log_info ""
 	log_info "Build Variables:"
-	log_info "  PACKAGE=${PACKAGE:- <undefined>}"
-	log_info "  VERSION=${VERSION:- <undefined>}"
-	log_info "  VARIANT=${VARIANT:- <undefined>}"
-	log_info "  PLAN=${PLAN:- <undefined>}"
-	log_info "  SOURCE=${SOURCE:- <undefined>}"
-	log_info "  TARGET=${TARGET:- <undefined>}"
-	log_info "  BUILD=${BUILD:- <undefined>}"
-	log_info "  LOG=${LOG:- <undefined>}"
-	log_info "  CONFIGURE_OPTIONS=${CONFIGURE_OPTIONS:- <undefined>}"
-	log_info "  MAKE_THREADS=${MAKE_THREADS:- <undefined>}"
+	log_info "  PACKAGE=\"${PACKAGE:- <undefined>}\""
+	log_info "  VERSION=\"${VERSION:- <undefined>}\""
+	log_info "  VARIANT=\"${VARIANT:- <undefined>}\""
+	log_info "  PLAN=\"${PLAN:- <undefined>}\""
+	log_info "  SOURCE=\"${SOURCE:- <undefined>}\""
+	log_info "  TARGET=\"${TARGET:- <undefined>}\""
+	log_info "  BUILD=\"${BUILD:- <undefined>}\""
+	log_info "  LOG=\"${LOG:- <undefined>}\""
+	log_info ""
+	log_info "  CONFIGURE_OPTIONS=\"${CONFIGURE_OPTIONS:- <undefined>}\""
 }
 ################################################################################
 # Default implementation of steps
@@ -212,6 +213,10 @@ module_install () {
 	AUTOMATIC_BUILD_WARNING=" This file was automatically produced by Builder.\n# Any changes may be overwritten without notice.\n#\n# Please see ${BUILDER_PATH} for details."
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
+		PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
+		PYTHON_PLATLIB="$(python -c "import sysconfig; print(sysconfig.get_path('platlib'))")"
+		PYTHON_PURELIB="$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")"
+		PYTHON_SITEPKG="$(python -c "import sysconfig; from pathlib import Path; print(Path(sysconfig.get_path('purelib')).relative_to(sysconfig.get_path('data')))")"
 		log_status ">>> installing module file to ${module_path}"
 		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
@@ -238,6 +243,11 @@ module_install () {
 			    -e "s%\${\?TARGET}\?%$TARGET%g" \
 			    -e "s%\${\?BUILD}\?%$BUILD%g" \
 			    -e "s%\${\?LOG}\?%$LOG%g" \
+			    -e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
+			    -e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
+			    -e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
+			    -e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
+			    -e "s%\${\?VIRTUAL_ENV}\?%${VIRTUAL_ENV:-/}%g" \
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
 		fi

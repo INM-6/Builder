@@ -1,0 +1,20 @@
+#%Module 1.0#############################################
+
+proc ModulesHelp { } {
+        puts "================================================================================
+🏗 Builder ${VERSION} (${VARIANT})
+================================================================================
+
+   Collection of tools and scripts to install software on a system.
+
+   In contrast to usual packaging systems, the aim is to equally help users and
+   admins. Many aspects are inspired by Portage, which is used by the Gentoo
+   Linux distribution.
+
+   Homepage:  https://github.com/INM-6/Builder
+"
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: build tool for installing and deploying software"
+
+prepend-path    PATH       "${TARGET}"
