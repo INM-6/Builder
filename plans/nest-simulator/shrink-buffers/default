@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# NEST Simulator master
+URL=https://github.com/jasperalbers/nest-simulator/archive/shrink-buffers.zip
+# MD5SUM=d3fc815b6a6db187468350cc971fed0b
+# SHA256SUM=40e33187c22d6e843d80095b221fa7fd5ebe4dbc0116765a91fc5c425dd0eca4
+
+CMAKEFLAGS="-Dwith-mpi=ON -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -Dwith-python=ON -Dwith-ltdl=ON -DTIMER=1 -Dwith-boost=ON"
+source "$(dirname "${PLAN}")/../common"

@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# NEST Simulator 2.14.0
+URL=https://github.com/nest/nest-simulator/archive/v2.14.0.zip
+
+# NEST Simulator 2.14.0
+#DOI=10.5281/zenodo.882971
+#MD5SUM=a214b61da740c9252f3dfea5ed804441 
+#SHA256SUM=afaf7d53c2d5305fac1257759cc0ea6d62c3cebf7d5cc4a07d4739af4dbb9caf
+
+CMAKEFLAGS="-Dwith-openmp=ON -Dwith-mpi=OFF -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -Dwith-python=ON -Dwith-ltdl=ON"
+source "$(dirname "${PLAN}")/../common"

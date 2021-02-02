@@ -17,8 +17,12 @@
 #
 
 # NEST Simulator 2.14.0
-DOI=10.5281/zenodo.882971
-MD5SUM=a214b61da740c9252f3dfea5ed804441 
-SHA256SUM=afaf7d53c2d5305fac1257759cc0ea6d62c3cebf7d5cc4a07d4739af4dbb9caf
+URL=https://github.com/nest/nest-simulator/archive/v2.14.0.zip
 
+# NEST Simulator 2.14.0
+#DOI=10.5281/zenodo.882971
+#MD5SUM=a214b61da740c9252f3dfea5ed804441 
+#SHA256SUM=afaf7d53c2d5305fac1257759cc0ea6d62c3cebf7d5cc4a07d4739af4dbb9caf
+
+CMAKEFLAGS="-Dwith-mpi=ON -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -Dwith-python=ON -Dwith-ltdl=ON"
 source "$(dirname "${PLAN}")/../common"

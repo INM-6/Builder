@@ -19,7 +19,7 @@ set -euo pipefail
 if [ -z "${BUILDER_PATH+x}" ]; then
 	BUILDER_PATH="$(dirname "$(realpath "$0")")"
 fi
-
+export PROJECT='/p/project/icei-hbp-2020-0006'
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Comman line parsing
@@ -57,7 +57,7 @@ esac
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Setup Builder configuration
 
-if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
+if [ "${PACKAGE}" == "configure" -a -e "${PROJECT}/.buildrc" ]; then
 	cat <<ENDNOTICE
 !!!
 !!! ~/.buildrc already exists.
@@ -66,9 +66,9 @@ if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
 !!!
 ENDNOTICE
 fi
-if [ ! -e "${HOME}/.buildrc" ]; then
-	echo ">>> installing default configuration '${HOME}/.buildrc'..."
-	cat >"${HOME}/.buildrc" <<ENDRC
+if [ ! -e "${PROJECT}/.buildrc" ]; then
+	echo ">>> installing default configuration '${PROJECT}/.buildrc'..."
+	cat >"${PROJECT}/.buildrc" <<ENDRC
 #
 # This is the configuration file for Builder
 #
@@ -84,21 +84,21 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 PLANFILE_PATH=${BUILDER_PATH}/plans
 
 # storage of all package archives (like .tar.gz files)
-PACKAGE_CACHE=\${HOME}/src
+PACKAGE_CACHE=\${PROJECT}/src
 
 # temporary storage of source files (extracted from tar-balls)
-SOURCE_PATH=\${HOME}/build/src
+SOURCE_PATH=\${PROJECT}/build/src
 
 # location for out-of-tree builds
-BUILD_PATH=\${HOME}/build
+BUILD_PATH=\${PROJECT}/build
 
 # install path (usually used as --prefix)
-TARGET_PATH=\${HOME}/install
+TARGET_PATH=\${PROJECT}/install
 
 # module install path. If defined and a template file
 # '<package>/<version>/<variant>.module' exists, it will be filled and copied
 # to '<MODULE_INSTALL_PATH>/<package>/<version>/<variant>'.
-MODULE_INSTALL_PATH=\${HOME}/modules
+MODULE_INSTALL_PATH=\${PROJECT}/modules
 
 # path where to store logfiles of the build
 LOG_PATH=\\\${BUILD}/logs
@@ -106,7 +106,7 @@ LOG_PATH=\\\${BUILD}/logs
 # define the number of cores to use in standard build_package()
 #MAKE_THREADS=\$(( \$(nproc) / 4 ))
 ENDRC
-	cat "${HOME}/.buildrc"
+	cat "${PROJECT}/.buildrc"
 	cat <<ENDNOTE
 !!!
 !!! You probably want to modify at least the \$TARGET_PATH in your
@@ -114,7 +114,7 @@ ENDRC
 !!!
 ENDNOTE
 	echo -e "\n>>> default configuration has been written to"
-	echo -e "    ${HOME}/.buildrc\n"
+	echo -e "    ${PROJECT}/.buildrc\n"
 	if [ "$PACKAGE" != "configure" ]; then
 		echo "!!! Please check that the guessed paths are correct and"
 		echo "!!! rerun the build command."
@@ -124,8 +124,8 @@ ENDNOTE
 fi
 
 # load configuration
-if [ -r "${HOME}/.buildrc" ]; then
-	. "${HOME}/.buildrc"
+if [ -r "${PROJECT}/.buildrc" ]; then
+	. "${PROJECT}/.buildrc"
 else
 	echo "ERROR: Could not read ~/.buildrc"
 	exit 1
@@ -161,12 +161,12 @@ log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 
 if version_gt $BASH_VERSION 4.4; then
 	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
-	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}_${VARIANT}"
+	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}/${VARIANT}"
 	BUILD="${BUILD_PATH@P}/${PACKAGE}/${VERSION}/${VARIANT}"
 	LOG="${LOG_PATH@P}"
 else
 	SOURCE="$(eval echo "${SOURCE_PATH}/${PACKAGE}-${VERSION}")"
-	TARGET="$(eval echo "${TARGET_PATH}/${PACKAGE}/${VERSION}")"
+	TARGET="$(eval echo "${TARGET_PATH}/${PACKAGE}/${VERSION}/${VARIANT}")"
 	BUILD="$(eval echo "${BUILD_PATH}/${PACKAGE}/${VERSION}/${VARIANT}")"
 	LOG="$(eval echo "${LOG_PATH}")"
 fi
@@ -189,9 +189,9 @@ read
 source_prepare
 build_prepare
 build_package
-build_test
+# build_test
 build_install
-build_install_test
+# build_install_test
 module_install
 
 log_success ">>>\n>>> done.\n>>>"
