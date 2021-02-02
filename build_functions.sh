@@ -158,7 +158,7 @@ source_prepare() {
 		log_info "extracting ${PACKAGE_FILE}"
 		case "$(basename "${URL}")" in
 		    *.tar.gz | *.tgz)
-			tar -xzf "${PACKAGE_FILE}" --strip-components=1
+			tar -xvf "${PACKAGE_FILE}" --strip-components=1
 			;;
 		    *.tar.bz2 | *.tbz)
 			tar -xjf "${PACKAGE_FILE}" --strip-components=1
@@ -170,9 +170,9 @@ source_prepare() {
 			unzip "${PACKAGE_FILE}"
 			cd "$SOURCE"
 			base_source="$(basename "${SOURCE}")"
-			mv * "$base_source"  # rename unzipped directory to base_source
-			mv "$base_source"/* .  # move files one directory up
-			rm -r "$base_source"  # remove empty directory
+                        mv * tmp_dir
+                        mv tmp_dir/* .
+                        rm -r tmp_dir
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
