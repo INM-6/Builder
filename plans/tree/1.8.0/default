@@ -32,7 +32,7 @@ build_prepare() {
 	fi
 	# tree specific:
 	TREE_ORIGINAL_TARGET="$TARGET"
-	TARGET="/tmp/Builder/tree-tmp"
+	TARGET="mktemp -d --suffix -build"
 	log_status "REDIRECTED \$TARGET path to $TARGET, because tree build process does not handle spaces..."
 	mkdir -pv "$(dirname "${BUILD}")"
 	cp -rv "${SOURCE}" "${BUILD}"	# not actually an out-of-tree-build
@@ -51,6 +51,7 @@ build_prepare() {
 
 	log_status "resetting \$TARGET back to ${TREE_ORIGINAL_TARGET}"
 	TREE_FAKE_TARGET="${TARGET}"
+	rm -rf "${TARGET}"
 	TARGET="${TREE_ORIGINAL_TARGET}"
 }
 
