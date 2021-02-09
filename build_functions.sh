@@ -243,13 +243,13 @@ module_install () {
 			    -e "s%\${\?TARGET}\?%$TARGET%g" \
 			    -e "s%\${\?BUILD}\?%$BUILD%g" \
 			    -e "s%\${\?LOG}\?%$LOG%g" \
-			    -e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
-			    -e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
-			    -e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
-			    -e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 			    -e "s%\${\?VIRTUAL_ENV}\?%${VIRTUAL_ENV:-/}%g" \
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
+			    #-e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
+			    #-e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
+			    #-e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
+			    #-e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 		fi
 		if ! echo "${MODULEPATH}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
