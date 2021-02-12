@@ -71,6 +71,7 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 	cat >"${HOME}/.buildrc" <<ENDRC
 #
 # This is the configuration file for Builder
+# (auto-generated on $(date))
 #
 # If you use environment or Builder internal variables to define paths, you
 # have to escape the dollar '\\\$' to defer evaluation to the actual build
@@ -81,27 +82,27 @@ if [ ! -e "${HOME}/.buildrc" ]; then
 # Each definition can reference only preceeding ones.
 
 # storage of all build plans
-PLANFILE_PATH=${BUILDER_PATH}/plans
+PLANFILE_PATH="\${PLANFILE_PATH:-${BUILDER_PATH}/plans}"
 
 # storage of all package archives (like .tar.gz files)
-PACKAGE_CACHE=\${HOME}/src
+PACKAGE_CACHE="\${HOME}/builder-cache/packages"
 
 # temporary storage of source files (extracted from tar-balls)
-SOURCE_PATH=\${HOME}/build/src
+SOURCE_PATH="\${HOME}/builder-cache/src"
 
 # location for out-of-tree builds
-BUILD_PATH=\${HOME}/build
+BUILD_PATH="\${HOME}/builder-cache/build"
 
 # install path (usually used as --prefix)
-TARGET_PATH=\${HOME}/install
+TARGET_PATH="\${TARGET_PATH:-\${HOME}/install}"
 
 # module install path. If defined and a template file
 # '<package>/<version>/<variant>.module' exists, it will be filled and copied
 # to '<MODULE_INSTALL_PATH>/<package>/<version>/<variant>'.
-MODULE_INSTALL_PATH=\${HOME}/modules
+MODULE_INSTALL_PATH="\${MODULE_INSTALL_PATH:-\${HOME}/modules}"
 
 # path where to store logfiles of the build
-LOG_PATH=\\\${BUILD}/logs
+LOG_PATH="\\\${BUILD}/logs"
 
 # define the number of cores to use in standard build_package()
 #MAKE_THREADS=\$(( \$(nproc) / 4 ))
