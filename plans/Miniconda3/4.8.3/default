@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://repo.anaconda.com/miniconda/Miniconda3-py38_${VERSION}-Linux-$(uname -m).sh
+
+# from https://conda.io/en/latest/miniconda_hashes.html
+# Miniconda3-py38_4.8.3-Linux-x86_64.sh 	88.7 MiB 	2020-06-16 14:57:56
+SHA256SUM=879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf688
+# from https://repo.anaconda.com/miniconda/
+MD5SUM=d63adf39f2c220950a063e0529d4ff74
+
+build_prepare() { log_status ">>> no build_prepare"; }
+build_install() { log_status ">>> no build_install"; }
+
+build_package() {
+	# To run the silent installation of Miniconda for macOS or Linux, specify the -b
+	# and -p arguments of the bash installer. The following arguments are supported:
+	# 
+	#     -b  Batch mode with no PATH modifications to ~/.bashrc. Assumes that you
+	#         agree to the license agreement. Does not edit the .bashrc or
+	#         .bash_profile files.
+	#     -p  Installation prefix/path.
+	#     -f  Force installation even if prefix -p already exists.
+
+	bash "${PACKAGE_FILE}" -b -p "${TARGET}"
+}
+
+# The installer prompts “Do you wish the installer to initialize Miniconda3 by running conda init?” We recommend “yes”.
+# If you enter “no”, then conda will not modify your shell scripts at all.
+# In order to initialize after the installation process is done, first run 
+#	source <path to conda>/bin/activate
+#	conda init.
+

@@ -1,0 +1,159 @@
+#%Module1.0#####################################################################
+#
+# Miniconda3 user package system
+#
+# ${AUTOMATIC_BUILD_WARNING}
+#
+
+# Specific Settings ############################################################
+
+set     VERSION         ${VERSION}
+set     SUFFIX          -${VARIANT}
+set     INSTALLDIR      ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION SUFFIX INSTALLDIR
+        puts stderr "================================================================================
+Miniconda3 \$VERSION\$SUFFIX
+================================================================================
+
+
+   and updates packages and their dependencies. Conda easily creates, saves,
+   loads, and switches between environments on your local computer. It was
+   created for Python programs but it can package and distribute software for
+   any language.
+
+   For help visit:  https://docs.conda.io/en/latest/miniconda.html
+"
+}
+
+module-whatis   "Miniconda3 package and environment manager, version \$VERSION\$SUFFIX"
+
+conflict ${PACKAGE}
+conflict Python
+
+#prepend-path    PATH                    \$INSTALLDIR/bin
+#prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
+#prepend-path    MANPATH \$INSTALLDIR/man
+
+# Variables injected by source ${TARGET}/bin/activate
+setenv  CONDA_DEFAULT_ENV       base
+setenv  CONDA_EXE       ${TARGET}/bin/conda
+setenv  CONDA_INTERNAL_OLDPATH  ${TARGET}/condabin:/opt/FJSVxtclanga/tcsds-1.2.26b/bin:/opt/local/openssh/bin:/opt/local/openssh/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/home/hp200139/u00469/login/install/bin:/home/hp200139/u00469/login/shared/bin:/home/hp200139/u00469/login/.local/bin:/home/hp200139/u00469/login/bin
+setenv  CONDA_PREFIX    ${TARGET}
+setenv  CONDA_PROMPT_MODIFIER   "(base) "
+setenv  CONDA_PYTHON_EXE        ${TARGET}/bin/python
+setenv  CONDA_SHLVL     1
+setenv  _CE_CONDA       ""
+setenv  _CE_M   ""
+setenv  _CONDA_ROOT     ${TARGET}
+setenv  rc      0
+
+prepend-path    PATH    ${TARGET}/bin:${TARGET}/condabin
+
+#unsetenv PS1    $::env(PS1)
+#unsetenv PS1      $::env(CONDA_PROMPT_MODIFIER)$::env(PS1)
+
+# actually set-function should be called, but for modules-3.10 compatibility
+# only set-alias is available.
+# see
+# https://modules.readthedocs.io/en/latest/MIGRATING.html#migrating-from-v3-2-to-v4-0
+# and
+# https://modules.readthedocs.io/en/latest/diff_v3_v4.html
+
+set-alias __add_sys_prefix_to_path "
+    if \[ -n \"\$\{_CE_CONDA\}\" \] && \[ -n \"\$\{WINDIR+x\}\" \]; then
+        SYSP=\$(\dirname \"\$\{CONDA_EXE\}\");
+    else
+        SYSP=\$(\dirname \"\$\{CONDA_EXE\}\");
+        SYSP=\$(\dirname \"\$\{SYSP\}\");
+    fi;
+    if \[ -n \"\$\{WINDIR+x\}\" \]; then
+        PATH=\"\$\{SYSP\}/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Scripts:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/usr/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}/Library/mingw-w64/bin:\$\{PATH\}\";
+        PATH=\"\$\{SYSP\}:\$\{PATH\}\";
+    else
+        PATH=\"\$\{SYSP\}/bin:\$\{PATH\}\";
+    fi;
+    \export PATH
+"
+
+
+set-alias __conda_activate "
+    if \[ -n \"\$\{CONDA_PS1_BACKUP:+x\}\" \]; then
+        PS1=\"\$CONDA_PS1_BACKUP\";
+        \unset CONDA_PS1_BACKUP;
+    fi;
+    \local cmd=\"\$1\";
+    shift;
+    \local ask_conda;
+    CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
+    __add_sys_prefix_to_path;
+    ask_conda=\"\$(PS1=\"\$PS1\" \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA shell.posix \"\$cmd\" \"\$@\")\" || \return \$?;
+    rc=\$?;
+    PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+    \eval \"\$ask_conda\";
+    if \[ \$rc != 0 \]; then
+        \export PATH;
+    fi;
+    __conda_hashr
+"
+
+set-alias __conda_hashr "
+    if \[ -n \"\$\{ZSH_VERSION:+x\}\" \]; then
+        \rehash;
+    else
+        if \[ -n \"\$\{POSH_VERSION:+x\}\" \]; then
+            :;
+        else
+            \hash -r;
+        fi;
+    fi
+"
+
+set-alias __conda_reactivate "
+    \local ask_conda;
+    CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
+    __add_sys_prefix_to_path;
+    ask_conda=\"\$(PS1=\"\$PS1\" \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA shell.posix reactivate)\" || \return \$?;
+    PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+    \eval \"\$ask_conda\";
+    __conda_hashr
+"
+
+set-alias conda "
+    if \[ \"\$#\" -lt 1 \]; then
+        \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA;
+    else
+        \local cmd=\"\$1\";
+        shift;
+        case \"\$cmd\" in
+            activate | deactivate)
+                __conda_activate \"\$cmd\" \"\$@\"
+            ;;
+            install | update | upgrade | remove | uninstall)
+                CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
+                __add_sys_prefix_to_path;
+                \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA \"\$cmd\" \"\$@\";
+                \local t1=\$?;
+                PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+                if \[ \$t1 = 0 \]; then
+                    __conda_reactivate;
+                else
+                    return \$t1;
+                fi
+            ;;
+            *)
+                CONDA_INTERNAL_OLDPATH=\"\$\{PATH\}\";
+                __add_sys_prefix_to_path;
+                \"\$CONDA_EXE\" \$_CE_M \$_CE_CONDA \"\$cmd\" \"\$@\";
+                \local t1=\$?;
+                PATH=\"\$\{CONDA_INTERNAL_OLDPATH\}\";
+                return \$t1
+            ;;
+        esac;
+    fi
+"

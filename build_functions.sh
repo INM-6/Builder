@@ -32,6 +32,7 @@ split_ext() {
 	*.tar.xz) echo ".tar.xz" ;;
 	*.tgz) echo ".tgz" ;;
 	*.zip) echo ".zip" ;;
+	*.sh) echo ".sh" ;;
 	*) log_error "UNKNOWN EXTENSION OF FILE '$1'"; exit 1;
 	esac
 }
@@ -173,6 +174,10 @@ source_prepare() {
 			base_source="$(basename "${SOURCE}")"
 			mv "$base_source"/* .
 			rm -r "$base_source"
+			;;
+		    *.sh)
+			log_info "🐚  shell script (probably self extracting)."
+			log_info "   not extracting package content!"
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
