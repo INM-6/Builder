@@ -18,7 +18,7 @@
 ################################################################################
 # Helper functions
 
-ECHO="$(which echo)"
+ECHO="$(command -v echo)"
 log_info() { "$ECHO" -e "\033[00;34m${@}\033[0m"; }
 log_status() { "$ECHO" -e "\033[01;33m${@}\033[0m"; }
 log_error() { "$ECHO" -e "\033[01;41m${@}\033[0m"; }
@@ -195,8 +195,8 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} |& tee "${LOG}/configure.log"
-	make -j ${MAKE_THREADS:-$(nproc)} |& tee "${LOG}/make.log"
+	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} 2>&1 | tee "${LOG}/configure.log"
+	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
 	set +x
 }
 
@@ -206,7 +206,7 @@ build_test () {
 
 build_install () {
 	log_status ">>> installing..."
-	make install |& tee "${LOG}/make-install.log"
+	make install 2>&1 | tee "${LOG}/make-install.log"
 }
 
 module_install () {
