@@ -39,13 +39,17 @@ default value.
 To install a package replace `<package>` and `<version>` with an available
 build plan:
 
-    build <package> [<version>] [<variant>]
+    build <package> [<version>] [<variant>] [<suffix>]
 
 The parameter `<version>` is optional. It will default to installing the
 highest version available.
 
 If there are more variants available, you can optionally specify the
 `<variant>` as third parameter.
+
+If you want to add a suffix to the paths of certain `<variant>` of a `<version>`
+of a `<package>`, you can optionally specify the `<suffix>` as a parameter.
+This results in the files being copied to `<package>/<version>/<variant>_<suffix>.`
 
 In any case, you can always get more details with
 
