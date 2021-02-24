@@ -163,7 +163,7 @@ PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}" # set plan path
 
 if [ ! -z "$3" ]
 then
-	VARIANT=${VARIANT}_${3} # append suffix to variant if suffix not empty
+	VARIANT="${VARIANT}_${3}"    # append suffix to variant if suffix not empty
 fi
 
 log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
