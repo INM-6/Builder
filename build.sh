@@ -183,7 +183,6 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
 log_status ">>> loading the build plan..."
-
 . "${PLAN}"
 
 log_status ">>> build environment information"
