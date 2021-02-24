@@ -31,11 +31,12 @@ case "$PACKAGE" in
 	cat <<ENDHELP
 Usage: build -h|--help
        build configure
-       build <package> [<version>] [<variant>]
+       build <package> [<version>] [<variant>] [<suffix>]
 
   Install software as given in a build plan identifed by <package>, <version>
-  and optional <variant>. If no <variant> is given, the "default" variant will
-  be built.
+  and optional <variant> and <suffix>. If no <variant> is given, the "default"
+  variant will be built. Note that you need to specify <variant> if you want to
+  pass <suffix>. If no <suffix> is given, the <variant> will be built.
 
 Options:
 
@@ -155,11 +156,17 @@ if [ -z ${1+x} ]; then
 	log_warning ">>>"
 	VERSION="${guess}"
 else
-	VERSION="${1}"	# keep version as $1 in $@ to hand it to the build scrips!
+	VERSION="${1}"	# keep version as $1 in $@ to hand it to the build scripts!
 fi
 VARIANT="${2:-default}"	# optional variant
-log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
+PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}" # set plan path
 
+if [ ! -z "$3" ]
+then
+	VARIANT="${VARIANT}_${3}"    # append suffix to variant if suffix not empty
+fi
+
+log_status ">>> set up build of ${PACKAGE} ${VERSION} (${VARIANT} variant)..."
 if version_gt $BASH_VERSION 4.4; then
 	SOURCE="${SOURCE_PATH@P}/${PACKAGE}-${VERSION}"
 	TARGET="${TARGET_PATH@P}/${PACKAGE}/${VERSION}/${VARIANT}"
@@ -176,7 +183,6 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Load the build plan
 log_status ">>> loading the build plan..."
-PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 . "${PLAN}"
 
 log_status ">>> build environment information"
