@@ -161,7 +161,7 @@ fi
 VARIANT="${2:-default}"	# optional variant
 PLAN="${PLANFILE_PATH}/${PACKAGE}/${VERSION}/${VARIANT}" # set plan path
 
-if [ ! -z "$3" ]
+if [ ! -z "${3:-}" ]
 then
 	VARIANT="${VARIANT}_${3}"    # append suffix to variant if suffix not empty
 fi
