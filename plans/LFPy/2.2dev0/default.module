@@ -1,0 +1,30 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts "${PACKAGE} ${VERSION}
+-------------------
+
+LFPy is a Python-module for calculation of extracellular potentials from multicompartment neuron models. It relies on the NEURON simulator (http://www.neuron.yale.edu/neuron) and uses the Python interface (http://www.frontiersin.org/neuroinformatics/10.3389/neuro.11.001.2009/abstract) it provides.
+
+Homepage: https://github.com/LFPy/LFPy
+Documentation: http://lfpy.readthedocs.io
+"
+
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: calculation of extracellular potentials from multicompartment neuron models"
+
+
+conflict ${PACKAGE}
+
+prepend-path    PATH    \$INSTALLDIR/bin
+prepend-path    PYTHONPATH  \$INSTALLDIR/opt/app-root/lib/python3.6/site-packages/
+#prepend-path    LIBRARY_PATH   \$INSTALLDIR/lib
+#prepend-path    CPATH   \$INSTALLDIR/include
+#prepend-path    MANPATH \$INSTALLDIR/share/man
+

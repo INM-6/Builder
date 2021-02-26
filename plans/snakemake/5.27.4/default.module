@@ -1,0 +1,39 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION}
+-------------------
+
+The Snakemake workflow management system is a tool to create reproducible and
+scalable data analyses. Workflows are described via a human readable, Python
+based language. They can be seamlessly scaled to server, cluster, grid and
+cloud environments, without the need to modify the workflow definition.
+Finally, Snakemake workflows can entail a description of required software,
+which will be automatically deployed to any execution environment.
+
+Documentation: https://snakemake.readthedocs.io
+PYTHON_SCRIPTS: ${PYTHON_SCRIPTS}
+PYTHON_PLATLIB: ${PYTHON_PLATLIB}
+PYTHON_PURELIB: ${PYTHON_PURELIB}
+PYTHON_SITEPKG: ${PYTHON_SITEPKG}
+"
+
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: workflow management system"
+
+
+conflict ${PACKAGE}
+
+prepend-path    PATH    "\$INSTALLDIR${PYTHON_SCRIPTS}"
+prepend-path    PYTHONPATH  "\$INSTALLDIR${PYTHON_PURELIB}"
+set-alias       "smake"  "snakemake -j1"
+#prepend-path    LIBRARY_PATH  "\$INSTALLDIR/lib"
+#prepend-path    CPATH   "\$INSTALLDIR/include"
+#prepend-path    MANPATH "\$INSTALLDIR/share/man"
+

@@ -1,0 +1,18 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION}"
+}
+
+module-whatis   "${PACKAGE} ${VERSION} (${VARIANT})"
+
+conflict ${PACKAGE}
+
+prepend-path    CPATH   \$INSTALLDIR/include
+prepend-path    MANPATH \$INSTALLDIR/share/man
+

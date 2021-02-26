@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+# from downloaded Python-3.6.9.tar.xz
+SHA256SUM=5e2f5f554e3f8f7f0296f7e73d8600c4e9acbaee6b2555b83206edf5153870da
+
+CONFIGURE_OPTIONS="--enable-shared"

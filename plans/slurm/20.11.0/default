@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://download.schedmd.com/${PACKAGE}/${PACKAGE}-${VERSION}.tar.bz2
+
+# from https://www.schedmd.com/downloads.php
+# slurm-20.02.5.tar.bz2
+SHA1SUM=aca78651a6629c8bbe3c0eeba73371da7e052acb
+MD5SUM=48b1951f59a2ef268620409c0c3cac76
+SHA256SUM=647d44e82bdc97da2600908de705e6dfdc1daa428dcdc2374b08f4fd63a6f23f
+
+CONFIGURE_OPTIONS="--enable-deprecated --sysconfdir=/etc/slurm --with-munge --disable-x11 --disable-gtktest --enable-pam"
+

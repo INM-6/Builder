@@ -18,11 +18,12 @@
 ################################################################################
 # Helper functions
 
-log_info() { /usr/bin/echo -e "\033[00;34m${@}\033[0m"; }
-log_status() { /usr/bin/echo -e "\033[01;33m${@}\033[0m"; }
-log_error() { /usr/bin/echo -e "\033[01;41m${@}\033[0m"; }
-log_warning() { /usr/bin/echo -e "\033[01;31m${@}\033[0m"; }
-log_success() { /usr/bin/echo -e "\033[00;32m${@}\033[0m"; }
+ECHO="$(command -v echo)"
+log_info() { "$ECHO" -e "\033[00;34m${@}\033[0m"; }
+log_status() { "$ECHO" -e "\033[01;33m${@}\033[0m"; }
+log_error() { "$ECHO" -e "\033[01;41m${@}\033[0m"; }
+log_warning() { "$ECHO" -e "\033[01;31m${@}\033[0m"; }
+log_success() { "$ECHO" -e "\033[00;32m${@}\033[0m"; }
 
 split_ext() {
 	case "$1" in
@@ -39,23 +40,26 @@ function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$
 
 builder_info () {
 	log_info "Configured variables:"
-	log_info "  PLANFILE_PATH=${PLANFILE_PATH:- <undefined>}"
-	log_info "  PACKAGE_CACHE=${PACKAGE_CACHE:- <undefined>}"
-	log_info "  SOURCE_PATH=${SOURCE_PATH:- <undefined>}"
-	log_info "  BUILD_PATH=${BUILD_PATH:- <undefined>}"
-	log_info "  TARGET_PATH=${TARGET_PATH:- <undefined>}"
-	log_info "  MODULE_INSTALL_PATH=${MODULE_INSTALL_PATH:- <undefined>}"
-	log_info "  LOG_PATH=${LOG_PATH:- <undefined>}"
+	log_info "  PLANFILE_PATH=\"${PLANFILE_PATH:- <undefined>}\""
+	log_info "  PACKAGE_CACHE=\"${PACKAGE_CACHE:- <undefined>}\""
+	log_info "  SOURCE_PATH=\"${SOURCE_PATH:- <undefined>}\""
+	log_info "  BUILD_PATH=\"${BUILD_PATH:- <undefined>}\""
+	log_info "  TARGET_PATH=\"${TARGET_PATH:- <undefined>}\""
+	log_info "  MODULE_INSTALL_PATH=\"${MODULE_INSTALL_PATH:- <undefined>}\""
+	log_info "  LOG_PATH=\"${LOG_PATH:- <undefined>}\""
+	log_info "  MAKE_THREADS=\"${MAKE_THREADS:- <undefined>}\""
 	log_info ""
 	log_info "Build Variables:"
-	log_info "  PACKAGE=${PACKAGE:- <undefined>}"
-	log_info "  VERSION=${VERSION:- <undefined>}"
-	log_info "  VARIANT=${VARIANT:- <undefined>}"
-	log_info "  PLAN=${PLAN:- <undefined>}"
-	log_info "  SOURCE=${SOURCE:- <undefined>}"
-	log_info "  TARGET=${TARGET:- <undefined>}"
-	log_info "  BUILD=${BUILD:- <undefined>}"
-	log_info "  LOG=${LOG:- <undefined>}"
+	log_info "  PACKAGE=\"${PACKAGE:- <undefined>}\""
+	log_info "  VERSION=\"${VERSION:- <undefined>}\""
+	log_info "  VARIANT=\"${VARIANT:- <undefined>}\""
+	log_info "  PLAN=\"${PLAN:- <undefined>}\""
+	log_info "  SOURCE=\"${SOURCE:- <undefined>}\""
+	log_info "  TARGET=\"${TARGET:- <undefined>}\""
+	log_info "  BUILD=\"${BUILD:- <undefined>}\""
+	log_info "  LOG=\"${LOG:- <undefined>}\""
+	log_info ""
+	log_info "  CONFIGURE_OPTIONS=\"${CONFIGURE_OPTIONS:- <undefined>}\""
 }
 ################################################################################
 # Default implementation of steps
@@ -75,7 +79,7 @@ check_package_file() {
 	fi
 	if [ ! -z "${SHA1SUM+x}" ]; then
 		echo -n "SHA1: "
-		sha1sum -c <<<"${SHA256SUM}  ${PACKAGE_FILE}"
+		sha1sum -c <<<"${SHA1SUM}  ${PACKAGE_FILE}"
 		checked=true
 		strength="SHA1"
 	fi
@@ -107,11 +111,11 @@ check_package_file() {
 		# if a verify key is defined, fetch signature and check it
 		if [ ! -r "${PACKAGE_FILE}.sig" ]; then
 			wget "${URL}.sig" -O "${PACKAGE_FILE}.sig"
-			gpg --import "$(dirname ${PLAN})/${GPG_VERIFY_KEY}"
+			gpg --import "$(dirname "${PLAN}")/${GPG_VERIFY_KEY}"
 		fi
 		echo -n "GPG Signature: "
 		( cd "${PACKAGE_CACHE}";
-		  gpg --verify "$(basename ${PACKAGE_FILE}).sig" )
+		  gpg --verify "$(basename "${PACKAGE_FILE}").sig" )
 		checked=true
 		strength="strong"
 	fi
@@ -143,13 +147,13 @@ source_prepare() {
 	log_status ">>> prepare source"
 	EXT="$(split_ext "${URL}")" || { echo "$EXT"; false; }
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
-	mkdir -pv "$(dirname "$PACKAGE_FILE")"
+	mkdir -pv "$(dirname "${PACKAGE_FILE}")"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
 	fi
 	check_package_file
-	if [ ! -d $SOURCE ]; then
+	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
 		cd "${SOURCE}"
 		log_info "extracting ${PACKAGE_FILE}"
@@ -165,6 +169,10 @@ source_prepare() {
 			;;
 		    *.zip)
 			unzip "${PACKAGE_FILE}"
+			cd "$SOURCE"
+			base_source="$(basename "${SOURCE}")"
+			mv "$base_source"/* .
+			rm -r "$base_source"
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
@@ -187,8 +195,8 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
-	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" |& tee "${LOG}/configure.log"
-	make -j $(( $(nproc) / 4 )) |& tee "${LOG}/make.log"
+	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} 2>&1 | tee "${LOG}/configure.log"
+	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
 	set +x
 }
 
@@ -198,7 +206,7 @@ build_test () {
 
 build_install () {
 	log_status ">>> installing..."
-	make install |& tee ${LOG}/make-install.log
+	make install 2>&1 | tee "${LOG}/make-install.log"
 }
 
 module_capture_prereq () {
@@ -216,8 +224,12 @@ module_install () {
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
+		#PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
+		#PYTHON_PLATLIB="$(python -c "import sysconfig; print(sysconfig.get_path('platlib'))")"
+		#PYTHON_PURELIB="$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")"
+		#PYTHON_SITEPKG="$(python -c "import sysconfig; from pathlib import Path; print(Path(sysconfig.get_path('purelib')).relative_to(sysconfig.get_path('data')))")"
 		log_status ">>> installing module file to ${module_path}"
-		mkdir -pv "$(dirname ${module_path})"
+		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
 		if version_gt $BASH_VERSION 4.4; then
 			echo "${module@P}" >"${module_path}"
@@ -243,8 +255,13 @@ module_install () {
 			    -e "s%\${\?BUILD}\?%$BUILD%g" \
 			    -e "s%\${\?LOG}\?%$LOG%g" \
 			    -e "s%\${\?PREREQ_DEPENDS}\?%$PREREQ_DEPENDS%g" \
+			    -e "s%\${\?VIRTUAL_ENV}\?%${VIRTUAL_ENV:-/}%g" \
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
+			    #-e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
+			    #-e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
+			    #-e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
+			    #-e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 		fi
 		if ! echo "${MODULEPATH}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"

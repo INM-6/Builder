@@ -1,0 +1,33 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION}
+-------------------
+
+- a Python API for the Human Brain Project Knowledge Graph.
+
+Authors: Andrew P. Davison, Onur Ates, Yann Zerlaut, Glynis Mattheisen, CNRS
+
+fairgraph is an experimental Python library for working with metadata in the HBP/EBRAINS Knowledge Graph, with a particular focus on data reuse, although it is also useful in metadata registration/curation. The API is not stable, and is subject to change.
+
+Copyright CNRS 2019
+Apache-2.0 License"
+
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: a Python API for the Human Brain Project Knowledge Graph"
+
+
+conflict ${PACKAGE}
+
+prepend-path    PATH    \$INSTALLDIR/bin
+prepend-path    PYTHONPATH  \$INSTALLDIR
+#prepend-path    LIBRARY_PATH   \$INSTALLDIR/lib
+#prepend-path    CPATH   \$INSTALLDIR/include
+#prepend-path    MANPATH \$INSTALLDIR/share/man
+

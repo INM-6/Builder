@@ -19,31 +19,24 @@
 # Here are some common definitions for all nest versions.
 # Source this file from version specific build plans.
 
-URL=https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz
-
 build_package () {
 	log_status ">>> build"
-	cd $BUILD
+	cd "${BUILD}"
 	set -x
-	module load cmake
-	if version_gt 2.16.0 $VERSION; then # version 2.14.0 and before requrie LTDL as hard dependency
-		module load libtool
-	fi
-
-	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH=$TARGET $SOURCE |& tee ${LOG}/cmake.log
-	make -j $(( $(nproc) / 4 )) |& tee ${LOG}/make.log
+	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH="$TARGET" "$SOURCE" |& tee "${LOG}/cmake.log"
+	make -j ${MAKE_THREADS:-$(nproc)} |& tee "${LOG}/make.log"
 	set +x
 }
 
 build_install () {
 	log_status ">>> install"
-	make install |& tee ${LOG}/make-install.log
-	awk 'BEGIN {f=3;x=0}; /^-------/{x=1;if (f>0) f--} f*x' ${LOG}/cmake.log >${TARGET}/ConfigurationSummary.txt
+	make install |& tee "${LOG}/make-install.log"
+	awk 'BEGIN {f=3;x=0}; /^-------/{x=1;if (f>0) f--} f*x' "${LOG}/cmake.log" >"${TARGET}/ConfigurationSummary.txt"
 }
 
 build_install_test () {
 	log_status ">>> test"
-	make installcheck |& tee ${LOG}/make-installcheck.log
-	log_success "installcheck passed." >>${TARGET}/ConfigurationSummary.txt
-	awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' ${LOG}/make-installcheck.log >>${TARGET}/ConfigurationSummary.txt
+	make installcheck |& tee "${LOG}/make-installcheck.log"
+	log_success "installcheck passed." >>"${TARGET}/ConfigurationSummary.txt"
+	awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' "${LOG}/make-installcheck.log" >>"${TARGET}/ConfigurationSummary.txt"
 }

@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL=https://ftp.mpi-inf.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/infrastructure/${PACKAGE}-${VERSION}.tar.bz2
+
+# mpfr-2.4.2.tar.bz2
+SHA512SUM=c004b3dbf86c04960e4a1f8db37a409a7cc4cb76135e76e98dcc5ad93aaa8deb62334ee13ff84447a7c12a5e8cb57f25c62ac908c24920f1fb1a38d79d4a4c5e

@@ -1,0 +1,30 @@
+#%Module1.0#####################################################################
+##
+## ${PACKAGE} ${VERSION} (${VARIANT})
+##
+set INSTALLDIR ${TARGET}
+
+proc ModulesHelp { } {
+        puts "${PACKAGE} ${VERSION}
+-------------------
+
+Python module implementating a hybrid model scheme for predictions of
+extracellular potentials (local field potentials, LFPs) of spiking neuron
+network simulations.
+
+Homepage: https://github.com/INM-6/hybridLFPy
+Documentation: http://INM-6.github.io/hybridLFPy
+"
+}
+
+module-whatis   "${PACKAGE} ${VERSION}: hybrid model for calculation of extracellular potentials"
+
+
+conflict ${PACKAGE}
+
+prepend-path    PATH    \$INSTALLDIR/bin
+prepend-path    PYTHONPATH  \$INSTALLDIR/opt/app-root/lib/python3.6/site-packages/
+#prepend-path    LIBRARY_PATH   \$INSTALLDIR/lib
+#prepend-path    CPATH   \$INSTALLDIR/include
+#prepend-path    MANPATH \$INSTALLDIR/share/man
+

@@ -1,0 +1,86 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+URL="https://github.com/HumanBrainProject/${PACKAGE}.git"
+
+source_prepare() {
+	# This function puts the contained source code into the SOURCE
+	# directory
+	log_status ">>> prepare source"
+	set -x
+	mkdir -pv "$(dirname "${SOURCE}")"
+	if [ -d "${SOURCE}" ]; then
+		rm -rf "${SOURCE}"
+	fi
+	git clone --depth 1 --branch "${VERSION}" "${URL}" "${SOURCE}"
+}
+
+build_prepare() {
+	log_status ">>> prepare build"
+        if [ -d "${BUILD}" ]; then
+                read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
+                rm -vrf "${BUILD}"
+        fi
+        mkdir -pv "${BUILD}"
+        mkdir -pv "${LOG}"
+
+	# we effectivley do an in-tree build here
+	cp -vr "${SOURCE}"/* "${BUILD}"
+
+	# DEPRECATION: The -b/--build/--build-dir/--build-directory option is
+	# deprecated. pip 20.3 will remove support for this functionality. A
+	# possible replacement is use the TMPDIR/TEMP/TMP environment variable,
+	# possibly combined with --no-clean. You can find discussion regarding
+	# this at https://github.com/pypa/pip/issues/8333.
+	export TMPDIR="${BUILD}"
+
+        # --target "${TARGET}"
+	# is a subset of --root
+	cd "${BUILD}"
+
+	pip install ${CONFIGURE_OPTIONS:-} \
+	    --root "${TARGET}" \
+            --cache-dir "${PACKAGE_CACHE}" \
+            --src "${SOURCE}" \
+	    --requirement ./requirements.txt |& tee "${LOG}/requirements-install.log"
+
+	set +x
+}
+
+build_package () {
+        log_status ">>> build and install"
+	# DEPRECATION: The -b/--build/--build-dir/--build-directory option is
+	# deprecated. pip 20.3 will remove support for this functionality. A
+	# possible replacement is use the TMPDIR/TEMP/TMP environment variable,
+	# possibly combined with --no-clean. You can find discussion regarding
+	# this at https://github.com/pypa/pip/issues/8333.
+	export TMPDIR="${BUILD}"
+
+        # --target "${TARGET}"
+	# is a subset of --root
+	pip install ${CONFIGURE_OPTIONS:-} \
+	    --root "${TARGET}" \
+            --cache-dir "${PACKAGE_CACHE}" \
+            --src "${SOURCE}" \
+	    --upgrade . |& tee "${LOG}/install.log"
+}
+
+build_install () {
+	log_status ">>> no separate install phase."
+}
+

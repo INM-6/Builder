@@ -2,9 +2,9 @@
 ##
 ## Tree
 ##
-set     PACKAGE         ${PACKAGE}
-set     VERSION         ${VERSION}
-set     INSTALLDIR      ${TARGET}
+set     PACKAGE         "${PACKAGE}"
+set     VERSION         "${VERSION}"
+set     INSTALLDIR      "${TARGET}"
 
 proc ModulesHelp { } {
         global VERSION PACKAGE
