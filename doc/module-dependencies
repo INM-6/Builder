@@ -9,7 +9,7 @@ which modules where loaded during the build time. It is (for now) assumed that
   so that requiring build-time deps at run-time provides all package requirements,
   and
 * build-time loaded modules are also available at run-time (not a given, if
-  packages are built on a head node, but run on a compute node).
+  packages are built on a head node, but run on a compute node, for example).
 
 Additional points to note are
 
