@@ -214,6 +214,11 @@ module_capture_prereq () {
 	# built from the curently loaded modules listed in `$LOADEDMODULES`
 	MODULES="${LOADEDMODULES:-}"
 	for dep in ${MODULES//:/ }; do
+		if echo "$dep" | grep "Builder" >/dev/null; then
+			# nothing should ever automatically depend on builder
+			# so we skip this dependency.
+			continue;
+		fi
 		echo -n "prereq $dep\\n"
 	done
 }
@@ -232,7 +237,7 @@ module_install () {
 		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
 		if version_gt $BASH_VERSION 4.4; then
-			echo "${module@P}" >"${module_path}"
+			echo -e "${module@P}" >"${module_path}"
 		else
 			# this is a bad substitute for the power of the bash>4.4 notation.
 			echo "${module}" | sed \
