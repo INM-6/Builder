@@ -37,11 +37,13 @@ EOT
 }
 
 @test "capturing of loaded modules" {
+	skip "reenable after module-deps branch has been merged"
 	run module_capture_prereq
 	[ "${output}" = "prereq somemodule\nprereq othermodule\n" ]
 }
 
 @test "fill module template (old path)" {
+	skip "reenable after module-deps branch has been merged"
 	# capture modules, load some dummy variables
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	TARGET=/path/to/nop-tool
@@ -62,6 +64,7 @@ EOT
 }
 
 @test "fill module template (new path)" {
+	skip "reenable after module-deps branch has been merged"
 	# capture modules, load some dummy variables
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	TARGET=/path/to/nop-tool
