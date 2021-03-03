@@ -1,8 +1,9 @@
 #%Module1.0#####################################################################
-##
-## ${PACKAGE} ${VERSION} (${VARIANT})
-##
-set INSTALLDIR ${TARGET}
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
 
 proc ModulesHelp { } {
         global VERSION
@@ -22,8 +23,8 @@ Apache-2.0 License"
 
 module-whatis   "${PACKAGE} ${VERSION}: a Python API for the Human Brain Project Knowledge Graph"
 
-
 conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    PYTHONPATH  \$INSTALLDIR
