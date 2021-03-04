@@ -19,6 +19,26 @@ test_files_contain() {
 	}
 }
 
+test_planfiles_startwith() {
+	# This helper function seaches for all files matching $2 pattern
+	# and complains about those not matching $1 regex.
+	FILESTART="$1"
+	N_BAD=0
+	for file in $(find "$BATS_TEST_DIRNAME/../plans" -type f -not -name "*.module" -not -name "*.txt" -not -name "*.sw*"); do
+		[ "$FILESTART" = "$(head -n 17 "$file")" ] || {
+			echo "$file does not contain correct copyright statement";
+			echo ""
+			head -n 17 "$file" | diff -u /dev/stdin --label "$file" /dev/fd/9 --label "correct" 9<<<"$FILESTART"
+			echo ""
+			N_BAD=$(( $N_BAD + 1 ))
+		};
+	done
+	[ $N_BAD -eq 0 ] || {
+		echo "$N_BAD BAD FILES"
+		false
+	}
+}
+
 @test "modules contain 'PREREQ_DEPENDS'" {
 	run test_files_contain 'PREREQ_DEPENDS' "*.module"
 	if [ ${status} -ne 0 ]; then
@@ -90,3 +110,34 @@ EOT
 	fi
 }
 
+@test "check planfiles start with LICENSE header" {
+	FILESTART="#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#"
+
+	run test_planfiles_startwith "$FILESTART"
+	if [ ${status} -ne 0 ]; then
+		cat <<EOT
+---------------------------------------------------------------------------
+Planfiles that are part of builder should start with an appropriate copyright
+header. Please open any planfile and copy the first 16 lines verbatim into any
+new planfile.
+---------------------------------------------------------------------------
+EOT
+		emit_debug_output && return 1
+	fi
+}
