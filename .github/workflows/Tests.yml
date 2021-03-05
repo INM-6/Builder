@@ -1,0 +1,13 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  bats:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install BATS
+      run: |
+        ./build.sh configure
+        yes | ./build bats
+    - name: Run BATS
+      run: bats tests/
