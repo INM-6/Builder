@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install BATS
       run: |
-        ./build.sh configure
+        ./build.sh configure || true
         yes | ./build bats
     - name: Run BATS
       run: bats tests/
