@@ -18,6 +18,9 @@
   of Builder. The packages installed are explicitly not tested, and should be
   checked in a higher level integration testing.
 
+  For an overview description of the possibilities and context of BATS see for
+  example [this article][bats-os].
+
 
 ## Installation
 
@@ -41,3 +44,4 @@
 
 [bats-doc]: https://bats-core.readthedocs.io BATS Documentation
 [bats-git]: https://github.com/bats-core/bats-core BATS Repository
+[bats-os]: https://opensource.com/article/19/2/testing-bash-bats Testing Bash with BATS

@@ -19,10 +19,6 @@ setup() {
 	# Create some temporary files
 	TMP1="$(mktemp)"
 	TMP2="$(mktemp)"
-	#rmtemps() {
-	#	rm -f "$TMP1" "$TMP2" || echo "failed to remove temporary files $TMP1 and $TMP2"
-	#}
-	#trap rmtemps EXIT
 
 	cat >"$TMP1" <<EOT
 #%Module1.0#####################################################################
@@ -34,6 +30,10 @@ prereq othermodule
 
 # eof
 EOT
+}
+
+teardown() {
+	rm -vf "$TMP1" "$TMP2" || echo "failed to remove temporary files $TMP1 and $TMP2"
 }
 
 @test "capturing of loaded modules" {
