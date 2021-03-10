@@ -195,6 +195,7 @@ build_package () {
 	log_status ">>> build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${BUILD}"
 	set -x
+	mkdir -pv "${LOG}"
 	"${SOURCE}/configure" --prefix="${TARGET}" --srcdir="${SOURCE}" ${CONFIGURE_OPTIONS:-} 2>&1 | tee "${LOG}/configure.log"
 	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
 	set +x
@@ -206,6 +207,7 @@ build_test () {
 
 build_install () {
 	log_status ">>> installing..."
+	mkdir -pv "${LOG}"
 	make install 2>&1 | tee "${LOG}/make-install.log"
 }
 
