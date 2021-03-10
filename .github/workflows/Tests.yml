@@ -1,12 +1,17 @@
 name: Tests
 on: [push, pull_request]
 jobs:
-  Test:
-    runs-on: ubuntu-latest
+  BATS:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-20.04"]
+        envmodules: ["environment-modules", "lmod"]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Install environment-modules
-      run: sudo apt-get install environment-modules
+    - name: Install ${{ matrix.envmodules }}
+      run: sudo apt-get install ${{ matrix.envmodules }}
     - name: Install BATS
       run: |
         ./build.sh configure || true
