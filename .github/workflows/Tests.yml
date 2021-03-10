@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Install environment-modules
+      run: sudo apt-get install environment-modules
     - name: Install BATS
       run: |
         ./build.sh configure || true
