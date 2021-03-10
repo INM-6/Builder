@@ -31,5 +31,5 @@ jobs:
         module avail
         date
         echo "run tests"
-        module load bats/1.2.*
+        module load bats/1.2.2
         bats tests/
