@@ -207,8 +207,11 @@ build_test () {
 
 build_install () {
 	log_status ">>> installing..."
+	set -x
 	mkdir -pv "${LOG}"
+	ls -lisa "${LOG}"
 	make install 2>&1 | tee "${LOG}/make-install.log"
+	set +x
 }
 
 module_capture_prereq () {
