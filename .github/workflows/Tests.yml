@@ -19,9 +19,11 @@ jobs:
     - name: Run BATS
       run: |
         source /etc/profile
-        set +x
+        echo "MODULEPATH=$MODULEPATH"
         export MODULEPATH=$MODULEPATH:/home/runner/modules
+        echo "MODULEPATH=$MODULEPATH"
         module spider || true   # not fail if spider not found
         module avail
+        date
         module load bats
         bats tests/
