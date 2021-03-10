@@ -13,6 +13,8 @@ jobs:
         echo "y" | ./build.sh bats
     - name: Run BATS
       run: |
+        source /etc/profile
+        module avail
         export MODULEPATH=$MODULEPATH:/home/runner/modules
         module load bats
         bats tests/
