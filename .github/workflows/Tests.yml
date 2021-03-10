@@ -22,6 +22,7 @@ jobs:
         echo "MODULEPATH=$MODULEPATH"
         #export MODULEPATH=/home/runner/modules:$MODULEPATH
         module use /home/runner/modules
+        cp -v /home/runner/modules/bats/1.2.1/default /home/runner/modules/bats/1.2.2
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         echo "module avail / spider"
