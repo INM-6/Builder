@@ -20,10 +20,13 @@ jobs:
       run: |
         source /etc/profile
         echo "MODULEPATH=$MODULEPATH"
-        export MODULEPATH=$MODULEPATH:/home/runner/modules
+        export MODULEPATH=/home/runner/modules:$MODULEPATH
         echo "MODULEPATH=$MODULEPATH"
+        find /home/runner/modules -type f
+        echo "module avail / spider"
         module spider || true   # not fail if spider not found
         module avail
         date
+        echo "run tests"
         module load bats
         bats tests/
