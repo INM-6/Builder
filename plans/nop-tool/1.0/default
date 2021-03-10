@@ -15,22 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-URL="https://github.com/bats-core/bats-core/archive/v${VERSION}.tar.gz"
-MD5SUM="e0efccc6345218d40c39678d1c89e67e"
-SHA256SUM="91c49b1fe6f0656c46491929ed728f8dfa9a96df0cce294963e8c6082bff87a2"
-
-build_prepare() {
-	log_status ">>> nothing to prepare"
-}
-build_package() {
-	log_status ">>> nothing to build"
-}
-build_install () {
-	log_status ">>> installing..."
-	set -x
-	cd "${SOURCE}"
-	mkdir -pv "${LOG}"
-	./install.sh "${TARGET}" 2>&1 | tee "${LOG}/make-install.log"
-	set +x
-	true
-}
+URL="https://github.com/terhorstd/nop-tool/archive/v${VERSION}.tar.gz"
+MD5SUM="662ebb7d53305bd9329bec093db31f1e"
+SHA256SUM="045bd2159b53c08b92233acaf884b1ddb0c9443ffae6229a73d5088ec9abec96"

@@ -1,0 +1,6 @@
+#%Module1.0#####################################################################
+# module template that can not be loaded
+# This is ${PACKAGE}/${VERSION}/${VARIANT}
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
+# eof

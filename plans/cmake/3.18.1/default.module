@@ -1,16 +1,18 @@
 #%Module1.0#####################################################################
-##
-## CMake
-##
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
+
 proc ModulesHelp { } {
         puts stderr "CMake ${VERSION}-${VARIANT}"
 }
 
 module-whatis   "CMake ${VERSION}"
 
-conflict cmake
-
-set     INSTALLDIR          ${TARGET}
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64

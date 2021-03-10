@@ -1,8 +1,9 @@
 #%Module1.0#####################################################################
-##
-## ${PACKAGE} ${VERSION} (${VARIANT})
-##
-set INSTALLDIR ${TARGET}
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
 
 proc ModulesHelp { } {
         global VERSION
@@ -19,8 +20,8 @@ Documentation: http://lfpy.readthedocs.io
 
 module-whatis   "${PACKAGE} ${VERSION}: calculation of extracellular potentials from multicompartment neuron models"
 
-
 conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    PYTHONPATH  \$INSTALLDIR/opt/app-root/lib/python3.6/site-packages/

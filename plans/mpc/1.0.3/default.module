@@ -1,14 +1,16 @@
 #%Module1.0#####################################################################
-##
-## CMake
-##
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
 proc ModulesHelp { } {
         puts stderr "MPC ${VERSION}-${VARIANT}"
 }
 
 module-whatis   "MPC ${VERSION}"
 
-conflict mpc
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 set     INSTALLDIR          "${TARGET}"
 

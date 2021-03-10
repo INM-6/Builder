@@ -1,4 +1,9 @@
 #%Module 1.0#############################################
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
 
 proc ModulesHelp { } {
         puts "================================================================================
@@ -16,5 +21,8 @@ proc ModulesHelp { } {
 }
 
 module-whatis   "${PACKAGE} ${VERSION}: build tool for installing and deploying software"
+
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH       "${TARGET}"

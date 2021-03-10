@@ -1,8 +1,9 @@
 #%Module1.0#####################################################################
-##
-## ${PACKAGE} ${VERSION} ${VARIANT}
-##
-set     INSTALLDIR      "${TARGET}"
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
 
 proc ModulesHelp { } {
         puts stderr "${PACKAGE} ${VERSION} ${VARIANT}
@@ -22,6 +23,7 @@ proc ModulesHelp { } {
 
 module-whatis   "${PACKAGE} ${VERSION} : reproducibly build container images from source code"
 
-conflict "${PACKAGE}"
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR
