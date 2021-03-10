@@ -10,4 +10,7 @@ jobs:
         ./build.sh configure || true
         echo "y" | ./build.sh bats
     - name: Run BATS
-      run: bats tests/
+      run: |
+        export MODULEPATH=$MODULEPATH:/home/runner/modules
+        module load bats
+        bats tests/
