@@ -20,6 +20,7 @@ jobs:
       run: |
         source /etc/profile
         export MODULEPATH=$MODULEPATH:/home/runner/modules
+        module spider || true   # not fail if spider not found
         module avail
         module load bats
         bats tests/
