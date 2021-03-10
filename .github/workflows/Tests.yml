@@ -20,7 +20,8 @@ jobs:
       run: |
         source /etc/profile
         echo "MODULEPATH=$MODULEPATH"
-        export MODULEPATH=/home/runner/modules:$MODULEPATH
+        #export MODULEPATH=/home/runner/modules:$MODULEPATH
+        module use /home/runner/modules
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         echo "module avail / spider"
