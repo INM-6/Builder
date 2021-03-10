@@ -6,7 +6,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-20.04"]
-        envmodules: ["environment-modules=4.3.*", "environment-modules=4.4.*", "lmod=6.6-*"]
+        envmodules: ["environment-modules=4.4.*", "lmod=6.6-*"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -19,6 +19,7 @@ jobs:
     - name: Run BATS
       run: |
         source /etc/profile
+        set +x
         export MODULEPATH=$MODULEPATH:/home/runner/modules
         module spider || true   # not fail if spider not found
         module avail
