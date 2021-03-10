@@ -8,6 +8,6 @@ jobs:
     - name: Install BATS
       run: |
         ./build.sh configure || true
-        yes | ./build.sh bats
+        (yes || true) | ./build.sh bats
     - name: Run BATS
       run: bats tests/
