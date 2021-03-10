@@ -14,7 +14,9 @@ jobs:
     - name: Run BATS
       run: |
         source /etc/profile
-        module avail
         export MODULEPATH=$MODULEPATH:/home/runner/modules
+        module avail
         module load bats
+        pwd
+        ls -l
         bats tests/
