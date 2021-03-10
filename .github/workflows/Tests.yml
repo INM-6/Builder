@@ -19,6 +19,7 @@ jobs:
     - name: Run BATS
       run: |
         source /etc/profile
+        module --version
         echo "MODULEPATH=$MODULEPATH"
         #export MODULEPATH=/home/runner/modules:$MODULEPATH
         module use /home/runner/modules
@@ -30,5 +31,5 @@ jobs:
         module avail
         date
         echo "run tests"
-        module load bats/1.2
+        module load bats/1.2.*
         bats tests/
