@@ -209,8 +209,24 @@ build_install () {
 	make install 2>&1 | tee "${LOG}/make-install.log"
 }
 
+module_capture_prereq () {
+	# This function returns the module system "prereq" lines
+	# built from the curently loaded modules listed in `$LOADEDMODULES`
+	MODULES="${LOADEDMODULES:-}"
+	for dep in ${MODULES//:/ }; do
+		if echo "$dep" | grep "Builder" >/dev/null; then
+			# nothing should ever automatically depend on builder
+			# so we skip this dependency.
+			continue;
+		fi
+		echo -n "prereq $dep\\n"
+	done
+}
+
 module_install () {
 	AUTOMATIC_BUILD_WARNING=" This file was automatically produced by Builder.\n# Any changes may be overwritten without notice.\n#\n# Please see ${BUILDER_PATH} for details."
+
+	PREREQ_DEPENDS="$(module_capture_prereq)"
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
 		#PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
@@ -221,7 +237,7 @@ module_install () {
 		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
 		if version_gt $BASH_VERSION 4.4; then
-			echo "${module@P}" >"${module_path}"
+			echo -e "${module@P}" >"${module_path}"
 		else
 			# this is a bad substitute for the power of the bash>4.4 notation.
 			echo "${module}" | sed \
@@ -243,6 +259,7 @@ module_install () {
 			    -e "s%\${\?TARGET}\?%$TARGET%g" \
 			    -e "s%\${\?BUILD}\?%$BUILD%g" \
 			    -e "s%\${\?LOG}\?%$LOG%g" \
+			    -e "s%\${\?PREREQ_DEPENDS}\?%$PREREQ_DEPENDS%g" \
 			    -e "s%\${\?VIRTUAL_ENV}\?%${VIRTUAL_ENV:-/}%g" \
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
