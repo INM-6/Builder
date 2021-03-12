@@ -219,7 +219,7 @@ module_capture_prereq () {
 			# so we skip this dependency.
 			continue;
 		fi
-		echo -n "prereq $dep\\n"
+		echo -n "module load $dep\\n"
 	done
 }
 

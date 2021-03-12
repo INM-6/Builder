@@ -62,6 +62,9 @@ teardown() {
 }
 
 @test "fill module template (new path)" {
+	if ! version_gt $BASH_VERSION 4.4; then
+		skip "need at least bash version 4.4 but found $(bash --version)"
+	fi
 	# capture modules, load some dummy variables
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	TARGET=/path/to/nop-tool
