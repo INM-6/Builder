@@ -268,7 +268,7 @@ module_install () {
 			    #-e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
 			    #-e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 		fi
-		if ! echo "${MODULEPATH}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
+		if ! echo "${MODULEPATH:-}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
 			log_info ">>> Info: MODULE_INSTALL_PATH is not in your MODULEPATH"
 			log_info ">>>       You may want to add the following line to your startup"
