@@ -6,14 +6,15 @@
 set INSTALLDIR "${TARGET}"
 
 proc ModulesHelp { } {
-        puts stderr "CMake ${VERSION}-${VARIANT}"
+        puts stderr "
+   Tool which just does absolutely nothing (no-op).
+"
 }
 
-module-whatis   "CMake ${VERSION}"
+module-whatis   "no-op tool (${VERSION})"
 
 conflict ${PACKAGE}
 ${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
-prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
 prepend-path    MANPATH \$INSTALLDIR/man

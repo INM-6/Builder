@@ -42,7 +42,8 @@ INSTALLDIR:  	\$INSTALLDIR"
 
 module-whatis   "GNU Scientific Library, version \$VERSION\$SUFFIX"
 
-conflict gsl
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH                    \$INSTALLDIR/bin
 prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
