@@ -27,10 +27,7 @@ build_package() {
 }
 build_install () {
 	log_status ">>> installing..."
-	set -x
 	cd "${SOURCE}"
 	mkdir -pv "${LOG}"
 	./install.sh "${TARGET}" 2>&1 | tee "${LOG}/make-install.log"
-	set +x
-	true
 }
