@@ -38,7 +38,8 @@ build_install () {
                 read -p "sure you want to delete ${TARGET}? (ctrl-c for NO)"
                 rm -vrf "${TARGET}"
         fi
-	git clone --depth 1 -b "${VARIANT}" "https://github.com/INM-6/${PACKAGE}.git" "${TARGET}"
+	#git clone --depth 1 -b "${VARIANT}" "git@github.com:INM-6/${PACKAGE}.git" "${TARGET}"
+	git clone --depth 1 -b "master" "git@github.com:INM-6/${PACKAGE}.git" "${TARGET}"
 	HERE="$(pwd)"
 	cd "${TARGET}"
 	ln -s build.sh build
