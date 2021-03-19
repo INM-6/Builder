@@ -25,8 +25,8 @@ setup() {
 # module template that can not be loaded
 # This is nop-tool/1.0/default
 conflict nop-tool
-prereq somemodule
-prereq othermodule
+module load somemodule
+module load othermodule
 
 # eof
 EOT
@@ -38,7 +38,7 @@ teardown() {
 
 @test "capturing of loaded modules" {
 	run module_capture_prereq
-	[ "${output}" = "prereq somemodule\nprereq othermodule\n" ]
+	[ "${output}" = "module load somemodule\nmodule load othermodule\n" ]
 }
 
 @test "fill module template (old path)" {
