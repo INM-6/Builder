@@ -19,7 +19,6 @@
 # NEST Simulator 2.20.1
 #
 
-log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
 URL="https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz"
 MD5SUM=fd9aaebedd1d5ace9e7b4c5ae867f1fd
 SHA256SUM=df3d32b5899d5d444f708037b290f889ac6ff8eae6b7be9e9faee2c0d660d8e5
