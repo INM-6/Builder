@@ -23,3 +23,14 @@ this does the trick:
 
 This causes the signature to be re-downloaded, but then should register the
 public key in your keyring.
+
+
+## Missing dependencies on MacOS
+
+Configuring a vanilla version of Builder throws the following error on macOS:
+
+```
+/Users/work/opt/miniconda3/bin/build: line 20: realpath: command not found
+```
+
+One solution is to install coreutils, e.g. via `brew install coreutils`
