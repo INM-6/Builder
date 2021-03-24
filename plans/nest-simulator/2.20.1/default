@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# This file is part of Builder.
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# NEST Simulator 2.20.1
+#
+
+URL="https://github.com/nest/nest-simulator/archive/v${VERSION}.tar.gz"
+MD5SUM=fd9aaebedd1d5ace9e7b4c5ae867f1fd
+SHA256SUM=df3d32b5899d5d444f708037b290f889ac6ff8eae6b7be9e9faee2c0d660d8e5
+
+CMAKEFLAGS="-Dwith-python=OFF"
+if which python; then
+	PYTHON="$(which python3)"
+	CMAKEFLAGS="-Dwith-python=3"
+fi
+
+CMAKEFLAGS+=" -Dwith-boost=ON"
+
+source "$(dirname "${PLAN}")/../common"
