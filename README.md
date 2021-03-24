@@ -18,7 +18,14 @@ your `$PATH`. You may have `~/bin` in your `$PATH` in which case you can do
     ln -s path/to/builder/build.sh build
 
 The only prerequisites are to have a system supporting sym-links with a proper
-`/bin/bash` and `wget` installed.
+`bash`-compatible shell, `coreutils` and `wget` installed. Most systems should
+have those by default, see [Known-Quirks](docs/Known-Quirks.md) anyway, if you
+hit a strange error.
+
+Dependencies:
+* `bash`-like shell
+* `coreutils`
+* `wget`
 
 To set up the defaults for Builder run the configure command once:
 
@@ -26,6 +33,15 @@ To set up the defaults for Builder run the configure command once:
 
 Then you can configure all relevant paths in `~/.buildrc`.  A more complete
 description is in the [configuration details](doc/Configuration.md).
+
+### Optional
+
+To make best use of the installed packages, you likely also want to install a
+package to load environment modules. This is however not used or required by
+Builder.
+
+Optional Dependencies:
+* `environment-modules` or `lmod`
 
 
 ## Usage
