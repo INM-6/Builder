@@ -271,7 +271,7 @@ module_install () {
 		if ! echo "${MODULEPATH:-}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
 			log_info ">>> Info: MODULE_INSTALL_PATH is not in your MODULEPATH"
-			log_info ">>>       You may want to add a line like the following your startup"
+			log_info ">>>       You may want to add a line like the following to your startup"
 			log_info ">>>       scripts like ~/.bashrc:"
 			log_info ">>>"
 			log_info ">>>       export MODULEPATH=${MODULE_INSTALL_PATH}:\$MODULEPATH"
