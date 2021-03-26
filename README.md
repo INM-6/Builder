@@ -22,7 +22,8 @@ The only prerequisites are to have a system supporting sym-links with a proper
 have those by default, see [Known-Quirks](docs/Known-Quirks.md) anyway, if you
 hit a strange error.
 
-Dependencies:
+**Dependencies** (Linux/MacOS/Windows):
+
 * `bash`-like shell
 * `coreutils`
 * `wget`
