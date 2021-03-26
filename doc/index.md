@@ -3,8 +3,15 @@
 
 ## Installation
 
-* [Configuration Details](Configuration.md)
+* [Configuration details](Configuration.md)
+* [Trouble-shooting](Trouble-shooting.md)
 
-## Plan Files
+## Concepts
 
-* [How to make your own plan files](Build-Plan-Files.md)
+* [Handling of dependencies and build-time/run-time environments](Module-Dependencies.md)
+
+## Contributing
+
+* [Writing build plans](Build-Plan-Files.md)
+* [Adding modules](Writing-new-modulefiles.md)
+* [Testing](Testing.md)
