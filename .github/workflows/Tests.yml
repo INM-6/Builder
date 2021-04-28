@@ -1,0 +1,29 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  BATS:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-20.04"]
+        envmodules: ["environment-modules=4.4.*", "lmod=6.6-*"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install ${{ matrix.envmodules }}
+      run: sudo apt-get install ${{ matrix.envmodules }}
+    - name: Install BATS
+      run: |
+        ./build.sh configure || true
+        echo "y" | ./build.sh bats
+    - name: Run BATS
+      run: |
+        source /etc/profile
+        module --version
+        module use /home/runner/modules
+        cp -v /home/runner/modules/bats/1.2.1/default /home/runner/modules/bats/1.2.2
+        echo "MODULEPATH=$MODULEPATH"
+        find /home/runner/modules -type f
+        module avail
+        module load bats/1.2.2
+        bats tests/

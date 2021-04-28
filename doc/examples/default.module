@@ -1,6 +1,7 @@
 #%Module1.0#####################################################################
 ##
 ## ${PACKAGE} ${VERSION} (${VARIANT})
+## ${AUTOMATIC_BUILD_WARNING}
 ##
 set INSTALLDIR ${TARGET}
 
@@ -12,6 +13,7 @@ proc ModulesHelp { } {
 module-whatis   "${PACKAGE} ${VERSION} (${VARIANT})"
 
 conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib

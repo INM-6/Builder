@@ -1,13 +1,11 @@
 #%Module1.0#####################################################################
-##
-## Tree
-##
-set     PACKAGE         "${PACKAGE}"
-set     VERSION         "${VERSION}"
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
 set     INSTALLDIR      "${TARGET}"
 
 proc ModulesHelp { } {
-        global VERSION PACKAGE
         puts stderr "
    Tree is a recursive directory listing command that produces a depth indented
    listing of files, which is colorized ala dircolors if the LS_COLORS
@@ -15,9 +13,10 @@ proc ModulesHelp { } {
 "
 }
 
-module-whatis   "graphical listing of directories (\$VERSION)"
+module-whatis   "graphical listing of directories (${VERSION})"
 
-conflict \$PACKAGE
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
 
 prepend-path    PATH    \$INSTALLDIR/bin
 prepend-path    MANPATH \$INSTALLDIR/man
