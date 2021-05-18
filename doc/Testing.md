@@ -42,6 +42,14 @@
   bats tests/
   ```
 
+## Continuous Testing
+
+  The tests are automatically run using GitHub Actions. The workflow
+  descriptions are stored in `.github/workflows/*` and are executed on push or
+  pull-request. The corresponding results can be seen on the
+  [Actions](https://github.com/INM-6/Builder/actions) page.
+
+
 [bats-doc]: https://bats-core.readthedocs.io BATS Documentation
 [bats-git]: https://github.com/bats-core/bats-core BATS Repository
 [bats-os]: https://opensource.com/article/19/2/testing-bash-bats Testing Bash with BATS
