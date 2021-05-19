@@ -19,3 +19,4 @@
 URL=https://ftp.gwdg.de/pub/misc/cran/src/base/R-4/R-${VERSION}.tar.gz
 SHA256SUM=e8e68959d7282ca147360fc9644ada9bd161bab781bab14d33b8999a95182781
 
+CONFIGURE_OPTIONS="--with-x=no"
