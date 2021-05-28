@@ -184,8 +184,15 @@ source_prepare() {
 build_prepare() {
 	log_status ">>> prepare build"
 	if [ -d "${BUILD}" ]; then
-		read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
-		rm -vrf "${BUILD}"
+		if  [ $FORCE = false ] && [ $SILENT = false ] ; then
+		  read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
+		  rm -vrf "${BUILD}"
+		elif [ $SILENT = true ]; then
+		  log_status ">>> skip build (use -f for force build)"
+		  SKIPBUILD=true
+		else
+		  rm -vrf "${BUILD}"
+		fi
 	fi
 	mkdir -pv "${BUILD}"
 	mkdir -pv "${LOG}"

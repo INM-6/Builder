@@ -24,6 +24,10 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Comman line parsing
 
+FORCE=false
+SILENT=false
+SKIPBUILD=false
+
 PACKAGE=${1:-help}
 shift || true
 case "$PACKAGE" in
@@ -31,7 +35,7 @@ case "$PACKAGE" in
 	cat <<ENDHELP
 Usage: build -h|--help
        build configure
-       build <package> [<version>] [<variant>] [<suffix>]
+       build [-f] [-s] <package> [<version>] [<variant>] [<suffix>]
 
   Install software as given in a build plan identifed by <package>, <version>
   and optional <variant> and <suffix>. If no <variant> is given, the "default"
@@ -42,7 +46,8 @@ Options:
 
   -h or --help       this text is printed
   configure          installs ~/.buildrc and exits
-
+  -s or -S           silent mode skips build if installation folder exists
+  -f or -F           force rebuild even if installation folder exists
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
@@ -52,6 +57,16 @@ Options:
 ENDHELP
 	exit 0
 	;;
+-F | -f)
+     PACKAGE=$1
+     FORCE=true
+     shift
+    ;;
+-S | -s)
+      PACKAGE=$1
+      SILENT=true
+      shift
+     ;;
 esac
 
 
@@ -146,7 +161,6 @@ fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # set up builder variables for the plan files
-
 if [ -z ${1+x} ]; then
 	log_warning ">>>"
 	log_warning ">>> No version specified!"
@@ -191,14 +205,17 @@ builder_info
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
 log_success "\nPRESS ENTER TO START"
-read
-
+if [ $FORCE = false ] && [ $SILENT = false ]  ; then
+ read
+fi
 source_prepare
 build_prepare
-build_package
-build_test
-build_install
-build_install_test
-module_install
+if [ $SKIPBUILD = false ] ; then
+  build_package
+  build_test
+  build_install
+  build_install_test
+  module_install
+fi
 
 log_success ">>>\n>>> done.\n>>>"
