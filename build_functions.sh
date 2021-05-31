@@ -189,7 +189,6 @@ build_prepare() {
 		  rm -vrf "${BUILD}"
 		elif [ $SILENT = true ]; then
 		  log_status ">>> skip build (use -f for force build)"
-		  SKIPBUILD=true
 		else
 		  rm -vrf "${BUILD}"
 		fi

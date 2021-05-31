@@ -46,6 +46,7 @@ Options:
 
   -h or --help       this text is printed
   configure          installs ~/.buildrc and exits
+  --dry-run          skip build
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists
 
@@ -59,13 +60,28 @@ ENDHELP
 	;;
 -f | --force)
      PACKAGE=$1
+     if [ $PACKAGE = -s ] || [ $PACKAGE = --silent ] ; then
+	    echo "ERROR: force and silent options are mutually exclusive!"
+	    exit 1
+     fi
      FORCE=true
      shift
     ;;
 -s | --silent)
       PACKAGE=$1
+
+     if [ $PACKAGE = -f ] || [ $PACKAGE = --force ] ; then
+	    echo "ERROR: force and silent options are mutually exclusive!"
+	    exit 1
+     fi
       SILENT=true
       shift
+     ;;
+--dry-run)
+      PACKAGE=$1
+      SKIPBUILD=true
+      shift
+      echo ">>> skip build (dry run)"
      ;;
 esac
 
@@ -204,13 +220,18 @@ builder_info
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
+if [ -d "${BUILD}" ] && [ $SILENT = true ]; then
+  SKIPBUILD=true
+fi
+
 log_success "\nPRESS ENTER TO START"
 if [ $FORCE = false ] && [ $SILENT = false ]  ; then
  read
 fi
-source_prepare
-build_prepare
+
 if [ $SKIPBUILD = false ] ; then
+  source_prepare
+  build_prepare
   build_package
   build_test
   build_install
