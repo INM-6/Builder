@@ -57,7 +57,7 @@ Options:
 ENDHELP
 	exit 0
 	;;
--F | -f)
+-f | --force)
      PACKAGE=$1
      FORCE=true
      shift
