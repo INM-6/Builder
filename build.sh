@@ -62,7 +62,7 @@ ENDHELP
      FORCE=true
      shift
     ;;
--S | -s)
+-s | --silent)
       PACKAGE=$1
       SILENT=true
       shift
