@@ -35,7 +35,7 @@ case "$PACKAGE" in
 	cat <<ENDHELP
 Usage: build -h|--help
        build configure
-       build [-f] [-s] <package> [<version>] [<variant>] [<suffix>]
+       build [-f | -s] <package> [<version>] [<variant>] [<suffix>]
 
   Install software as given in a build plan identifed by <package>, <version>
   and optional <variant> and <suffix>. If no <variant> is given, the "default"
