@@ -46,8 +46,8 @@ Options:
 
   -h or --help       this text is printed
   configure          installs ~/.buildrc and exits
-  -s or -S           silent mode skips build if installation folder exists
-  -f or -F           force rebuild even if installation folder exists
+  -s or --silent     skip build if installation folder exists
+  -f or --force      rebuild even if installation folder exists
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
