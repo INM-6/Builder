@@ -229,14 +229,18 @@ if [ $FORCE = false ] && [ $SILENT = false ]  ; then
  read
 fi
 
-if [ $SKIPBUILD = false ] ; then
-  source_prepare
-  build_prepare
-  build_package
-  build_test
-  build_install
-  build_install_test
-  module_install
+if [ $SKIPBUILD = true ] ; then
+    log_success ">>> package already built and rebuild is skipped due to slient mode."
+    log_success ">>>\n>>> nothing to do.\n>>>"
+    exit 0
 fi
+
+source_prepare
+build_prepare
+build_package
+build_test
+build_install
+build_install_test
+module_install
 
 log_success ">>>\n>>> done.\n>>>"
