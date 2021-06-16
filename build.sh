@@ -59,30 +59,29 @@ ENDHELP
 	exit 0
 	;;
 -f | --force)
-     PACKAGE=$1
-     if [ $PACKAGE = -s ] || [ $PACKAGE = --silent ] ; then
-	    echo "ERROR: force and silent options are mutually exclusive!"
-	    exit 1
-     fi
-     FORCE=true
-     shift
-    ;;
+	PACKAGE=$1
+	if [ $PACKAGE = -s ] || [ $PACKAGE = --silent ] ; then
+		echo "ERROR: force and silent options are mutually exclusive!"
+		exit 1
+	fi
+	FORCE=true
+	shift
+	;;
 -s | --silent)
-      PACKAGE=$1
-
-     if [ $PACKAGE = -f ] || [ $PACKAGE = --force ] ; then
-	    echo "ERROR: force and silent options are mutually exclusive!"
-	    exit 1
-     fi
-      SILENT=true
-      shift
-     ;;
+	PACKAGE=$1
+	if [ $PACKAGE = -f ] || [ $PACKAGE = --force ] ; then
+		echo "ERROR: force and silent options are mutually exclusive!"
+		exit 1
+	fi
+	SILENT=true
+	shift
+	;;
 --dry-run)
-      PACKAGE=$1
-      SKIPBUILD=true
-      shift
-      echo ">>> skip build (dry run)"
-     ;;
+	PACKAGE=$1
+	SKIPBUILD=true
+	shift
+	echo ">>> skip build (dry run)"
+	;;
 esac
 
 
@@ -221,18 +220,16 @@ builder_info
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
 if [ -d "${BUILD}" ] && [ $SILENT = true ]; then
-  SKIPBUILD=true
+	SKIPBUILD=true
 fi
-
-log_success "\nPRESS ENTER TO START"
 if [ $FORCE = false ] && [ $SILENT = false ]  ; then
- read
+	log_success "\nPRESS ENTER TO START"
+	read
 fi
-
 if [ $SKIPBUILD = true ] ; then
-    log_success ">>> package already built and rebuild is skipped due to slient mode."
-    log_success ">>>\n>>> nothing to do.\n>>>"
-    exit 0
+	log_success ">>> package already built and rebuild is skipped due to slient mode."
+	log_success ">>>\n>>> nothing to do.\n>>>"
+	exit 0
 fi
 
 source_prepare
