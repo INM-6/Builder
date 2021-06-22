@@ -23,20 +23,20 @@ build_package () {
 	log_status ">>> build"
 	cd "${BUILD}"
 	set -x
-	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH="$TARGET" "$SOURCE" |& tee "${LOG}/cmake.log"
-	make -j ${MAKE_THREADS:-$(nproc)} |& tee "${LOG}/make.log"
+	cmake ${CMAKEFLAGS} -DCMAKE_INSTALL_PREFIX:PATH="$TARGET" "$SOURCE" 2>&1 | tee "${LOG}/cmake.log"
+	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
 	set +x
 }
 
 build_install () {
 	log_status ">>> install"
-	make install |& tee "${LOG}/make-install.log"
+	make install 2>&1 | tee "${LOG}/make-install.log"
 	awk 'BEGIN {f=3;x=0}; /^-------/{x=1;if (f>0) f--} f*x' "${LOG}/cmake.log" >"${TARGET}/ConfigurationSummary.txt"
 }
 
 build_install_test () {
 	log_status ">>> test"
-	make installcheck |& tee "${LOG}/make-installcheck.log"
+	make installcheck 2>&1 | tee "${LOG}/make-installcheck.log"
 	log_success "installcheck passed." >>"${TARGET}/ConfigurationSummary.txt"
 	awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' "${LOG}/make-installcheck.log" >>"${TARGET}/ConfigurationSummary.txt"
 }
