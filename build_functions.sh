@@ -170,8 +170,7 @@ source_prepare() {
 		    *.zip)
 			unzip "${PACKAGE_FILE}"
 			cd "$SOURCE"
-			base_source="$(basename "${SOURCE}")"
-			mv */* .
+			rsync -ua --delete-after */ .
 			;;
 		    *)
 			log_error "NO RULE HOW TO EXTRACT '${PACKAGE_FILE}'";
