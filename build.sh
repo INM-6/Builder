@@ -193,12 +193,13 @@ builder_info
 log_success "\nPRESS ENTER TO START"
 read
 
+source_get
 source_prepare
-build_prepare
-build_package
-build_test
-build_install
-build_install_test
-module_install
+#build_prepare
+#build_package
+#build_test
+#build_install
+#build_install_test
+#module_install
 
 log_success ">>>\n>>> done.\n>>>"
