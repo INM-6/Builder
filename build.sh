@@ -24,6 +24,10 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Comman line parsing
 
+FORCE=false
+SILENT=false
+SKIPBUILD=false
+
 PACKAGE=${1:-help}
 shift || true
 case "$PACKAGE" in
@@ -31,7 +35,7 @@ case "$PACKAGE" in
 	cat <<ENDHELP
 Usage: build -h|--help
        build configure
-       build <package> [<version>] [<variant>] [<suffix>]
+       build [-f | -s] <package> [<version>] [<variant>] [<suffix>]
 
   Install software as given in a build plan identifed by <package>, <version>
   and optional <variant> and <suffix>. If no <variant> is given, the "default"
@@ -42,7 +46,9 @@ Options:
 
   -h or --help       this text is printed
   configure          installs ~/.buildrc and exits
-
+  --dry-run          skip build
+  -s or --silent     skip build if installation folder exists
+  -f or --force      rebuild even if installation folder exists
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
@@ -51,6 +57,30 @@ Options:
 
 ENDHELP
 	exit 0
+	;;
+-f | --force)
+	PACKAGE=$1
+	if [ $PACKAGE = -s ] || [ $PACKAGE = --silent ] ; then
+		echo "ERROR: force and silent options are mutually exclusive!"
+		exit 1
+	fi
+	FORCE=true
+	shift
+	;;
+-s | --silent)
+	PACKAGE=$1
+	if [ $PACKAGE = -f ] || [ $PACKAGE = --force ] ; then
+		echo "ERROR: force and silent options are mutually exclusive!"
+		exit 1
+	fi
+	SILENT=true
+	shift
+	;;
+--dry-run)
+	PACKAGE=$1
+	SKIPBUILD=true
+	shift
+	echo ">>> skip build (dry run)"
 	;;
 esac
 
@@ -146,7 +176,6 @@ fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # set up builder variables for the plan files
-
 if [ -z ${1+x} ]; then
 	log_warning ">>>"
 	log_warning ">>> No version specified!"
@@ -190,8 +219,18 @@ builder_info
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Run build sequence
-log_success "\nPRESS ENTER TO START"
-read
+if [ -d "${BUILD}" ] && [ $SILENT = true ]; then
+	SKIPBUILD=true
+fi
+if [ $FORCE = false ] && [ $SILENT = false ]  ; then
+	log_success "\nPRESS ENTER TO START"
+	read
+fi
+if [ $SKIPBUILD = true ] ; then
+	log_success ">>> package already built and rebuild is skipped due to slient mode."
+	log_success ">>>\n>>> nothing to do.\n>>>"
+	exit 0
+fi
 
 source_get
 source_prepare
