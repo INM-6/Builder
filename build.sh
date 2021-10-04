@@ -27,6 +27,7 @@ fi
 FORCE=false
 SILENT=false
 SKIPBUILD=false
+GET=false
 
 PACKAGE=${1:-help}
 shift || true
@@ -78,6 +79,7 @@ ENDHELP
 	shift
 	;;
 -g | --get)
+	PACKAGE=$1
 	GET=true
 	shift
 	;;
