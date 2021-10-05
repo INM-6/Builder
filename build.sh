@@ -50,7 +50,7 @@ Options:
   --dry-run          skip build
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists
-  -g or --get        only acquires the source code
+  -g or --get        only download the package source files
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
