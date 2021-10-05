@@ -27,6 +27,7 @@ fi
 FORCE=false
 SILENT=false
 SKIPBUILD=false
+GET=false
 
 PACKAGE=${1:-help}
 shift || true
@@ -35,7 +36,7 @@ case "$PACKAGE" in
 	cat <<ENDHELP
 Usage: build -h|--help
        build configure
-       build [-f | -s] <package> [<version>] [<variant>] [<suffix>]
+       build [-f | -s | -g] <package> [<version>] [<variant>] [<suffix>]
 
   Install software as given in a build plan identifed by <package>, <version>
   and optional <variant> and <suffix>. If no <variant> is given, the "default"
@@ -49,6 +50,7 @@ Options:
   --dry-run          skip build
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists
+  -g or --get        only download the package source files
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
@@ -74,6 +76,11 @@ ENDHELP
 		exit 1
 	fi
 	SILENT=true
+	shift
+	;;
+-g | --get)
+	PACKAGE=$1
+	GET=true
 	shift
 	;;
 --dry-run)
@@ -232,6 +239,10 @@ if [ $SKIPBUILD = true ] ; then
 	exit 0
 fi
 
+source_get
+if [ $GET = true ] ; then
+	exit 0
+fi
 source_prepare
 build_prepare
 build_package

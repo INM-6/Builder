@@ -141,7 +141,7 @@ check_package_file() {
 	fi
 }
 
-source_prepare() {
+source_get() {
 	# This function takes the PACKAGE_FILE, checks it and puts the
 	# contained source code into the SOURCE directory
 	log_status ">>> prepare source"
@@ -152,6 +152,9 @@ source_prepare() {
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
 		wget "${URL}" -O "${PACKAGE_FILE}"
 	fi
+}
+
+source_prepare() {
 	check_package_file
 	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
