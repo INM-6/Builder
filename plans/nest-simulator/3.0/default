@@ -21,6 +21,5 @@ URL="https://zenodo.org/record/4739103/files/nest-simulator-${VERSION}.tar.gz?do
 MD5SUM=5f369b65512bbb9a7031529ed18776e4
 SHA256SUM=d481ea67f3251fe3aadf5252ab0a999172f0cd5536c5985366d271d772e686e6
 
-CMAKEFLAGS+=" -Dwith-boost=ON"
 
 source "$(dirname "${PLAN}")/../common"
