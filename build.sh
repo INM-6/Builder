@@ -50,7 +50,8 @@ Options:
   --dry-run          skip build
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists
-  -g or --get        only download the package source files
+  -g or --get        only download the package source files, adding --silent
+		     or -s results in dowloading the package files silently
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
@@ -82,6 +83,11 @@ ENDHELP
 	PACKAGE=$1
 	GET=true
 	shift
+	if [ $PACKAGE = -s ] || [ $PACKAGE = --silent ] ; then
+		SILENT=true
+		PACKAGE=$1
+		shift
+	fi
 	;;
 --dry-run)
 	PACKAGE=$1
@@ -101,8 +107,7 @@ if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
 !!! ~/.buildrc already exists.
 !!!
 !!! Edit manually or delete it to install a new default configuration.
-!!!
-ENDNOTICE
+
 fi
 if [ ! -e "${HOME}/.buildrc" ]; then
 	echo ">>> installing default configuration '${HOME}/.buildrc'..."
