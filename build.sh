@@ -109,6 +109,7 @@ if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
 !!! Edit manually or delete it to install a new default configuration.
 !!!
 -ENDNOTICE
+
 fi
 if [ ! -e "${HOME}/.buildrc" ]; then
 	echo ">>> installing default configuration '${HOME}/.buildrc'..."
