@@ -51,7 +51,7 @@ Options:
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists
   -g or --get        only download the package source files, adding --silent
-		     or -s results in dowloading the package files silently
+                     or -s results in dowloading the package files silently
 
   Builder  Copyright (C) 2020  Dennis Terhorst, Forschungszentrum Jülich GmbH/INM-6
   This program comes with ABSOLUTELY NO WARRANTY; for details type 'build help'.
