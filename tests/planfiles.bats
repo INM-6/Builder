@@ -23,12 +23,13 @@ test_planfiles_startwith() {
 	# This helper function seaches for all files matching $2 pattern
 	# and complains about those not matching $1 regex.
 	FILESTART="$1"
+	NLINES="$(echo "$FILESTART" | wc -l)"
 	N_BAD=0
 	for file in $(find "$BATS_TEST_DIRNAME/../plans" -type f -not -name "*.module" -not -name "*.txt" -not -name "*.sw*"); do
-		[ "$FILESTART" = "$(head -n 17 "$file")" ] || {
+		[ "$FILESTART" = "$(head -n $NLINES "$file")" ] || {
 			echo "$file does not contain correct copyright statement";
 			echo ""
-			head -n 17 "$file" | diff -u /dev/stdin --label "$file" /dev/fd/9 --label "correct" 9<<<"$FILESTART"
+			head -n $NLINES "$file" | diff -u /dev/stdin --label "$file" /dev/fd/9 --label "correct" 9<<<"$FILESTART"
 			echo ""
 			N_BAD=$(( $N_BAD + 1 ))
 		};
@@ -113,7 +114,8 @@ EOT
 @test "check planfiles start with LICENSE header" {
 	FILESTART="#!/bin/bash
 #
-# This file is part of Builder.
+# Builder – Compile scripts for local installs of software packages.
+# Copyright (C) 2020 Forschungszentrum Jülich GmbH, INM-6
 #
 # Builder is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -127,6 +129,8 @@ EOT
 #
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #"
 
 	run test_planfiles_startwith "$FILESTART"

@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# This file is part of Builder.
+# Builder – Compile scripts for local installs of software packages.
+# Copyright (C) 2020 Forschungszentrum Jülich GmbH, INM-6
 #
 # Builder is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-
-VERSION=3.18.1
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 URL=https://github.com/Kitware/CMake/releases/download/v${VERSION}/${PACKAGE}-${VERSION}.tar.gz
 MD5SUM=bc0d668dba6ec081c664ae95b75540d6
 SHA256SUM=c0e3338bd37e67155b9d1e9526fec326b5c541f74857771b7ffed0c46ad62508

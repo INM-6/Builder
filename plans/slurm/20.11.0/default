@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# This file is part of Builder.
+# Builder – Compile scripts for local installs of software packages.
+# Copyright (C) 2020 Forschungszentrum Jülich GmbH, INM-6
 #
 # Builder is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 URL=https://download.schedmd.com/${PACKAGE}/${PACKAGE}-${VERSION}.tar.bz2
 
 # from https://www.schedmd.com/downloads.php
@@ -25,4 +27,3 @@ MD5SUM=48b1951f59a2ef268620409c0c3cac76
 SHA256SUM=647d44e82bdc97da2600908de705e6dfdc1daa428dcdc2374b08f4fd63a6f23f
 
 CONFIGURE_OPTIONS="--enable-deprecated --sysconfdir=/etc/slurm --with-munge --disable-x11 --disable-gtktest --enable-pam"
-

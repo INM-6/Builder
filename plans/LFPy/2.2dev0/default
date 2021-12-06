@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# This file is part of Builder.
+# Builder – Compile scripts for local installs of software packages.
+# Copyright (C) 2020 Forschungszentrum Jülich GmbH, INM-6
 #
 # Builder is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Builder.  If not, see <https://www.gnu.org/licenses/>.
 #
-
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 # This is a PIP package, so most of the heavy lifting is done already. We just forward the build environment settings.
 
 source_prepare() {
