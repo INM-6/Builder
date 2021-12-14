@@ -35,7 +35,7 @@ source_prepare() {
 build_prepare() {
 	log_status ">>> prepare build"
         if [ -d "${BUILD}" ]; then
-                read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
+                read -rp "sure you want to delete ${BUILD}? (ctrl-c for NO)"
                 rm -vrf "${BUILD}"
         fi
         mkdir -pv "${BUILD}"
@@ -55,6 +55,8 @@ build_prepare() {
 	# is a subset of --root
 	cd "${BUILD}"
 
+	# CONFIGURE_OPTIONS variable needs to be split, so no quotes
+	# shellcheck disable=SC2086
 	pip install ${CONFIGURE_OPTIONS:-} \
 	    --root "${TARGET}" \
             --cache-dir "${PACKAGE_CACHE}" \
@@ -75,6 +77,8 @@ build_package () {
 
         # --target "${TARGET}"
 	# is a subset of --root
+	# CONFIGURE_OPTIONS variable needs to be split, so no quotes
+	# shellcheck disable=SC2086
 	pip install ${CONFIGURE_OPTIONS:-} \
 	    --root "${TARGET}" \
             --cache-dir "${PACKAGE_CACHE}" \

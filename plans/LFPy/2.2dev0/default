@@ -43,7 +43,7 @@ build_install () {
 
         # --target "${TARGET}"
 	# is a subset of --root
-	pip install ${CONFIGURE_OPTIONS:-} \
+	pip install "${CONFIGURE_OPTIONS:-}" \
 	    --root "${TARGET}" \
             --cache-dir "${PACKAGE_CACHE}" \
             --src "${SOURCE}" \

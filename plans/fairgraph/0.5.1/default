@@ -43,6 +43,8 @@ build_install () {
 
         # --target "${TARGET}"
 	# is a subset of --root
+	# CONFIGURE_OPTIONS variable needs to be split, so no quotes
+	# shellcheck disable=SC2086
 	pip install ${CONFIGURE_OPTIONS:-} \
 	    --root "${TARGET}" \
             --cache-dir "${PACKAGE_CACHE}" \

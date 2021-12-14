@@ -24,4 +24,5 @@ DOI=10.5281/zenodo.2605422
 MD5SUM=5d04f99bb8d1fa13a5796ef12500ec99
 SHA256SUM=7295c936fbdd5486395b06f54f0d4d35d9a1b6ee50b7b844186ec2c92de641d1
 
+# shellcheck source=plans/nest-simulator/common
 source "$(dirname "${PLAN}")/../common"
