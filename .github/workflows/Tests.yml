@@ -10,12 +10,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+
     - name: Install ${{ matrix.envmodules }}
-      run: sudo apt-get install ${{ matrix.envmodules }}
+      run: sudo apt install ${{ matrix.envmodules }}
+
+    - name: Install test dependencies
+      run: sudo apt install shellcheck
+
     - name: Install BATS
       run: |
         ./build.sh configure || true
-        echo "y" | ./build.sh bats
+        ./build.sh -s bats
+
     - name: Run BATS
       run: |
         source /etc/profile
