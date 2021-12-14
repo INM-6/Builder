@@ -9,7 +9,7 @@ Builder itself.
 First you would want to create a default config and check if everything is as
 you want it to be:
 
-    ./builder.sh configure
+    ./build.sh configure
     vim ~/.buildrc      # chosse whichever editor you prefer
 
 Then you can install builder by calling it from your local clone or download:
