@@ -3,6 +3,7 @@
 
 ## Installation
 
+* [Installation](Installation.md)
 * [Configuration details](Configuration.md)
 * [Trouble-shooting](Trouble-shooting.md)
 

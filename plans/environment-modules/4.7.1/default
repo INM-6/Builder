@@ -18,31 +18,18 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+URL=https://github.com/cea-hpc/modules/releases/download/v${VERSION}/modules-${VERSION}.tar.gz
 
-# This is a script collection that does not require build.
-# The "install" is creation of a single symlink.
+# this checksum was not officially provided, but taken from downloaded tar-ball
+SHA256SUM=ee7ecd62bbbde6d51e30788a97800c39e72515b6a910839fb84041b35ba42b4d
 
-source_prepare() {
-        log_status ">>> no source preparation necessary."
-}
-
-build_prepare() {
-        log_status ">>> no prepare for pip packages."
-}
+CONFIGURE_OPTIONS="--modulefilesdir '$MODULE_INSTALL_PATH'  --enable-color --disable-example-modulefiles"
 
 build_package () {
-        log_status ">>> build phase is combined with install phase for pip packages."
-}
-
-build_install () {
-        log_status ">>> build and install ${PACKAGE}..."
+	log_status ">>> in-tree build ${PACKAGE}/${VERSION}/${VARIANT}..."
+	cd "${SOURCE}"
 	set -x
-	if [ -d "${TARGET}" ]; then
-                read -p "sure you want to delete ${TARGET}? (ctrl-c for NO)"
-                rm -vrf "${TARGET}"
-        fi
-	git clone --depth 1 -b "${VARIANT}" "https://github.com/INM-6/${PACKAGE}.git" "${TARGET}"
-	mv -v "${TARGET}"/{build.sh,build}
+	"./configure" --prefix="${TARGET}" ${CONFIGURE_OPTIONS:-} 2>&1 | tee "${LOG}/configure.log"
+	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
 	set +x
 }
-
