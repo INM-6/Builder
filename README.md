@@ -8,6 +8,7 @@ admins. Many aspects are inspired by
 [Portage](https://wiki.gentoo.org/wiki/Project:Portage), which is used by the
 [Gentoo](https://gentoo.org/) Linux distribution.
 
+When using Builder, **please cite as stated** on the [releases page](https://github.com/INM-6/Builder/releases).
 
 ## Installation
 
