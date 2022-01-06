@@ -44,7 +44,7 @@ test_codefiles_startwith() {
 }
 
 @test "check planfiles start with LICENSE header" {
-	run test_planfiles_startwith "$(<license-header.txt)"
+	run test_planfiles_startwith "$(<$BATS_TEST_DIRNAME/license-header.txt)"
 	if [ ${status} -ne 0 ]; then
 		cat <<EOT
 ---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ EOT
 }
 
 @test "check source code starts with LICENSE header" {
-	run test_codefiles_startwith "$(<license-header.txt)"
+	run test_codefiles_startwith "$(<$BATS_TEST_DIRNAME/license-header.txt)"
 	if [ ${status} -ne 0 ]; then
 		cat <<EOT
 ---------------------------------------------------------------------------
