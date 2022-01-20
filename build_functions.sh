@@ -236,10 +236,10 @@ module_install () {
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	if [ -r "${PLAN}.module" ]; then
 		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
-		#PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
-		#PYTHON_PLATLIB="$(python -c "import sysconfig; print(sysconfig.get_path('platlib'))")"
-		#PYTHON_PURELIB="$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")"
-		#PYTHON_SITEPKG="$(python -c "import sysconfig; from pathlib import Path; print(Path(sysconfig.get_path('purelib')).relative_to(sysconfig.get_path('data')))")"
+		PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
+		PYTHON_PLATLIB="$(python -c "import sysconfig; print(sysconfig.get_path('platlib'))")"
+		PYTHON_PURELIB="$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")"
+		PYTHON_SITEPKG="$(python -c "import sysconfig; from pathlib import Path; print(Path(sysconfig.get_path('purelib')).relative_to(sysconfig.get_path('data')))")"
 		log_status ">>> installing module file to ${module_path}"
 		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
@@ -266,14 +266,14 @@ module_install () {
 			    -e "s%\${\?TARGET}\?%$TARGET%g" \
 			    -e "s%\${\?BUILD}\?%$BUILD%g" \
 			    -e "s%\${\?LOG}\?%$LOG%g" \
+			    -e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
+			    -e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
+			    -e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
+			    -e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 			    -e "s%\${\?PREREQ_DEPENDS}\?%$PREREQ_DEPENDS%g" \
 			    -e "s%\${\?VIRTUAL_ENV}\?%${VIRTUAL_ENV:-/}%g" \
 			    -e 's%__NOT_BUILDER_DOLLAR__%$%g' \
 			       > "${module_path}"
-			    #-e "s%\${\?PYTHON_SCRIPTS}\?%$PYTHON_SCRIPTS%g" \
-			    #-e "s%\${\?PYTHON_PLATLIB}\?%$PYTHON_PLATLIB%g" \
-			    #-e "s%\${\?PYTHON_PURELIB}\?%$PYTHON_PURELIB%g" \
-			    #-e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 		fi
 		if ! echo "${MODULEPATH:-}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
