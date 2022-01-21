@@ -50,7 +50,7 @@ setenv          NEST_MODULE_PATH        \$INSTALLDIR/lib64/nest
 # The path where the PyNEST bindings are installed.
 setenv          NEST_PYTHON_PREFIX      \$INSTALLDIR
 
-prepend-path    PYTHONPATH              \$INSTALLDIR
+prepend-path    PYTHONPATH              \$INSTALLDIR/lib64/
 prepend-path    PATH                    \$INSTALLDIR/bin
 #prepend-path    LD_LIBRARY_PATH  \$INSTALLDIR/lib64
 #prepend-path    MANPATH \$INSTALLDIR/man
