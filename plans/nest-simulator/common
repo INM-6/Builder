@@ -39,7 +39,10 @@ build_install () {
 
 build_install_test () {
 	log_status ">>> test"
-	make installcheck 2>&1 | tee "${LOG}/make-installcheck.log"
-	log_success "installcheck passed." >>"${TARGET}/ConfigurationSummary.txt"
-	awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' "${LOG}/make-installcheck.log" >>"${TARGET}/ConfigurationSummary.txt"
+
+	if [[ "${CMAKEFLAGS}" != *"mpi=ON"* && "${CMAKEFLAGS}" == *"python=OFF"* ]]; then
+		make installcheck 2>&1 | tee "${LOG}/make-installcheck.log"
+		log_success "installcheck passed." >>"${TARGET}/ConfigurationSummary.txt"
+		awk '/Testsuite Summary/{f=1} /Built target/{f=0} f;' "${LOG}/make-installcheck.log" >>"${TARGET}/ConfigurationSummary.txt"
+	fi
 }
