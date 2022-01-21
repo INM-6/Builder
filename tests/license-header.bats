@@ -2,7 +2,7 @@
 load test_helper
 
 test_planfiles_startwith() {
-	# This helper function seaches for all files matching $2 pattern
+	# This helper function searches for all files matching $2 pattern
 	# and complains about those not matching $1 regex.
 	FILESTART="$1"
 	NLINES="$(echo "$FILESTART" | wc -l)"
@@ -23,7 +23,7 @@ test_planfiles_startwith() {
 }
 
 test_codefiles_startwith() {
-	# This helper function seaches for all files matching $2 pattern
+	# This helper function searches for all files matching $2 pattern
 	# and complains about those not matching $1 regex.
 	FILESTART="$1"
 	NLINES="$(echo "$FILESTART" | wc -l)"
