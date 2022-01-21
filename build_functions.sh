@@ -147,6 +147,10 @@ source_get() {
 	log_status ">>> prepare source"
 	EXT="$(split_ext "${URL}")" || { echo "$EXT"; false; }
 	PACKAGE_FILE="${PACKAGE_CACHE}/${PACKAGE}-${VERSION}${EXT}"
+	if [ -r "${PACKAGE_FILE}" ] && [ $FORCE = true ] ; then
+                read -p "sure you want to delete ${PACKAGE_FILE}? (ctrl-c for NO)"
+                rm "${PACKAGE_FILE}"
+        fi
 	mkdir -pv "$(dirname "${PACKAGE_FILE}")"
 	if [ ! -r "${PACKAGE_FILE}" ]; then
 		log_status ">>> downloading $(basename "${PACKAGE_FILE}") from ${URL}"
@@ -156,6 +160,12 @@ source_get() {
 
 source_prepare() {
 	check_package_file
+
+	if [ -d "${SOURCE}" ] && [ $FORCE = true ] ; then
+		read -p "sure you want to delete ${SOURCE}? (ctrl-c for NO)"
+		rm -vrf "${SOURCE}"
+	fi
+
 	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
 		cd "${SOURCE}"

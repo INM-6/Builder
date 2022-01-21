@@ -49,7 +49,7 @@ Options:
   configure          installs ~/.buildrc and exits
   --dry-run          skip build
   -s or --silent     skip build if installation folder exists
-  -f or --force      rebuild even if installation folder exists
+  -f or --force      rebuild even if installation folder exists, delete package and source folder if they exists
   -g or --get        only download the package source files, adding --silent
                      or -s results in dowloading the package files silently
 
