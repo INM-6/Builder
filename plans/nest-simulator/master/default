@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Builder – Compile scripts for local installs of software packages.
+# Copyright (C) 2020 Forschungszentrum Jülich GmbH, INM-6
+#
+# Builder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Builder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Builder.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+URL="https://github.com/nest/nest-simulator/archive/${VERSION}.tar.gz"
+MD5SUM=65aa0f9da659697a5a5d017e460e22a6
+SHA256SUM=a87e40799e9a82cb5c0bd0e224f0dcaaa2e95c7fb343c1734382da6aa2850fd4
+
+CMAKEFLAGS+=" -Dwith-boost=ON -Dwith-python=ON -Dwith-mpi=ON -Dwith-detailed-timers=ON -Dwith-ltdl=OFF"
+
+source "$(dirname "${PLAN}")/../common"
