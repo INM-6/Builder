@@ -20,8 +20,6 @@
 #
 
 URL="https://github.com/nest/nest-simulator/archive/${VERSION}.tar.gz"
-MD5SUM=65aa0f9da659697a5a5d017e460e22a6
-SHA256SUM=a87e40799e9a82cb5c0bd0e224f0dcaaa2e95c7fb343c1734382da6aa2850fd4
 
 CMAKEFLAGS+=" -Dwith-boost=ON -Dwith-python=ON -Dwith-mpi=ON -Dwith-detailed-timers=ON -Dwith-ltdl=OFF"
 
