@@ -38,7 +38,7 @@ build_install () {
         log_status ">>> build and install ${PACKAGE}..."
 	set -x
 	if [ -d "${TARGET}" ]; then
-                read -r -p "sure you want to delete ${TARGET}? (ctrl-c for NO)"
+                read -rp "sure you want to delete ${TARGET}? (ctrl-c for NO)"
                 rm -vrf "${TARGET}"
         fi
 	git clone --depth 1 -b "${VARIANT}" "https://github.com/INM-6/${PACKAGE}.git" "${TARGET}"
