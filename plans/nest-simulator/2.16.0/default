@@ -28,4 +28,5 @@ MD5SUM=327c1d1edea9580cde1bc1deaa7f63f3 # GitHub release tarball
 SHA256SUM=abfeb61719dec54da9477be035bef1d9d764f4e7663f63f6a6d9211f967e0490
 log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
 
+# shellcheck source=plans/nest-simulator/common
 source "$(dirname "${PLAN}")/../common"

@@ -32,5 +32,6 @@ MD5SUM=d3fc815b6a6db187468350cc971fed0b
 SHA256SUM=40e33187c22d6e843d80095b221fa7fd5ebe4dbc0116765a91fc5c425dd0eca4
 log_warning "!!! NOTE: Building from release tar-ball, which is different from the DOI version!"
 
-CMAKEFLAGS="-Dwith-python=3 -Dwith-gsl=ON"
+CONFIGURE_OPTIONS="-Dwith-python=3 -Dwith-gsl=ON"
+# shellcheck source=plans/nest-simulator/common
 source "$(dirname "${PLAN}")/../common"

@@ -29,7 +29,7 @@ log_warning "WARNING: This build re-assigns \$TARGET path to $TARGET, because tr
 build_prepare() {
 	log_status ">>> prepare build"
 	if [ -d "${BUILD}" ]; then
-		read -p "sure you want to delete ${BUILD}? (ctrl-c for NO)"
+		read -rp "sure you want to delete ${BUILD}? (ctrl-c for NO)"
 		rm -vrf "${BUILD}"
 	fi
 	# tree specific:

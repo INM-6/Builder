@@ -23,13 +23,15 @@ URL=https://github.com/cea-hpc/modules/releases/download/v${VERSION}/modules-${V
 # this checksum was not officially provided, but taken from downloaded tar-ball
 SHA256SUM=ee7ecd62bbbde6d51e30788a97800c39e72515b6a910839fb84041b35ba42b4d
 
-CONFIGURE_OPTIONS="--modulefilesdir '$MODULE_INSTALL_PATH'  --enable-color --disable-example-modulefiles"
+CONFIGURE_OPTIONS=("--modulefilesdir" "$MODULE_INSTALL_PATH"  "--enable-color" "--disable-example-modulefiles")
 
 build_package () {
 	log_status ">>> in-tree build ${PACKAGE}/${VERSION}/${VARIANT}..."
 	cd "${SOURCE}"
 	set -x
-	"./configure" --prefix="${TARGET}" ${CONFIGURE_OPTIONS:-} 2>&1 | tee "${LOG}/configure.log"
-	make -j ${MAKE_THREADS:-$(nproc)} 2>&1 | tee "${LOG}/make.log"
+	# CONFIGURE_OPTIONS variable needs to be split, so no quotes
+	# shellcheck disable=SC2086
+	"./configure" --prefix="${TARGET}" "${CONFIGURE_OPTIONS[@]}" 2>&1 | tee "${LOG}/configure.log"
+	make -j "${MAKE_THREADS:-$(nproc)}" 2>&1 | tee "${LOG}/make.log"
 	set +x
 }

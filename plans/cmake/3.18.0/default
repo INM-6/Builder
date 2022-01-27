@@ -25,8 +25,8 @@ build_package () {
 	log_status ">>> build"
 	cd "${BUILD}"
 	set -x
-	"${SOURCE}/bootstrap" --prefix="${TARGET}" --parallel=${MAKE_THREADS:-$(nproc)} |& tee "${LOG}/bootstrap.log"
-	make -j ${MAKE_THREADS:-$(nproc)} |& tee "${LOG}/make.log"
+	"${SOURCE}/bootstrap" --prefix="${TARGET}" --parallel="${MAKE_THREADS:-$(nproc)}" |& tee "${LOG}/bootstrap.log"
+	make -j "${MAKE_THREADS:-$(nproc)}" |& tee "${LOG}/make.log"
 	set +x
 }
 

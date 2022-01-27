@@ -19,13 +19,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 PACKAGE=gsl
-VERSION=${1:-2.6}
-SUFFIX=${2:-}
 URL=ftp://ftp.gnu.org/gnu/${PACKAGE}/${PACKAGE}-${VERSION}.tar.gz
 GPG_VERIFY_KEY=../gsl_key.txt
 
 build_install() {
-	make install |& tee ${LOG}/make-install.log
-	awk 'BEGIN {f=2;x=0}; /^-------/{x=1;if (f>0) f--} f*x' ${LOG}/make-install.log  >${TARGET}/ConfigurationSummary.txt
+	make install |& tee "${LOG}/make-install.log"
+	awk 'BEGIN {f=2;x=0}; /^-------/{x=1;if (f>0) f--} f*x' "${LOG}/make-install.log"  >"${TARGET}/ConfigurationSummary.txt"
 }
 

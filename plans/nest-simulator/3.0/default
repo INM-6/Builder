@@ -25,4 +25,5 @@ MD5SUM=5f369b65512bbb9a7031529ed18776e4
 SHA256SUM=d481ea67f3251fe3aadf5252ab0a999172f0cd5536c5985366d271d772e686e6
 
 
+# shellcheck source=plans/nest-simulator/common
 source "$(dirname "${PLAN}")/../common"

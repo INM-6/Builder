@@ -46,6 +46,7 @@ build_install () {
 
         # --target "${TARGET}"
 	# is a subset of --root
+	# shellcheck disable=SC2086
 	pip3 install ${CONFIGURE_OPTIONS:-} \
 	    --root "${TARGET}" \
             --cache-dir "${PACKAGE_CACHE}" \
