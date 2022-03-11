@@ -1,0 +1,23 @@
+#%Module1.0#####################################################################
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set     INSTALLDIR      "${TARGET}"
+
+proc ModulesHelp { } {
+        puts stderr "
+   Vale is a command-line tool that brings code-like linting to prose. It's
+   fast, cross-platform (Windows, macOS, and Linux), and highly customizable.
+
+   GitHub: https://github.com/errata-ai/vale
+   Documentation: https://docs.errata.ai/vale/about
+"
+}
+
+module-whatis   "Linting for documentation (${VERSION})"
+
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
+
+prepend-path    PATH    \$INSTALLDIR
