@@ -10,7 +10,7 @@
   If `modules` are installed, the only required change to write your own
   modules is to have a `MODULESPATH` variable in your shell's environment.
 
-     MODULESPATH=/path/to/your/modulefiles
+     MODULEPATH=/path/to/your/modulefiles
 
   Builder supports populating such a directory, if the plan-file is accompanied
   by a `.module` template.
