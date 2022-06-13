@@ -8,7 +8,7 @@
   select a specific installed version of a software.
 
   If `modules` are installed, the only required change to write your own
-  modules is to have a `MODULESPATH` variable in your shell's environment.
+  modules is to have a `MODULEPATH` variable in your shell's environment.
 
      MODULEPATH=/path/to/your/modulefiles
 
