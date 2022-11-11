@@ -23,13 +23,15 @@ jobs:
         ./build.sh -s bats
 
     - name: Run BATS
+      env:
+        LATEST_BATS_VER: 1.8.2
       run: |
         source /etc/profile
         module --version
         module use /home/runner/modules
-        cp -v /home/runner/modules/bats/1.2.1/default /home/runner/modules/bats/1.2.2
+        cp -v /home/runner/modules/bats/${LATEST_BATS_VER}/default /home/runner/modules/bats/${LATEST_BATS_VER}
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         module avail
-        module load bats/1.2.2
+        module load bats/${LATEST_BATS_VER}
         bats tests/
