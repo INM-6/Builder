@@ -76,7 +76,7 @@ In any case, you can always get more details with
 
 ## Contributing
 
-I would be happy to receive PRs for new plan files or bug fixes. Some
+PRs for new plan files or bug fixes are welcome. Some
 documentation can be found in the [doc/ folder](doc/), where the [documentation
 index](index.md) aims to give you a quick overview.
 
