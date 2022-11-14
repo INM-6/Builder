@@ -160,6 +160,12 @@ source_get() {
 
 source_prepare() {
 	check_package_file
+
+	if [ -d "${SOURCE}" ] && [ $FORCE = true ] ; then
+		read -p "sure you want to delete ${SOURCE}? (ctrl-c for NO)"
+		rm -vrf "${SOURCE}"
+	fi
+
 	if [ ! -d "${SOURCE}" ]; then
 		mkdir -pv "${SOURCE}"
 		cd "${SOURCE}"
