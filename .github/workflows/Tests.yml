@@ -41,6 +41,8 @@ jobs:
         set
         if [ ${LMOD_VERSION+x} ]; then
           echo "assuming LUA modules…"
+          echo "module --config"
+          module --config
           echo "module avail:"
           module --ignore_cache avail
           echo "module spider:"
