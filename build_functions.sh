@@ -239,7 +239,11 @@ module_install () {
 
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	if [ -r "${PLAN}.module" ]; then
-		module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
+		if [ ${LUA_VERSION+x} ]; then	# if we are using a LUA module system
+			module_path="${MODULE_INSTALL_PATH}/${VARIANT}/${PACKAGE}/${VERSION}"
+		else				# else we assume TCL
+			module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
+		fi
 		#PYTHON_SCRIPTS="$(python -c "import sysconfig; print(sysconfig.get_path('scripts'))")"
 		#PYTHON_PLATLIB="$(python -c "import sysconfig; print(sysconfig.get_path('platlib'))")"
 		#PYTHON_PURELIB="$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")"

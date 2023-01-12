@@ -19,7 +19,14 @@ jobs:
 
     - name: Install BATS
       run: |
+        source /etc/profile
         ./build.sh configure || true
+        module --version
+        if [ $LMOD_VERSION+x ]; then
+          echo "assuming LUA modules…"
+        else
+          echo "assuming TCL modules…"
+        fi
         ./build.sh -s bats
 
     - name: Run BATS
