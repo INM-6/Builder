@@ -31,6 +31,6 @@ jobs:
         module use /home/runner/modules
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
-        module avail
+        module --ignore_cache avail
         module load bats/${LATEST_BATS_VER}/default
         bats tests/
