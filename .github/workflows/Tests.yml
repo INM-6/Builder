@@ -19,17 +19,42 @@ jobs:
 
     - name: Install BATS
       run: |
+        source /etc/profile
         ./build.sh configure || true
+        module --version
+        if [ $LMOD_VERSION+x ]; then
+          echo "assuming LUA modules…"
+        else
+          echo "assuming TCL modules…"
+        fi
         ./build.sh -s bats
 
     - name: Run BATS
+      env:
+        LATEST_BATS_VER: 1.8.2
       run: |
         source /etc/profile
         module --version
         module use /home/runner/modules
-        cp -v /home/runner/modules/bats/1.2.1/default /home/runner/modules/bats/1.2.2
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
-        module avail
-        module load bats/1.2.2
+        set
+        if [ ${LMOD_VERSION+x} ]; then
+          export LMOD_IGNORE_CACHE=yes
+          echo "assuming LUA modules…"
+          echo "module --config"
+          module --config
+          echo "module avail:"
+          module --ignore_cache avail
+          echo "module spider:"
+          module spider bats
+          echo "module load:"
+          module load default/bats/${LATEST_BATS_VER}
+        else
+          echo "assuming TCL modules…"
+          echo "module avail:"
+          module avail
+          echo "module load:"
+          module load bats/${LATEST_BATS_VER}/default
+        fi
         bats tests/
