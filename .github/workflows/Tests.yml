@@ -32,5 +32,5 @@ jobs:
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         module avail
-        module load bats/${LATEST_BATS_VER}
+        module load bats/${LATEST_BATS_VER}/default
         bats tests/
