@@ -29,7 +29,6 @@ jobs:
         source /etc/profile
         module --version
         module use /home/runner/modules
-        cp -v /home/runner/modules/bats/${LATEST_BATS_VER}/default /home/runner/modules/bats/${LATEST_BATS_VER}
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         module avail
