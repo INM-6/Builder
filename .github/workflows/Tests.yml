@@ -40,6 +40,7 @@ jobs:
         find /home/runner/modules -type f
         set
         if [ ${LMOD_VERSION+x} ]; then
+          export LMOD_IGNORE_CACHE=yes
           echo "assuming LUA modules…"
           echo "module --config"
           module --config
