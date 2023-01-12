@@ -39,12 +39,19 @@ jobs:
         echo "MODULEPATH=$MODULEPATH"
         find /home/runner/modules -type f
         set
-        echo "module avail:"
-        module --ignore_cache avail
         if [ ${LMOD_VERSION+x} ]; then
+          echo "assuming LUA modules…"
+          echo "module avail:"
+          module --ignore_cache avail
+          echo "module spider:"
           module spider bats
+          echo "module load:"
           module load default/bats/${LATEST_BATS_VER}
         else
+          echo "assuming TCL modules…"
+          echo "module avail:"
+          module avail
+          echo "module load:"
           module load bats/${LATEST_BATS_VER}/default
         fi
         bats tests/
