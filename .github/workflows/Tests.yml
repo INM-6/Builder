@@ -41,5 +41,10 @@ jobs:
         set
         echo "module avail:"
         module --ignore_cache avail
-        module load bats/${LATEST_BATS_VER}/default
+        if [ ${LMOD_VERSION+x} ]; then
+          module spider bats
+          module load default/bats/${LATEST_BATS_VER}
+        else
+          module load bats/${LATEST_BATS_VER}/default
+        fi
         bats tests/
