@@ -239,7 +239,7 @@ module_install () {
 
 	PREREQ_DEPENDS="$(module_capture_prereq)"
 	if [ -r "${PLAN}.module" ]; then
-		if [ ${LUA_VERSION+x} ]; then	# if we are using a LUA module system
+		if [ ${LMOD_VERSION+x} ]; then	# if we are using a LUA module system
 			module_path="${MODULE_INSTALL_PATH}/${VARIANT}/${PACKAGE}/${VERSION}"
 		else				# else we assume TCL
 			module_path="${MODULE_INSTALL_PATH}/${PACKAGE}/${VERSION}/${VARIANT}"
