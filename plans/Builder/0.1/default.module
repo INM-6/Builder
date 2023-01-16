@@ -1,0 +1,24 @@
+#%Module1.0#####################################################################
+#
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set     INSTALLDIR      "${TARGET}"
+
+proc ModulesHelp { } {
+        puts stderr "
+   Collection of tools and scripts to install software on a system.
+
+   In contrast to usual packaging systems, the aim is to equally help users and
+   admins. Many aspects are inspired by Portage, which is used by the Gentoo
+   Linux distribution.
+
+   See https://github.com/INM-6/Builder
+"
+}
+
+module-whatis   "Bash testing framework (${VERSION})"
+
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
+
+prepend-path    PATH    \$INSTALLDIR

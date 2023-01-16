@@ -36,6 +36,11 @@ To set up the defaults for Builder run the configure command once:
 Then you can configure all relevant paths in `~/.buildrc`.  A more complete
 description is in the [configuration details](doc/Configuration.md).
 
+**Hint:** *You can also use Builder to install itself, which has the benefit of
+installing a suitable modulefile automatically. See [Install](doc/Install.md)
+for details.*
+
+
 ### Optional
 
 To make best use of the installed packages, you likely also want to install a
