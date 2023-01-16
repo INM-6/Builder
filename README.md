@@ -20,7 +20,7 @@ your `$PATH`. You may have `~/bin` in your `$PATH` in which case you can do
 
 The only prerequisites are to have a system supporting sym-links with a proper
 `bash`-compatible shell, `coreutils` and `wget` installed. Most systems should
-have those by default, see [Trouble-shooting](docs/Trouble-shooting.md) anyway, if you
+have those by default, see [Trouble-shooting](doc/Trouble-shooting.md) anyway, if you
 hit a strange error.
 
 **Dependencies** (Linux/MacOS/Windows):
@@ -81,7 +81,7 @@ In any case, you can always get more details with
 
 ## Contributing
 
-I would be happy to receive PRs for new plan files or bug fixes. Some
+PRs for new plan files or bug fixes are welcome. Some
 documentation can be found in the [doc/ folder](doc/), where the [documentation
 index](index.md) aims to give you a quick overview.
 
