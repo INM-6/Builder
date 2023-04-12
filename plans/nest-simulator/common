@@ -95,12 +95,6 @@ module_install () {
 			    #-e "s%\${\?PYTHON_SITEPKG}\?%$PYTHON_SITEPKG%g" \
 		fi
 
-                if [[ "${CMAKEFLAGS}" == *"python=ON"* ]]; then
-                        PYTHON_SITEPKG="$(python -c "import sysconfig; from pathlib import Path; print(Path(sysconfig.get_path('purelib')).relative_to(sysconfig.get_path('data')))")"
-                        PYTHON_SITEPKG=${PYTHON_SITEPKG#"lib/"}
-                        sed -i "s|.*PYTHONPATH.*|&$PYTHON_SITEPKG|" "$module_path"
-                fi
-
 		if ! echo "${MODULEPATH:-}" | grep "${MODULE_INSTALL_PATH}" >/dev/null; then
 			log_info ">>>"
 			log_info ">>> Info: MODULE_INSTALL_PATH is not in your MODULEPATH"
