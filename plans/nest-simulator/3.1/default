@@ -25,4 +25,5 @@ SHA256SUM=5c11dd6b451c4c6bf93037bf29d5231c6c75a0e1a8863344f6fb9bb225f279ca
 
 CMAKEFLAGS+=" -Dwith-boost=ON -Dwith-python=ON -Dwith-mpi=ON -Dwith-detailed-timers=ON -Dwith-ltdl=OFF"
 
+# shellcheck source=../common
 source "$(dirname "${PLAN}")/../common"

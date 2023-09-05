@@ -23,4 +23,5 @@ URL="https://github.com/nest/nest-simulator/archive/${VERSION}.tar.gz"
 
 CMAKEFLAGS+=" -Dwith-boost=ON -Dwith-python=ON -Dwith-mpi=ON -Dwith-detailed-timers=ON -Dwith-ltdl=OFF"
 
+# shellcheck source=../common
 source "$(dirname "${PLAN}")/../common"
