@@ -48,10 +48,10 @@ We can however call Builder directly and start building env modules
     ./build.sh environment-modules
 
 This will build environment-modules as a normal package into your set install
-path (see `~/.buildrc`). Alternative implementations like 'lmod' may be built
-in a similar manner. Since many things depend on your choice here, you may want
-to look into the install instructions and probably manually change things here
-and there.
+path (see [configuration](Configuration.md)). Alternative implementations like
+'lmod' may be built in a similar manner. Since many things depend on your
+choice here, you may want to look into the install instructions and probably
+manually change things here and there.
 
     less ~/install/environment-modules/4.7.1/default/share/doc/INSTALL.txt
 
