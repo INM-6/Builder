@@ -62,7 +62,7 @@ module_install () {
 		log_status ">>> installing module file to ${module_path}"
 		mkdir -pv "$(dirname "${module_path}")"
 		module="$(cat "${PLAN}.module")"
-		if version_gt $BASH_VERSION 4.4; then
+		if version_gt "${BASH_VERSION}" "4.4"; then
 			echo -e "${module@P}" >"${module_path}"
 		else
 			# this is a bad substitute for the power of the bash>4.4 notation.

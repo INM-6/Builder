@@ -50,9 +50,9 @@ Optional Dependencies:
 
 You can install any software with Builder if a plan file is available. The
 default location where Builder looks for plan files is configured as
-`PLANFILE_PATH` in `~/.buildrc`. You will find many files in the scheme
-`<package>/<version>/<variant>`, where the `<variant>` uses `default` as its
-default value.
+`PLANFILE_PATH` in the [configuration](doc/Configuration.md). You will find
+many files in the scheme `<package>/<version>/<variant>`, where the `<variant>`
+uses `default` as its default value.
 
 To install a package replace `<package>` and `<version>` with an available
 build plan:

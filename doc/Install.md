@@ -48,10 +48,10 @@ We can however call Builder directly and start building env modules
     ./build.sh environment-modules
 
 This will build environment-modules as a normal package into your set install
-path (see `~/.buildrc`). Alternative implementations like 'lmod' may be built
-in a similar manner. Since many things depend on your choice here, you may want
-to look into the install instructions and probably manually change things here
-and there.
+path (see [configuration](Configuration.md)). Alternative implementations like
+'lmod' may be built in a similar manner. Since many things depend on your
+choice here, you may want to look into the install instructions and probably
+manually change things here and there.
 
     less ~/install/environment-modules/4.7.1/default/share/doc/INSTALL.txt
 
@@ -71,3 +71,20 @@ still available.
 
 After this you can install or load Builder and go on extending your deployment.
 
+
+### Multi-configuration Environments
+
+When using Builder in a multi-user or CI setup it is inconvenient to have the
+`.buildrc` loaded from the user-account home directory. To circumvent this the
+variable `$BUILDER_CONFIG` can be defined to override the default path. For
+example, suppose you keep your configuration in a repository
+`repo/builder.conf`. You can use any Builder installation available and point
+it to your current setup:
+
+```bash
+#cd repo   # wherever this is
+export BUILDER_CONFIG="${PWD}/builder.conf"
+```
+
+With this, `build` can be called from any location and will find the right
+config file.

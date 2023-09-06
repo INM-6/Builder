@@ -22,6 +22,9 @@ set -euo pipefail
 if [ -z "${BUILDER_PATH+x}" ]; then
 	BUILDER_PATH="$(dirname "$(realpath "$0")")"
 fi
+# Use ~/.buildrc as default config, unless specified explicitly in an
+# environment variable.
+BUILDER_CONFIG="${BUILDER_CONFIG:-${HOME}/.buildrc}"
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -49,7 +52,7 @@ Usage: build -h|--help
 Options:
 
   -h or --help       this text is printed
-  configure          installs ~/.buildrc and exits
+  configure          installs ~/.buildrc or the file pointed to by BUILDER_CONFIG and exits
   --dry-run          skip build
   -s or --silent     skip build if installation folder exists
   -f or --force      rebuild even if installation folder exists, delete source folder if it exits
@@ -104,18 +107,18 @@ esac
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Setup Builder configuration
 
-if [ "${PACKAGE}" == "configure" -a -e "${HOME}/.buildrc" ]; then
+if [ "${PACKAGE}" == "configure" -a -e "${BUILDER_CONFIG}" ]; then
 	cat <<ENDNOTICE
 !!!
-!!! ~/.buildrc already exists.
+!!! ${BUILDER_CONFIG} already exists.
 !!!
 !!! Edit manually or delete it to install a new default configuration.
 !!!
 ENDNOTICE
 fi
-if [ ! -e "${HOME}/.buildrc" ]; then
-	echo ">>> installing default configuration '${HOME}/.buildrc'..."
-	cat >"${HOME}/.buildrc" <<ENDRC
+if [ ! -e "${BUILDER_CONFIG}" ]; then
+	echo ">>> installing default configuration '${BUILDER_CONFIG}'..."
+	cat >"${BUILDER_CONFIG}" <<ENDRC
 #
 # This is the configuration file for Builder
 # (auto-generated on $(date))
@@ -154,15 +157,15 @@ LOG_PATH="\\\${BUILD}/logs"
 # define the number of cores to use in standard build_package()
 #MAKE_THREADS=\$(( \$(nproc) / 4 ))
 ENDRC
-	cat "${HOME}/.buildrc"
+	cat "${BUILDER_CONFIG}"
 	cat <<ENDNOTE
 !!!
 !!! You probably want to modify at least the \$TARGET_PATH in your
-!!! configuration in '~/.buildrc'.
+!!! configuration in '${BUILDER_CONFIG}'.
 !!!
 ENDNOTE
 	echo -e "\n>>> default configuration has been written to"
-	echo -e "    ${HOME}/.buildrc\n"
+	echo -e "    ${BUILDER_CONFIG}\n"
 	if [ "$PACKAGE" != "configure" ]; then
 		echo "!!! Please check that the guessed paths are correct and"
 		echo "!!! rerun the build command."
@@ -172,10 +175,10 @@ ENDNOTE
 fi
 
 # load configuration
-if [ -r "${HOME}/.buildrc" ]; then
-	. "${HOME}/.buildrc"
+if [ -r "${BUILDER_CONFIG}" ]; then
+	. "${BUILDER_CONFIG}"
 else
-	echo "ERROR: Could not read ~/.buildrc"
+	echo "ERROR: Could not read ${BUILDER_CONFIG}"
 	exit 1
 fi
 

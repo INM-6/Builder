@@ -2,12 +2,12 @@
 
   Builder is designed to require only very minimal configuration. Upon its
   first build or when explicitly called with `build configure` a file
-  `.buildrc` is created if it does not exist yet. This file contains variables
-  that define various locations used in the build and install process.  When
-  the file is generated automatically Builder pre-fills some guessed defaults
-  that point to your home directory. While this quickly gets you started,
-  installing a lot of software into your `$HOME` is usually not a good idea and
-  you should set `$TARGET_PATH` to a better location.
+  `~/.buildrc` is created if it does not exist yet. This file contains
+  variables that define various locations used in the build and install
+  process.  When the file is generated automatically Builder pre-fills some
+  guessed defaults that point to your home directory. While this quickly gets
+  you started, installing a lot of software into your `$HOME` is usually not a
+  good idea and you should set `$TARGET_PATH` to a better location.
 
   The builder configuration defines variables of the build system itself.
   Mostly paths where Builder can put its work-space and where to put the
@@ -22,12 +22,13 @@
 
 ## `.buildrc` variables
 
-  Builder configuriation is automatically loaded from `$HOME/.buildrc`. If this
-  file does not exist, it will be created and the build will abort for you to
-  check the settings. The variables expected to be available after sourcing
-  `.buildrc` are described in the following table. The variables marked
-  "optional", if undefined, will be filled with appropriate default values by
-  builder for each build.
+  Builder configuriation is automatically loaded from `$HOME/.buildrc` (or the
+  file pointed to by the `$BUILDER_CONFIG` variable). If this file does not
+  exist, it will be created and the build will abort for you to check the
+  settings. The variables expected to be available after sourcing `.buildrc`
+  are described in the following table. The variables marked "optional", if
+  undefined, will be filled with appropriate default values by builder for each
+  build.
 
   Note that the expressions need not be constants, but are evaluated according
   to normal bash expansion rules (see man bash(1)). By this, you can
