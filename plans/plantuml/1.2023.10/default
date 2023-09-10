@@ -20,7 +20,7 @@
 #
 URL=https://github.com/plantuml/plantuml/releases/download/v${VERSION}/${PACKAGE}.jar
 SHA256SUM=ee06454723028763dd8280459e8fd8f31fcd85b1ae8d9ab0e32122243c098c3b
-#GPG_VERIFY_KEY=../plantuml-jar-signing-key.pub
+#GPG_VERIFY_KEY="../plantuml-jar-signing-key.txt"
 
 source_prepare() {
 	log_status ">>> prepare source (from planfile)"
@@ -38,13 +38,13 @@ build_package() {
 build_install() {
 	WRAPPER="${TARGET}/bin/plantuml"
 	log_info "Installing shell wrapper at ${WRAPPER}"
-	mkdir -pv ${TARGET}/bin
+	mkdir -pv "${TARGET}/bin"
 	# wrapper similar to suggested by
 	# https://daniel-siepmann.de/posts/migrated/workflow-for-read-the-docs-sphinx-and-plantuml.html
 	cat >>"${WRAPPER}" <<EOT
 #!/usr/bin/env sh -e
-java -Djava.awt.headless=true -jar ${TARGET}/${PACKAGE}-${VERSION}.jar "\${@}"
+java -Djava.awt.headless=true -jar "${TARGET}/${PACKAGE}-${VERSION}.jar" "\${@}"
 EOT
 	chmod u+x "${WRAPPER}"
-	cp -v ${PACKAGE_FILE} ${TARGET}/${PACKAGE}-${VERSION}.jar
+	cp -v "${PACKAGE_FILE}" "${TARGET}/${PACKAGE}-${VERSION}.jar"
 }
