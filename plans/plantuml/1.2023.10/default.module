@@ -1,0 +1,43 @@
+#%Module1.0#####################################################################
+#
+# https://plantuml.com
+#
+# ${AUTOMATIC_BUILD_WARNING}
+#
+
+# Specific Settings ############################################################
+
+set     VERSION         ${VERSION}
+set     SUFFIX          -${VARIANT}
+set     INSTALLDIR      ${TARGET}
+
+set moduledir [file dirname \$ModulesCurrentModulefile]
+
+# Common Setting ###############################################################
+if [info exists version]==0 {
+   set version [file tail [module-info version [module-info name] ] ]
+}
+
+proc ModulesHelp { } {
+        global VERSION SUFFIX INSTALLDIR
+        puts stderr "================================================================================
+PlantUML \$VERSION\$SUFFIX
+================================================================================
+
+   Generate UML diagram from textual description.
+
+   PlantUML is a component that allows to quickly write: Sequence diagram, Use
+   case diagram, Class diagram, Object diagram, Activity diagram (here is the
+   legacy syntax), Component diagram, Deployment diagram, State diagram, Timing
+   diagram.
+
+   To know more about PlantUML, please visit https://plantuml.com/
+"
+}
+
+module-whatis   "PlantUML graphics library, version \$VERSION\$SUFFIX"
+
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
+
+prepend-path    PATH                    \$INSTALLDIR/bin

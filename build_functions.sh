@@ -36,6 +36,7 @@ split_ext() {
 	*.tar.xz) echo ".tar.xz" ;;
 	*.tgz) echo ".tgz" ;;
 	*.zip) echo ".zip" ;;
+	*.jar) echo ".jar" ;;
 	*) log_error "UNKNOWN EXTENSION OF FILE '$1'"; exit 1;
 	esac
 }
