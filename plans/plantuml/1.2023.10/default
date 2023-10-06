@@ -41,7 +41,7 @@ build_install() {
 	mkdir -pv "${TARGET}/bin"
 	# wrapper similar to suggested by
 	# https://daniel-siepmann.de/posts/migrated/workflow-for-read-the-docs-sphinx-and-plantuml.html
-	cat >>"${WRAPPER}" <<EOT
+	cat >"${WRAPPER}" <<EOT
 #!/usr/bin/env sh -e
 java -Djava.awt.headless=true -jar "${TARGET}/${PACKAGE}-${VERSION}.jar" "\${@}"
 EOT
