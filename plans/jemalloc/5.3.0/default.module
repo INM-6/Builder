@@ -1,0 +1,24 @@
+#%Module1.0#####################################################################
+#
+# ${PACKAGE}/${VERSION}/${VARIANT}
+# ${AUTOMATIC_BUILD_WARNING}
+#
+set INSTALLDIR "${TARGET}"
+
+proc ModulesHelp { } {
+        global VERSION
+        puts stderr "${PACKAGE} ${VERSION} (${VARIANT})"
+}
+
+module-whatis   "${PACKAGE} ${VERSION} ${VARIANT}"
+
+conflict ${PACKAGE}
+${PREREQ_DEPENDS}
+
+setenv       LD_PRELOAD "\$INSTALLDIR/lib/libjemalloc.so"
+# prepend-path    PATH              "\$INSTALLDIR/bin"
+# prepend-path    LD_LIBRARY_PATH   "\$INSTALLDIR/lib"
+# prepend-path    LIBRARY_PATH      "\$INSTALLDIR/lib"
+# prepend-path    CPATH             "\$INSTALLDIR/include"
+# prepend-path    MANPATH           "\$INSTALLDIR/share/man"
+
