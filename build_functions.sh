@@ -294,7 +294,8 @@ module_install () {
 			log_info ">>>       export MODULEPATH=${MODULE_INSTALL_PATH}:\$MODULEPATH"
 			log_info ">>>"
 		else
-			log_success ">>> use 'module avail' to see and e.g. 'module load ${PACKAGE}/${VERSION}' to load modules."
+			log_success ">>> use 'module avail' to see and e.g. 'module load ${PACKAGE}/${VERSION}' to load modules,"
+			log_success ">>> or 'module load ${PACKAGE}/${VERSION}/${VARIANT}'"
 		fi
 	else
 		log_status ">>> no modulefile template found. skipping."
